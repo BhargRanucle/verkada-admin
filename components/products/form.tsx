@@ -1,0 +1,221 @@
+"use client";
+
+import { useState } from "react";
+import { useRouter } from "next/navigation";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
+import { z } from "zod";
+import { Button } from "@/components/ui/button";
+import {
+  Form,
+  FormControl,
+  FormDescription,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Textarea } from "@/components/ui/textarea";
+import { toast } from "@/components/ui/use-toast";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { createUser, updateUser } from "@/lib/actions";
+import type { Product } from "./table";
+import dynamic from "next/dynamic";
+import { motion } from "framer-motion";
+import "react-quill-new/dist/quill.core.css";
+import "react-quill-new/dist/quill.bubble.css";
+import "react-quill-new/dist/quill.snow.css";
+const ReactQuill = dynamic(() => import("react-quill-new"), { ssr: false });
+
+const formSchema = z.object({
+  name: z.string().min(2, {
+    message: "Name must be at least 2 characters.",
+  }),
+  product_category: z.string().nonempty("Product Category is required."),
+  content: z.string().optional(),
+});
+
+interface ProductFormProps {
+  product?: Product;
+}
+
+export function ProductForm({ product }: ProductFormProps) {
+  const router = useRouter();
+  const [isLoading, setIsLoading] = useState(false);
+
+  const form = useForm<z.infer<typeof formSchema>>({
+    resolver: zodResolver(formSchema),
+    defaultValues: {
+      name: product?.name || "",
+      product_category: product?.product_category || "",
+      content: product?.content || "",
+    },
+  });
+
+  async function onSubmit(values: z.infer<typeof formSchema>) {
+    setIsLoading(true);
+
+    try {
+      if (product) {
+        toast({
+          title: "Product updated",
+          description: "The user has been updated successfully.",
+        });
+      } else {
+        toast({
+          title: "Product created",
+          description: "The user has been created successfully.",
+        });
+      }
+      router.push("/admin/products");
+      router.refresh();
+    } catch (error) {
+      toast({
+        title: "Error",
+        description: "Something went wrong. Please try again.",
+        variant: "destructive",
+      });
+    } finally {
+      setIsLoading(false);
+    }
+  }
+
+  const modules = {
+    toolbar: {
+      container: `#toolbar`,
+    },
+  };
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.5 }}
+    >
+      <Form {...form}>
+        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+          <div className="grid gap-6 md:grid-cols-2">
+            <FormField
+              control={form.control}
+              name="name"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Name</FormLabel>
+                  <FormControl>
+                    <Input
+                      placeholder="Product Name"
+                      className="rounded-lg"
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            <FormField
+              control={form.control}
+              name="product_category"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Select Product Category</FormLabel>
+                  <Select
+                    onValueChange={(value) => {
+                      field.onChange(value);
+                    }}
+                    value={field.value}
+                  >
+                    <FormControl>
+                      <SelectTrigger className="rounded-lg">
+                        <SelectValue placeholder="Select a product category" />
+                      </SelectTrigger>
+                    </FormControl>
+                    <SelectContent>
+                      <SelectItem value="Door Controllers">
+                        Door Controllers
+                      </SelectItem>
+                      <SelectItem value="IO Controllers">
+                        IO Controllers
+                      </SelectItem>
+                      <SelectItem value="Integrated Card Reader Door Locks">
+                        Integrated Card Reader Door Locks
+                      </SelectItem>
+                      <SelectItem value="Multi-Format Card Readers">
+                        Multi-Format Card Readers
+                      </SelectItem>
+                      <SelectItem value="Badge Printing Software">
+                        Badge Printing Software
+                      </SelectItem>
+                    </SelectContent>
+                  </Select>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          </div>
+
+          <div className="mt-2 text-editor">
+            <FormField
+              control={form.control}
+              name="content"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Content</FormLabel>
+                  <div>
+                    <div id={`toolbar`}>
+                      <select className="ql-header">
+                        <option value="1">Heading 1</option>
+                        <option value="2">Heading 2</option>
+                      </select>
+                      <button className="ql-bold" />
+                      <button
+                        className="ql-list"
+                        value="bullet"
+                        title="Bullet List"
+                      />
+                    </div>
+                    <ReactQuill
+                      value={field.value}
+                      onChange={(content) => field.onChange(content)}
+                      theme="snow"
+                      modules={modules}
+                      key={"content"}
+                    />
+                  </div>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          </div>
+
+          <div className="flex flex-col gap-2 sm:flex-row sm:justify-end">
+            <Button
+              type="button"
+              variant="outline"
+              onClick={() => router.push("/admin/products")}
+              className="rounded-lg"
+            >
+              Cancel
+            </Button>
+            <Button type="submit" disabled={isLoading} className="rounded-lg">
+              {isLoading
+                ? "Saving..."
+                : product
+                ? "Update Product"
+                : "Create Product"}
+            </Button>
+          </div>
+        </form>
+      </Form>
+    </motion.div>
+  );
+}
