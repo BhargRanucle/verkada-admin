@@ -66,7 +66,6 @@ export function UserForm({ user }: UserFormProps) {
     defaultValues: {
       name: user?.name || "",
       email: user?.email || "",
-      role: user?.role || "",
       status: user?.status || "",
       bio: "",
       password: "",
@@ -134,7 +133,7 @@ export function UserForm({ user }: UserFormProps) {
                 </div>
               </div>
 
-              <div className="grid gap-6 md:grid-cols-2">
+              <div className="grid gap-6 grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
                 <FormField
                   control={form.control}
                   name="name"
@@ -161,27 +160,7 @@ export function UserForm({ user }: UserFormProps) {
                     </FormItem>
                   )}
                 />
-                <FormField
-                  control={form.control}
-                  name="role"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>Role</FormLabel>
-                      <Select onValueChange={field.onChange} value={field.value || "Admin"}>
-                        <FormControl>
-                          <SelectTrigger className="rounded-lg">
-                            <SelectValue placeholder="Select a role" />
-                          </SelectTrigger>
-                        </FormControl>
-                        <SelectContent>
-                          <SelectItem value="Admin">Admin</SelectItem>
-                          {/* <SelectItem value="Staff">Staff</SelectItem> */}
-                        </SelectContent>
-                      </Select>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
+                
                 <FormField
                   control={form.control}
                   name="status"
@@ -218,7 +197,6 @@ export function UserForm({ user }: UserFormProps) {
                         {...field}
                       />
                     </FormControl>
-                    <FormDescription>This is the user&apos;s public bio.</FormDescription>
                     <FormMessage />
                   </FormItem>
                 )}
@@ -235,7 +213,7 @@ export function UserForm({ user }: UserFormProps) {
                       <FormControl>
                         <Input type="password" className="rounded-lg" {...field} />
                       </FormControl>
-                      <FormDescription>{user ? "Leave blank to keep current password." : ""}</FormDescription>
+                      {/* <FormDescription>{user ? "Leave blank to keep current password." : ""}</FormDescription> */}
                       <FormMessage />
                     </FormItem>
                   )}

@@ -236,7 +236,7 @@ export default function LoginPage() {
                   </Button>
                 </form>
               </Form>
-              <div className="text-center text-sm text-muted-foreground">
+              {/* <div className="text-center text-sm text-muted-foreground">
                 Don't have an account?{" "}
                 <Link
                   href="#"
@@ -244,7 +244,7 @@ export default function LoginPage() {
                 >
                   Sign up
                 </Link>
-              </div>
+              </div> */}
             </CardContent>
           </Card>
           <motion.div

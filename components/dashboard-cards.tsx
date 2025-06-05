@@ -1,6 +1,6 @@
 "use client"
 
-import { Users, Package, ShoppingCart, DollarSign, TrendingUp, TrendingDown } from "lucide-react"
+import { Users, Package, ShoppingCart, DollarSign, TrendingUp, TrendingDown, SquareChartGantt, FolderOpenDot, FolderKanban } from "lucide-react"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { motion } from "framer-motion"
 
@@ -31,13 +31,13 @@ export function DashboardCards() {
         <Card className="group overflow-hidden rounded-xl border-none shadow-lg transition-all duration-300 hover:-translate-y-1 hover:shadow-xl">
           {/* <div className="absolute right-0 top-0 h-24 w-24 translate-x-8 -translate-y-8 transform rounded-full bg-primary/10 transition-transform group-hover:translate-x-6 group-hover:-translate-y-6"></div> */}
           <CardHeader className="flex flex-row items-center justify-between pb-2 px-4">
-            <CardTitle className="text-sm font-medium">Total Users</CardTitle>
+            <CardTitle className="text-sm font-medium">Total Admin Users</CardTitle>
             <div className="flex h-8 w-8 items-center justify-center rounded-full bg-primary/10 text-primary">
               <Users className="h-4 w-4" />
             </div>
           </CardHeader>
           <CardContent className="pb-6">
-            <div className="text-3xl font-bold">1,234</div>
+            <div className="text-3xl font-bold">110</div>
             <p className="mt-1 flex items-center text-xs text-muted-foreground">
               <span className="inline-flex items-center text-success">
                 <TrendingUp className="mr-1 h-3 w-3" />
@@ -55,11 +55,11 @@ export function DashboardCards() {
           <CardHeader className="flex flex-row items-center justify-between pb-2 px-4">
             <CardTitle className="text-sm font-medium">Total Products</CardTitle>
             <div className="flex h-8 w-8 items-center justify-center rounded-full bg-primary/10 text-primary">
-              <Package className="h-4 w-4" />
+              <FolderKanban className="h-4 w-4" />
             </div>
           </CardHeader>
           <CardContent className="pb-6">
-            <div className="text-3xl font-bold">567</div>
+            <div className="text-3xl font-bold">56</div>
             <p className="mt-1 flex items-center text-xs text-muted-foreground">
               <span className="inline-flex items-center text-success">
                 <TrendingUp className="mr-1 h-3 w-3" />
@@ -75,13 +75,13 @@ export function DashboardCards() {
         <Card className="group overflow-hidden rounded-xl border-none shadow-lg transition-all duration-300 hover:-translate-y-1 hover:shadow-xl">
           {/* <div className="absolute right-0 top-0 h-24 w-24 translate-x-8 -translate-y-8 transform rounded-full bg-primary/10 transition-transform group-hover:translate-x-6 group-hover:-translate-y-6"></div> */}
           <CardHeader className="flex flex-row items-center justify-between pb-2 px-4">
-            <CardTitle className="text-sm font-medium">Total Orders</CardTitle>
+            <CardTitle className="text-sm font-medium">Total Specifications</CardTitle>
             <div className="flex h-8 w-8 items-center justify-center rounded-full bg-primary/10 text-primary">
-              <ShoppingCart className="h-4 w-4" />
+              <SquareChartGantt className="h-4 w-4" />
             </div>
           </CardHeader>
           <CardContent className="pb-6">
-            <div className="text-3xl font-bold">892</div>
+            <div className="text-3xl font-bold">89</div>
             <p className="mt-1 flex items-center text-xs text-muted-foreground">
               <span className="inline-flex items-center text-destructive">
                 <TrendingDown className="mr-1 h-3 w-3" />
@@ -97,13 +97,13 @@ export function DashboardCards() {
         <Card className="group overflow-hidden rounded-xl border-none shadow-lg transition-all duration-300 hover:-translate-y-1 hover:shadow-xl">
           {/* <div className="absolute right-0 top-0 h-24 w-24 translate-x-8 -translate-y-8 transform rounded-full bg-primary/10 transition-transform group-hover:translate-x-6 group-hover:-translate-y-6"></div> */}
           <CardHeader className="flex flex-row items-center justify-between pb-2 px-4">
-            <CardTitle className="text-sm font-medium">Total Revenue</CardTitle>
+            <CardTitle className="text-sm font-medium">Total Projects</CardTitle>
             <div className="flex h-8 w-8 items-center justify-center rounded-full bg-primary/10 text-primary">
-              <DollarSign className="h-4 w-4" />
+              <FolderOpenDot className="h-4 w-4" />
             </div>
           </CardHeader>
           <CardContent className="pb-6">
-            <div className="text-3xl font-bold">$89,234</div>
+            <div className="text-3xl font-bold">420</div>
             <p className="mt-1 flex items-center text-xs text-muted-foreground">
               <span className="inline-flex items-center text-success">
                 <TrendingUp className="mr-1 h-3 w-3" />

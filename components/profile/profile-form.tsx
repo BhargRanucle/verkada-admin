@@ -163,7 +163,7 @@ export function ProfileForm() {
                       name="name"
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel>Full Name</FormLabel>
+                          <FormLabel>Name</FormLabel>
                           <FormControl>
                             <Input placeholder="John Doe" className="rounded-lg" {...field} />
                           </FormControl>
@@ -178,7 +178,7 @@ export function ProfileForm() {
                         <FormItem>
                           <FormLabel>Email Address</FormLabel>
                           <FormControl>
-                            <Input placeholder="john@example.com" className="rounded-lg" {...field} />
+                            <Input placeholder="john@example.com" className="rounded-lg" {...field} disabled />
                           </FormControl>
                           <FormMessage />
                         </FormItem>

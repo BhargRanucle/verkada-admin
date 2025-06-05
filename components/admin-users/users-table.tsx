@@ -39,7 +39,6 @@ const data: User[] = [
     id: "1",
     name: "John Doe",
     email: "john@example.com",
-    role: "Admin",
     status: "Active",
     createdAt: "2023-01-15T09:24:45",
     avatar: "/placeholder.svg",
@@ -48,7 +47,6 @@ const data: User[] = [
     id: "2",
     name: "Jane Smith",
     email: "jane@example.com",
-    role: "Admin",
     status: "Active",
     createdAt: "2023-02-20T14:35:12",
     avatar: "/placeholder.svg",
@@ -57,7 +55,6 @@ const data: User[] = [
     id: "3",
     name: "Robert Johnson",
     email: "robert@example.com",
-    role: "Admin",
     status: "Inactive",
     createdAt: "2023-03-10T11:12:30",
     avatar: "/placeholder.svg",
@@ -66,7 +63,6 @@ const data: User[] = [
     id: "4",
     name: "Emily Davis",
     email: "emily@example.com",
-    role: "Admin",
     status: "Active",
     createdAt: "2023-04-05T16:48:22",
     avatar: "/placeholder.svg",
@@ -75,7 +71,6 @@ const data: User[] = [
     id: "5",
     name: "Michael Wilson",
     email: "michael@example.com",
-    role: "Admin",
     status: "Active",
     createdAt: "2023-05-18T08:56:10",
     avatar: "/placeholder.svg",
@@ -84,7 +79,6 @@ const data: User[] = [
     id: "6",
     name: "Sarah Thompson",
     email: "sarah@example.com",
-    role: "Admin",
     status: "Active",
     createdAt: "2023-06-22T13:15:45",
     avatar: "/placeholder.svg",
@@ -93,7 +87,6 @@ const data: User[] = [
     id: "7",
     name: "David Brown",
     email: "david@example.com",
-    role: "Admin",
     status: "Inactive",
     createdAt: "2023-07-30T10:30:15",
     avatar: "/placeholder.svg",
@@ -102,7 +95,6 @@ const data: User[] = [
     id: "8",
     name: "Jennifer Martinez",
     email: "jennifer@example.com",
-    role: "Admin",
     status: "Active",
     createdAt: "2023-08-12T15:22:33",
     avatar: "/placeholder.svg",
@@ -111,7 +103,6 @@ const data: User[] = [
     id: "9",
     name: "Christopher Lee",
     email: "chris@example.com",
-    role: "Admin",
     status: "Active",
     createdAt: "2023-09-05T09:10:20",
     avatar: "/placeholder.svg",
@@ -120,7 +111,6 @@ const data: User[] = [
     id: "10",
     name: "Amanda White",
     email: "amanda@example.com",
-    role: "Admin",
     status: "Inactive",
     createdAt: "2023-10-18T14:05:50",
     avatar: "/placeholder.svg",
@@ -131,7 +121,6 @@ export type User = {
   id: string;
   name: string;
   email: string;
-  role: string;
   status: string;
   createdAt: string;
   avatar: string;
@@ -152,28 +141,6 @@ export function UsersTable() {
   };
 
   const columns: ColumnDef<User>[] = [
-    {
-      id: "select",
-      header: ({ table }) => (
-        <Checkbox
-          checked={
-            table.getIsAllPageRowsSelected() ||
-            (table.getIsSomePageRowsSelected() && "indeterminate")
-          }
-          onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
-          aria-label="Select all"
-        />
-      ),
-      cell: ({ row }) => (
-        <Checkbox
-          checked={row.getIsSelected()}
-          onCheckedChange={(value) => row.toggleSelected(!!value)}
-          aria-label="Select row"
-        />
-      ),
-      enableSorting: false,
-      enableHiding: false,
-    },
     {
       accessorKey: "name",
       header: ({ column }) => {
@@ -217,38 +184,6 @@ export function UsersTable() {
             Email
             <ArrowUpDown className="ml-3 h-4 w-4" />
           </div>
-        );
-      },
-    },
-    {
-      accessorKey: "role",
-      header: ({ column }) => {
-        return (
-          <div
-            // variant="ghost"
-            className="flex items-center cursor-pointer"
-            onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-          >
-            Role
-            <ArrowUpDown className="ml-3 h-4 w-4" />
-          </div>
-        );
-      },
-      cell: ({ row }) => {
-        const role = row.original.role;
-        return (
-          <Badge
-            variant="outline"
-            className={
-              role === "Admin"
-                ? "border-primary/50 bg-primary/10 text-primary"
-                : role === "Editor"
-                ? "border-secondary/50 bg-secondary/10 text-secondary"
-                : "border-muted-foreground/20 bg-muted-foreground/10 text-muted-foreground"
-            }
-          >
-            {role}
-          </Badge>
         );
       },
     },

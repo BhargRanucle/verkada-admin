@@ -12,7 +12,7 @@ export default function ProfilePage() {
   return (
     <div className="space-y-6">
       <PageTitle title="Profile Settings" />
-      <div className="rounded-xl border-none bg-white p-6 shadow-lg dark:bg-background">
+      <div className="rounded-xl border-none bg-white p-6 shadow-none dark:bg-background [box-shadow:0_8px_34px_rgba(0,0,0,0.1)]">
         <ProfileForm />
       </div>
     </div>

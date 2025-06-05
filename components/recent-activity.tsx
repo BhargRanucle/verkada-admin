@@ -13,19 +13,8 @@ const activities = [
       avatar: "/placeholder.svg",
       initials: "JD",
     },
-    action: "created a new account",
+    action: "created a new product category",
     time: "2 minutes ago",
-  },
-  {
-    id: 2,
-    user: {
-      name: "Jane Smith",
-      email: "jane@example.com",
-      avatar: "/placeholder.svg",
-      initials: "JS",
-    },
-    action: "placed an order #1234",
-    time: "10 minutes ago",
   },
   {
     id: 3,
@@ -57,8 +46,19 @@ const activities = [
       avatar: "/placeholder.svg",
       initials: "MW",
     },
-    action: "completed their order",
+    action: "updated their profile",
     time: "2 hours ago",
+  },
+  {
+    id: 6,
+    user: {
+      name: "Dan Brown",
+      email: "dan@example.com",
+      avatar: "/placeholder.svg",
+      initials: "DB",
+    },
+    action: "deleted a product category (IO Controllers)",
+    time: "3 hours ago",
   },
 ]
 

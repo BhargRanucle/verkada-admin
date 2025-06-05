@@ -93,7 +93,7 @@ export function Header() {
           </DropdownMenuContent>
         </DropdownMenu>
 
-        <DropdownMenu>
+        {/* <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button
               variant="ghost"
@@ -119,7 +119,7 @@ export function Header() {
               System
             </DropdownMenuItem>
           </DropdownMenuContent>
-        </DropdownMenu>
+        </DropdownMenu> */}
 
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
