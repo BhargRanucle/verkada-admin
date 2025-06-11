@@ -34,6 +34,8 @@ import { Input } from "../ui/input";
 import { use } from "react";
 import { useRouter } from "next/navigation";
 import { Specification } from "../manage-specifications/table";
+import { Label } from "@/components/ui/label";
+import TextEditorField from "../text-editor/TextEditorField";
 
 // Define product types and their associated products
 const productOptions = {
@@ -85,11 +87,13 @@ export default function FormComponent({ specification }: SpecificationProps) {
   const router = useRouter();
 
   const initialValues = {
-    title: specification?.title || "",
+    product_line: specification?.product_line || "",
     status: specification?.status || "Active",
     generalSections: [{ title: "", content: "" }],
     productSections: [],
     executionSections: [{ title: "", content: "" }],
+    general: "",
+    execution: ""
   };
 
   return (
@@ -103,26 +107,33 @@ export default function FormComponent({ specification }: SpecificationProps) {
           setSubmitting(false);
         }}
       >
-        {({ values, isSubmitting, handleChange, handleBlur }) => (
+        {({
+          values,
+          isSubmitting,
+          handleChange,
+          handleBlur,
+          setFieldValue,
+        }) => (
           <FormikForm className="space-y-4">
             <div className="grid gap-6 md:grid-cols-2">
               <div className="form-item">
                 <label className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
-                  Title
+                  Product Line
                 </label>
                 <Field
                   as={Input}
-                  placeholder="Enter your specification title"
+                  // placeholder="Enter your specification title"
                   className="rounded-lg"
-                  name="title"
+                  name="product_line"
                   onChange={(e: any) => {
                     handleChange(e);
                     console.log("Title changed:", e.target.value);
                   }}
                   onBlur={handleBlur}
+                  disabled
                 />
                 <ErrorMessage
-                  name="name"
+                  name="product_line"
                   component="div"
                   className="text-red-500 text-xs mt-1"
                 />
@@ -187,19 +198,37 @@ export default function FormComponent({ specification }: SpecificationProps) {
                           </div>
                         </CardHeader>
                         <div className="grid grid-cols-1 gap-4">
-                          {values.generalSections.map((section, index) => (
-                            <GeneralSection
-                              key={index}
-                              index={index}
-                              remove={remove}
-                              showRemove={values.generalSections.length > 1}
-                              arrayLength={values.generalSections.length}
-                            />
-                          ))}
+                          <div
+                            key={`general-section`}
+                            className=" hover:border-black/20 transition-all duration-200 bg-white/80 backdrop-blur-sm border-0 rounded-[17px]"
+                          >
+                                <div className="">
+                                  <Field name={`general`}>
+                                    {({ field, form, meta }: any) => (
+                                      <>
+                                        <TextEditorField
+                                          name="general"
+                                          toolbarId="toolbar-general"
+                                          value={field.value}
+                                          onChange={(value: any) =>
+                                            setFieldValue(`general`, value)
+                                          }
+                                        />
+
+                                        <ErrorMessage
+                                          name={`general`}
+                                          component="div"
+                                          className="text-red-500 text-xs mt-1"
+                                        />
+                                      </>
+                                    )}
+                                  </Field>
+                                </div>
+                              
+                          </div>
                         </div>
 
-                        {/* Add the button outside the div */}
-                        <Button
+                        {/* <Button
                           type="button"
                           variant="outline"
                           size="sm"
@@ -207,7 +236,7 @@ export default function FormComponent({ specification }: SpecificationProps) {
                           onClick={() => push({ title: "", content: "" })}
                         >
                           <Plus className="h-4 w-4 mr-1" /> Add Section
-                        </Button>
+                        </Button> */}
                       </>
                     )}
                   </FieldArray>
@@ -242,7 +271,7 @@ export default function FormComponent({ specification }: SpecificationProps) {
                                     variant="outline"
                                     className="text-xs border-black/20 text-gray-600"
                                   >
-                                    {(field.value || []).length} item
+                                    {(field.value || []).length} Product
                                     {(field.value || []).length !== 1
                                       ? "s"
                                       : ""}{" "}
@@ -314,25 +343,332 @@ export default function FormComponent({ specification }: SpecificationProps) {
                           </div>
                         </CardHeader>
                         <div className="grid grid-cols-1 gap-4">
-                          {values.executionSections.map((section, index) => (
+                          {/* {values.executionSections.map((section, index) => (
                             <ExecutionSection
                               key={index}
                               index={index}
                               remove={remove}
                               showRemove={values.executionSections.length > 1}
                             />
-                          ))}
+                          ))} */}
+
+                          {/* <Card
+                            key={`execution-section`}
+                            className="border border-black/10 hover:border-black/20 transition-all duration-200 bg-white/80 backdrop-blur-sm"
+                          >
+                            <CardContent className="p-3 space-y-2">
+                              <div className="">
+                                <Label
+                                  htmlFor={`installers`}
+                                  className="font-semibold text-sm text-gray-700 ms-1"
+                                >
+                                  Installers
+                                </Label>
+                                <div className="mt-1">
+                                  <Field name={`installers`}>
+                                    {({ field, form, meta }: any) => (
+                                      <>
+                                        <TextEditorField
+                                          name="installers"
+                                          toolbarId="toolbar-installers"
+                                          value={field.value}
+                                          onChange={(value: any) =>
+                                            setFieldValue(`installers`, value)
+                                          }
+                                        />
+
+                                        <ErrorMessage
+                                          name={`installers`}
+                                          component="div"
+                                          className="text-red-500 text-xs mt-1"
+                                        />
+                                      </>
+                                    )}
+                                  </Field>
+                                </div>
+                              </div>
+
+                              <div className="mt-2">
+                                <Label
+                                  htmlFor={`examination`}
+                                  className="font-semibold text-sm text-gray-700 ms-1"
+                                >
+                                  Examination
+                                </Label>
+                                <div className="mt-1">
+                                  <Field name={`examination`}>
+                                    {({ field, form, meta }: any) => (
+                                      <>
+                                        <TextEditorField
+                                          name="examination"
+                                          toolbarId="toolbar-examination"
+                                          value={field.value}
+                                          onChange={(value: any) =>
+                                            setFieldValue(`examination`, value)
+                                          }
+                                        />
+
+                                        <ErrorMessage
+                                          name={`examination`}
+                                          component="div"
+                                          className="text-red-500 text-xs mt-1"
+                                        />
+                                      </>
+                                    )}
+                                  </Field>
+                                </div>
+                              </div>
+
+                              <div className="mt-2">
+                                <Label
+                                  htmlFor={`preparation`}
+                                  className="font-semibold text-sm text-gray-700 ms-1"
+                                >
+                                  Preparation
+                                </Label>
+                                <div className="mt-1">
+                                  <Field name={`preparation`}>
+                                    {({ field, form, meta }: any) => (
+                                      <>
+                                        <TextEditorField
+                                          name="preparation"
+                                          toolbarId="toolbar-preparation"
+                                          value={field.value}
+                                          onChange={(value: any) =>
+                                            setFieldValue(`preparation`, value)
+                                          }
+                                        />
+
+                                        <ErrorMessage
+                                          name={`preparation`}
+                                          component="div"
+                                          className="text-red-500 text-xs mt-1"
+                                        />
+                                      </>
+                                    )}
+                                  </Field>
+                                </div>
+                              </div>
+
+                              <div className="mt-2">
+                                <Label
+                                  htmlFor={`installation`}
+                                  className="font-semibold text-sm text-gray-700 ms-1"
+                                >
+                                  Installation
+                                </Label>
+                                <div className="mt-1">
+                                  <Field name={`installation`}>
+                                    {({ field, form, meta }: any) => (
+                                      <>
+                                        <TextEditorField
+                                          name="installation"
+                                          toolbarId="toolbar-installation"
+                                          value={field.value}
+                                          onChange={(value: any) =>
+                                            setFieldValue(`installation`, value)
+                                          }
+                                        />
+
+                                        <ErrorMessage
+                                          name={`installation`}
+                                          component="div"
+                                          className="text-red-500 text-xs mt-1"
+                                        />
+                                      </>
+                                    )}
+                                  </Field>
+                                </div>
+                              </div>
+
+                              <div className="mt-2">
+                                <Label
+                                  htmlFor={`labeling`}
+                                  className="font-semibold text-sm text-gray-700 ms-1"
+                                >
+                                  Labeling
+                                </Label>
+                                <div className="mt-1">
+                                  <Field name={`labeling`}>
+                                    {({ field, form, meta }: any) => (
+                                      <>
+                                        <TextEditorField
+                                          name="labeling"
+                                          toolbarId="toolbar-labeling"
+                                          value={field.value}
+                                          onChange={(value: any) =>
+                                            setFieldValue(`labeling`, value)
+                                          }
+                                        />
+
+                                        <ErrorMessage
+                                          name={`labeling`}
+                                          component="div"
+                                          className="text-red-500 text-xs mt-1"
+                                        />
+                                      </>
+                                    )}
+                                  </Field>
+                                </div>
+                              </div>
+
+                              <div className="mt-2">
+                                <Label
+                                  htmlFor={`programming`}
+                                  className="font-semibold text-sm text-gray-700 ms-1"
+                                >
+                                  Programming
+                                </Label>
+                                <div className="mt-1">
+                                  <Field name={`programming`}>
+                                    {({ field, form, meta }: any) => (
+                                      <>
+                                        <TextEditorField
+                                          name="programming"
+                                          toolbarId="toolbar-programming"
+                                          value={field.value}
+                                          onChange={(value: any) =>
+                                            setFieldValue(`programming`, value)
+                                          }
+                                        />
+
+                                        <ErrorMessage
+                                          name={`programming`}
+                                          component="div"
+                                          className="text-red-500 text-xs mt-1"
+                                        />
+                                      </>
+                                    )}
+                                  </Field>
+                                </div>
+                              </div>
+
+                              <div className="mt-2">
+                                <Label
+                                  htmlFor={`acceptance_testing`}
+                                  className="font-semibold text-sm text-gray-700 ms-1"
+                                >
+                                  Acceptance Testing
+                                </Label>
+                                <div className="mt-1">
+                                  <Field name={`acceptance_testing`}>
+                                    {({ field, form, meta }: any) => (
+                                      <>
+                                        <TextEditorField
+                                          name="acceptance_testing"
+                                          toolbarId="toolbar-acceptance-testing"
+                                          value={field.value}
+                                          onChange={(value: any) =>
+                                            setFieldValue(`acceptance_testing`, value)
+                                          }
+                                        />
+
+                                        <ErrorMessage
+                                          name={`acceptance_testing`}
+                                          component="div"
+                                          className="text-red-500 text-xs mt-1"
+                                        />
+                                      </>
+                                    )}
+                                  </Field>
+                                </div>
+                              </div>
+
+                              <div className="mt-2">
+                                <Label
+                                  htmlFor={`owner_personnel_training`}
+                                  className="font-semibold text-sm text-gray-700 ms-1"
+                                >
+                                  Owner Personnel Training
+                                </Label>
+                                <div className="mt-1">
+                                  <Field name={`owner_personnel_training`}>
+                                    {({ field, form, meta }: any) => (
+                                      <>
+                                        <TextEditorField
+                                          name="owner_personnel_training"
+                                          toolbarId="toolbar-owner-personnel-training"
+                                          value={field.value}
+                                          onChange={(value: any) =>
+                                            setFieldValue(`owner_personnel_training`, value)
+                                          }
+                                        />
+
+                                        <ErrorMessage
+                                          name={`owner_personnel_training`}
+                                          component="div"
+                                          className="text-red-500 text-xs mt-1"
+                                        />
+                                      </>
+                                    )}
+                                  </Field>
+                                </div>
+                              </div>
+
+                              <div className="mt-2">
+                                <Label
+                                  htmlFor={`documentation`}
+                                  className="font-semibold text-sm text-gray-700 ms-1"
+                                >
+                                  Documentation
+                                </Label>
+                                <div className="mt-1">
+                                  <Field name={`documentation`}>
+                                    {({ field, form, meta }: any) => (
+                                      <>
+                                        <TextEditorField
+                                          name="documentation"
+                                          toolbarId="toolbar-documentation"
+                                          value={field.value}
+                                          onChange={(value: any) =>
+                                            setFieldValue(`documentation`, value)
+                                          }
+                                        />
+
+                                        <ErrorMessage
+                                          name={`documentation`}
+                                          component="div"
+                                          className="text-red-500 text-xs mt-1"
+                                        />
+                                      </>
+                                    )}
+                                  </Field>
+                                </div>
+                              </div>
+                            </CardContent>
+                          </Card> */}
+
+                          <div
+                            key={`execution-section`}
+                            className=" hover:border-black/20 transition-all duration-200 bg-white/80 backdrop-blur-sm border-0 rounded-[17px]"
+                          >
+                                <div className="">
+                                  <Field name={`execution`}>
+                                    {({ field, form, meta }: any) => (
+                                      <>
+                                        <TextEditorField
+                                          name="execution"
+                                          toolbarId="toolbar-execution"
+                                          value={field.value}
+                                          onChange={(value: any) =>
+                                            setFieldValue(`execution`, value)
+                                          }
+                                        />
+
+                                        <ErrorMessage
+                                          name={`execution`}
+                                          component="div"
+                                          className="text-red-500 text-xs mt-1"
+                                        />
+                                      </>
+                                    )}
+                                  </Field>
+                                </div>
+                              
+                          </div>
                         </div>
 
-                        <Button
-                          type="button"
-                          variant="outline"
-                          size="sm"
-                          className="w-[15%] mt-2 border-black/20 bg-black text-white transition-all duration-200"
-                          onClick={() => push({ title: "", content: "" })}
-                        >
-                          <Plus className="h-4 w-4 mr-1" /> Add Execution
-                        </Button>
+                       
                       </>
                     )}
                   </FieldArray>

@@ -20,7 +20,7 @@ const breadcrumbs = [
 export default async function EditPage({ params }: { params: { id: string } }) {
   const specification = {
     id: "1",
-    title: "28 10 00 Access Control 24.4",
+    product_line: "28 10 00 Access Control 24.4",
     status: "Active",
     createdAt: "2023-01-15T09:24:45",
   };

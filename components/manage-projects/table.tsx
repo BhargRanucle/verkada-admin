@@ -221,6 +221,13 @@ export function Table() {
             >
               <Pencil className="h-4 w-4 text-yellow-600" />
             </Link>
+
+            <Link
+              href={`/admin/manage-projects/view/${data.id}`}
+              className="rounded-[12px] p-2 bg-blue-200 hover:bg-blue-300"
+            >
+              <Eye className="h-4 w-4 text-blue-600" />
+            </Link>
           </div>
         );
       },

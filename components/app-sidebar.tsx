@@ -111,7 +111,8 @@ import {
   TableRowsSplit,
   FolderKanban,
   SquareChartGantt,
-  FolderOpenDot
+  FolderOpenDot,
+  BookType
 } from "lucide-react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
@@ -148,6 +149,11 @@ const navItems = [
     href: "#",
     icon: TableRowsSplit,
     submenu: [
+      // {
+      //   title: "Product Lines",
+      //   href: "/admin/product-lines",
+      //   icon: BookType,
+      // },
       {
         title: "Product Categories",
         href: "/admin/product-categories",
@@ -163,6 +169,11 @@ const navItems = [
         href: "/admin/manage-specifications",
         icon: SquareChartGantt,
       },
+      // {
+      //   title: "Manage Specifications 2",
+      //   href: "/admin/manage-specifications-sections",
+      //   icon: SquareChartGantt,
+      // },
     ],
   },
   {

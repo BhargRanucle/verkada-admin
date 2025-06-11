@@ -19,7 +19,9 @@ import { Input } from "@/components/ui/input";
 import {
   Select,
   SelectContent,
+  SelectGroup,
   SelectItem,
+  SelectLabel,
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
@@ -122,7 +124,7 @@ export function ProductForm({ product }: ProductFormProps) {
               )}
             />
 
-            <FormField
+            {/* <FormField
               control={form.control}
               name="product_category"
               render={({ field }) => (
@@ -160,6 +162,73 @@ export function ProductForm({ product }: ProductFormProps) {
                   <FormMessage />
                 </FormItem>
               )}
+            /> */}
+
+            <FormField
+              control={form.control}
+              name="product_category"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Select Product Category</FormLabel>
+                  <Select
+                    onValueChange={(value) => {
+                      field.onChange(value);
+                    }}
+                    value={field.value}
+                  >
+                    <FormControl>
+                      <SelectTrigger className="rounded-lg">
+                        <SelectValue placeholder="Select a product category" />
+                      </SelectTrigger>
+                    </FormControl>
+                    <SelectContent>
+                      <SelectGroup>
+                        <SelectLabel>28 10 00 Access Control 24.4</SelectLabel>
+                        <SelectItem className="ms-3" value="Door Controllers">
+                          Door Controllers
+                        </SelectItem>
+                        <SelectItem className="ms-3" value="IO Controllers">
+                          IO Controllers
+                        </SelectItem>
+                        <SelectItem
+                          className="ms-3"
+                          value="Integrated Card Reader Door Locks"
+                        >
+                          Integrated Card Reader Door Locks
+                        </SelectItem>
+                        <SelectItem
+                          className="ms-3"
+                          value="Multi-Format Card Readers"
+                        >
+                          Multi-Format Card Readers
+                        </SelectItem>
+                      </SelectGroup>
+
+                      <SelectGroup>
+                        <SelectLabel>
+                          28 20 00 Video Surveillance, Gateways, Connector 25.1
+                        </SelectLabel>
+                        <SelectItem className="ms-3" value="Indoor Dome Series">
+                          Indoor Dome Series
+                        </SelectItem>
+                        <SelectItem
+                          className="ms-3"
+                          value="Outdoor Dome Series"
+                        >
+                          Outdoor Dome Series
+                        </SelectItem>
+                        <SelectItem className="ms-3" value="Mini Series">
+                          Mini Series
+                        </SelectItem>
+                        <SelectItem className="ms-3" value="Bullet Series">
+                          Bullet Series
+                        </SelectItem>
+                      </SelectGroup>
+                    </SelectContent>
+                  </Select>
+                  <FormMessage />
+                </FormItem>
+              )}
             />
           </div>
 
@@ -172,7 +241,7 @@ export function ProductForm({ product }: ProductFormProps) {
                   <FormLabel>Content</FormLabel>
                   <div>
                     <div id={`toolbar`}>
-                      <select className="ql-header">
+                      {/* <select className="ql-header">
                         <option value="1">Heading 1</option>
                         <option value="2">Heading 2</option>
                       </select>
@@ -181,7 +250,31 @@ export function ProductForm({ product }: ProductFormProps) {
                         className="ql-list"
                         value="bullet"
                         title="Bullet List"
+                      /> */}
+
+                      <button className="ql-bold" />
+                      <button
+                        className="ql-list"
+                        value="bullet"
+                        title="Bullet List"
                       />
+                      <button
+                        className="ql-list"
+                        value="ordered"
+                        title="Numbered List"
+                      />
+                      <button
+                        className="ql-indent"
+                        value="-1"
+                        title="Indent Left"
+                      />
+                      <button
+                        className="ql-indent"
+                        value="+1"
+                        title="Indent Right"
+                      />
+
+                      <button className="ql-link" title="Add Link" />
                     </div>
                     <ReactQuill
                       value={field.value}

@@ -172,3 +172,46 @@
 .text-editor .ql-container.ql-snow {
   border-radius: 0px 0px 17px 17px;
 }
+
+
+.ql-editor {
+  height: 150px !important;
+}
+
+.manage-spacification-section .ql-editor {
+  height: 350px !important;
+}
+.ql-editor li[data-list=ordered] > .ql-ui:before {
+    content: counter(list-0, upper-alpha) '. ' !important;
+}
+.ql-editor ol li:before {
+    content: counter(list-0, upper-alpha) '. ' !important;
+}
+
+.ql-editor ol li.ql-indent-1:before {
+  content: counter(list-1, decimal) '. ' !important;
+}
+.ql-editor li[data-list=ordered].ql-indent-1 > .ql-ui:before {
+    content: counter(list-1, decimal) '. ' !important;
+}
+
+.ql-editor ol li.ql-indent-2:before {
+  content: counter(list-2, lower-alpha) '. ' !important;
+}
+.ql-editor li[data-list=ordered].ql-indent-2 > .ql-ui:before {
+    content: counter(list-2, lower-alpha) '. ' !important;
+}
+
+.ql-editor ol li.ql-indent-3:before {
+  content: counter(list-3, lower-roman) '. ' !important;
+}
+.ql-editor li[data-list=ordered].ql-indent-3 > .ql-ui:before {
+    content: counter(list-3, lower-roman) '. ' !important;
+}
+
+.ql-editor ol li.ql-indent-4:before {
+  content: counter(list-4, upper-alpha) ') ' !important;
+}
+.ql-editor li[data-list=ordered].ql-indent-4 > .ql-ui:before {
+    content: counter(list-4, upper-alpha) ') ' !important;
+}

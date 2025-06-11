@@ -52,16 +52,30 @@ const TextEditorField: React.FC<TextEditorFieldProps> = ({
               {isLoaded && (
                 <div>
                   <div id={toolbarId}>
-                    <select className="ql-header">
-                      <option value="1">Heading 1</option>
-                      <option value="2">Heading 2</option>
-                    </select>
+                    
                     <button className="ql-bold" />
-                    <button
+                   <button
                       className="ql-list"
                       value="bullet"
                       title="Bullet List"
                     />
+                    <button
+                      className="ql-list"
+                      value="ordered"
+                      title="Numbered List"
+                    />
+                    <button
+                      className="ql-indent"
+                      value="-1"
+                      title="Indent Left"
+                    />
+                    <button
+                      className="ql-indent"
+                      value="+1"
+                      title="Indent Right"
+                    />
+
+                    <button className="ql-link" title="Add Link" />
                   </div>
                   <ReactQuill
                     value={value ?? field.value}
@@ -86,3 +100,211 @@ const TextEditorField: React.FC<TextEditorFieldProps> = ({
 };
 
 export default TextEditorField;
+
+// import React, { useState, useEffect, useRef } from "react";
+// import { Field } from "formik";
+
+// interface TextEditorFieldProps {
+//   name: string;
+//   value?: string;
+//   onChange?: (content: string) => void;
+// }
+
+// const TextEditorField: React.FC<TextEditorFieldProps> = ({
+//   name,
+//   value,
+//   onChange,
+// }) => {
+//   const editorRef = useRef<any>(null);
+//   const [isLoading, setIsLoading] = useState(true);
+//   const [editorData, setEditorData] = useState(value || "");
+
+//   useEffect(() => {
+//     // Load CKEditor only on client-side
+//     const initializeEditor = async () => {
+//       if (typeof window !== "undefined") {
+//         try {
+//           // Dynamically import CKEditor components
+//           const { CKEditor } = await import("@ckeditor/ckeditor5-react");
+//           const ClassicEditor = (await import("@ckeditor/ckeditor5-build-classic")).default;
+
+//           // Store editor components in ref
+//           editorRef.current = { CKEditor, ClassicEditor };
+//           setIsLoading(false);
+//         } catch (error) {
+//           console.error("Failed to load CKEditor:", error);
+//         }
+//       }
+//     };
+
+//     initializeEditor();
+//   }, []);
+
+//   const handleChange = (event: any, editor: any) => {
+//     const content = editor.getData();
+//     setEditorData(content);
+//     onChange?.(content);
+//   };
+
+//   const editorConfiguration = {
+//     licenseKey: "eyJhbGciOiJFUzI1NiJ9.eyJleHAiOjE3NTA0NjM5OTksImp0aSI6ImRhY2IwMjllLTZhYWMtNGY5Ni05NGJjLTY5MzkzODMzODBmZCIsInVzYWdlRW5kcG9pbnQiOiJodHRwczovL3Byb3h5LWV2ZW50LmNrZWRpdG9yLmNvbSIsImRpc3RyaWJ1dGlvbkNoYW5uZWwiOlsiY2xvdWQiLCJkcnVwYWwiLCJzaCJdLCJ3aGl0ZUxhYmVsIjp0cnVlLCJsaWNlbnNlVHlwZSI6InRyaWFsIiwiZmVhdHVyZXMiOlsiKiJdLCJ2YyI6Ijk3ZTQ3MGM2In0.seZ7bNWzNL7izyM_L9BALyQX-LT5AM0gs2mvWErDICWv1l5RA5cyZhqxP3duUxAf1pfXFXHx7WN9qTSTh2O5MA",
+//     toolbar: [
+//       "heading",
+//       "|",
+//       "bold",
+//       "italic",
+//       "underline",
+//       "|",
+//       "bulletedList",
+//       "numberedList",
+//       "|",
+//       "alignment",
+//       "indent",
+//       "outdent",
+//       "|",
+//       "undo",
+//       "redo",
+//     ],
+//     list: {
+//       properties: {
+//         styles: true,
+//         startIndex: true,
+//         reversed: true,
+//       },
+//     },
+//     numberedList: {
+//     styles: ["default", "lower-alpha", "upper-alpha", "lower-roman", "upper-roman"],
+//   },
+//   };
+
+//   return (
+//     <div className="bg-white text-editor rounded-[17px] p-4 shadow-sm">
+//       <Field name={name}>
+//         {({ field, form }: any) => {
+//           // Update form value when editor data changes
+//           useEffect(() => {
+//             form.setFieldValue(name, editorData);
+//           }, [editorData, name]);
+
+//           if (isLoading || !editorRef.current) {
+//             return (
+//               <div className="min-h-[200px] flex items-center justify-center text-gray-500">
+//                 Loading editor...
+//               </div>
+//             );
+//           }
+
+//           const { CKEditor, ClassicEditor } = editorRef.current;
+
+//           return (
+//             <CKEditor
+//               editor={ClassicEditor}
+//               config={editorConfiguration}
+//               data={editorData}
+//               onChange={(event: any, editor: any) => {
+//                 handleChange(event, editor);
+//               }}
+//             />
+//           );
+//         }}
+//       </Field>
+//     </div>
+//   );
+// };
+
+// export default TextEditorField;
+
+// "use client";
+// import React, { useState, useEffect, useRef } from "react";
+// import { Field } from "formik";
+// import { CKEditor } from "@ckeditor/ckeditor5-react";
+// import { ClassicEditor, Essentials, Paragraph, Bold, Italic, IconNumberedList } from "ckeditor5";
+// import { FormatPainter } from "ckeditor5-premium-features";
+
+// import "ckeditor5/ckeditor5.css";
+// import "ckeditor5-premium-features/ckeditor5-premium-features.css";
+
+// interface TextEditorFieldProps {
+//   name: string;
+//   value?: string;
+//   onChange?: (content: string) => void;
+// }
+
+// const TextEditorField: React.FC<TextEditorFieldProps> = ({
+//   name,
+//   value,
+//   onChange,
+// }) => {
+//   const handleChange = (event: any, editor: any) => {
+//     const content = editor.getData();
+//     onChange?.(content);
+//   };
+
+//   const editorConfiguration = {
+//     licenseKey: "your-license-key",
+//     toolbar: [
+//       "heading",
+//       "|",
+//       "bold",
+//       "italic",
+//       "underline",
+//       "|",
+//       "bulletedList",
+//       "numberedList",
+//       "|",
+//       "alignment",
+//       "indent",
+//       "outdent",
+//       "|",
+//       "undo",
+//       "redo",
+//     ],
+//     list: {
+//       properties: {
+//         styles: true,
+//         startIndex: true,
+//         reversed: true,
+//       },
+//     },
+//     numberedList: {
+//       styles: [
+//         "default",
+//         "lower-alpha",
+//         "upper-alpha",
+//         "lower-roman",
+//         "upper-roman",
+//       ],
+//     },
+//   };
+
+//   return (
+//     <div className="bg-white text-editor rounded-[17px] p-4 shadow-sm">
+//       <Field name={name}>
+//         {({ field, form }: any) => {
+//           return (
+//             <CKEditor
+//               editor={ClassicEditor}
+//               config={{
+//                 licenseKey: "eyJhbGciOiJFUzI1NiJ9.eyJleHAiOjE3NTA0NjM5OTksImp0aSI6ImRhY2IwMjllLTZhYWMtNGY5Ni05NGJjLTY5MzkzODMzODBmZCIsInVzYWdlRW5kcG9pbnQiOiJodHRwczovL3Byb3h5LWV2ZW50LmNrZWRpdG9yLmNvbSIsImRpc3RyaWJ1dGlvbkNoYW5uZWwiOlsiY2xvdWQiLCJkcnVwYWwiLCJzaCJdLCJ3aGl0ZUxhYmVsIjp0cnVlLCJsaWNlbnNlVHlwZSI6InRyaWFsIiwiZmVhdHVyZXMiOlsiKiJdLCJ2YyI6Ijk3ZTQ3MGM2In0.seZ7bNWzNL7izyM_L9BALyQX-LT5AM0gs2mvWErDICWv1l5RA5cyZhqxP3duUxAf1pfXFXHx7WN9qTSTh2O5MA", // Or 'GPL'.
+//                 plugins: [Essentials, Paragraph, Bold, Italic, FormatPainter],
+//                 toolbar: [
+//                   "undo",
+//                   "redo",
+//                   "|",
+//                   "bold",
+//                   "italic",
+//                   "|",
+//                   "formatPainter",
+//                 ],
+//                 initialData: "<p>Hello from CKEditor 5 in React!</p>",
+//               }}
+//             />
+//           );
+//         }}
+//       </Field>
+//     </div>
+//   );
+// };
+
+// export default TextEditorField;
+

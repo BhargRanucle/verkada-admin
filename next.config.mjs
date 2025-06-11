@@ -10,6 +10,9 @@ const nextConfig = {
     unoptimized: true,
   },
   reactStrictMode: false,
+  env: {
+    API_URL: "http://192.168.1.14:5000/api",
+  },
 }
 
 export default nextConfig

@@ -41,14 +41,24 @@ interface ProductCategoryFormProps {
   productCategory?: ProductCategory;
 }
 
-export function ProductCategoryForm({ productCategory }: ProductCategoryFormProps) {
+export function ProductCategoryForm({
+  productCategory,
+}: ProductCategoryFormProps) {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
+
+  const formSchema = z.object({
+    name: z.string().min(2, {
+      message: "Name must be at least 2 characters.",
+    }),
+    product_line: z.string(),
+  });
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       name: productCategory?.name || "",
+      product_line: productCategory?.product_line || "access_control",
     },
   });
 
@@ -138,24 +148,71 @@ export function ProductCategoryForm({ productCategory }: ProductCategoryFormProp
             </TabsContent>
           </Tabs> */}
 
-          <div className="grid gap-6 md:grid-cols-1">
-            <FormField
-              control={form.control}
-              name="name"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Name</FormLabel>
-                  <FormControl>
-                    <Input
-                      placeholder="Product Category Name"
-                      className="rounded-lg"
-                      {...field}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+          <div className="grid gap-6 md:grid-cols-2">
+            <div>
+              <FormField
+                control={form.control}
+                name="name"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Name</FormLabel>
+                    <FormControl>
+                      <Input
+                        placeholder="Product Category Name"
+                        className="rounded-lg"
+                        {...field}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </div>
+
+            <div>
+              <FormField
+                control={form.control}
+                name="product_line"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Select Product Line</FormLabel>
+                    <Select
+                      onValueChange={(value) => {
+                        field.onChange(value);
+                      }}
+                      value={field.value}
+                    >
+                      <FormControl>
+                        <SelectTrigger className="rounded-lg">
+                          <SelectValue placeholder="Select a product line" />
+                        </SelectTrigger>
+                      </FormControl>
+                      <SelectContent>
+                        <SelectItem value="access_control">
+                         28 10 00 Access Control 24.4
+                        </SelectItem>
+                        <SelectItem value="intercom_entry_systems">
+                          28 15 23 Intercom Entry Systems 25.1
+                        </SelectItem>
+                        <SelectItem value="visitor_management_systems">
+                          28 17 11 Visitor Management Systems 25.1
+                        </SelectItem>
+                        <SelectItem value="video_surveillance">
+                          28 20 00 Video Surveillance, Gateways, Connector 25.1
+                        </SelectItem>
+                        <SelectItem value="environmental_sensors">
+                          28 30 00 Environmental Sensors 25.1
+                        </SelectItem>
+                        <SelectItem value="intrusion_detection">
+                          28 31 00 Intrusion Detection 25.1
+                        </SelectItem>
+                      </SelectContent>
+                    </Select>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </div>
           </div>
 
           <div className="flex flex-col gap-2 sm:flex-row sm:justify-end">

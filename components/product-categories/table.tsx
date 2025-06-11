@@ -38,51 +38,61 @@ const data: ProductCategory[] = [
   {
     id: "1",
     name: "Door Controllers",
+    product_line: "28 10 00 Access Control 24.4",
     createdAt: "2023-01-15T09:24:45",
   },
   {
     id: "2",
     name: "IO Controllers",
+    product_line: "28 10 00 Access Control 24.4",
     createdAt: "2023-02-20T14:35:12",
   },
   {
     id: "3",
     name: "Integrated Card Reader Door Locks",
+    product_line: "28 10 00 Access Control 24.4",
     createdAt: "2023-03-10T11:12:30",
   },
   {
     id: "4",
     name: "Multi-Format Card Readers",
+    product_line: "28 10 00 Access Control 24.4",
     createdAt: "2023-04-05T16:48:22",
   },
   {
     id: "5",
     name: "Badge Printing Software",
+    product_line: "28 10 00 Access Control 24.4",
     createdAt: "2023-05-18T08:56:10",
   },
   {
     id: "6",
     name: "Access Control Badges",
+    product_line: "28 10 00 Access Control 24.4",
     createdAt: "2023-06-22T13:15:45",
   },
   {
     id: "7",
     name: "Indoor Dome Series",
+    product_line: "28 20 00 Video Surveillance, Gateways, Connector 25.1",
     createdAt: "2023-07-30T10:30:15",
   },
   {
     id: "8",
     name: "Outdoor Dome Series",
+    product_line: "28 20 00 Video Surveillance, Gateways, Connector 25.1",
     createdAt: "2023-08-12T15:22:33",
   },
   {
     id: "9",
     name: "Mini Series",
+    product_line: "28 20 00 Video Surveillance, Gateways, Connector 25.1",
     createdAt: "2023-09-05T09:10:20",
   },
   {
     id: "10",
     name: "Bullet Series",
+    product_line: "28 20 00 Video Surveillance, Gateways, Connector 25.1",
     createdAt: "2023-10-18T14:05:50",
   },
 ];
@@ -90,6 +100,7 @@ const data: ProductCategory[] = [
 export type ProductCategory = {
   id: string;
   name: string;
+  product_line: string;
   createdAt: string;
 };
 
@@ -148,6 +159,28 @@ export function Table() {
         return (
           <div className="flex items-center gap-2">
             <div className="font-medium">{row.original.name}</div>
+          </div>
+        );
+      },
+    },
+    {
+      accessorKey: "product_line",
+      header: ({ column }) => {
+        return (
+          <div
+            // variant="ghost"
+            className="flex items-center cursor-pointer"
+            onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+          >
+            Product Lines
+            <ArrowUpDown className="ml-3 h-4 w-4" />
+          </div>
+        );
+      },
+      cell: ({ row }) => {
+        return (
+          <div className="flex items-center gap-2">
+            <div className="font-medium">{row.original.product_line}</div>
           </div>
         );
       },

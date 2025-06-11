@@ -38,10 +38,10 @@ export default function DashboardPage() {
       <Breadcrumb items={breadcrumbs} />
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <PageTitle title="Manage Specifications" />
-        <CreateButton
+        {/* <CreateButton
           href="/admin/manage-specifications/create"
           label="Add New Specification"
-        />
+        /> */}
       </div>
       <Table />
 

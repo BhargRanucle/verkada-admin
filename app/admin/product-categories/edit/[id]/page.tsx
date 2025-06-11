@@ -30,7 +30,7 @@ export default async function EditPage({ params }: { params: { id: string } }) {
     <div className="space-y-6">
       <Breadcrumb items={breadcrumbs} />
       <PageTitle title="Product Category" />
-      <div className="rounded-xl border-none bg-white p-6 shadow-none dark:bg-background w-[60%] [box-shadow:0_8px_34px_rgba(0,0,0,0.1)]">
+      <div className="rounded-xl border-none bg-white p-6 shadow-none dark:bg-background [box-shadow:0_8px_34px_rgba(0,0,0,0.1)]">
         <ProductCategoryForm productCategory={data}  />
       </div>
     </div>

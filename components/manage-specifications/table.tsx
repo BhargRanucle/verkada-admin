@@ -37,37 +37,37 @@ import { deleteUser } from "@/lib/actions";
 const data: Specification[] = [
   {
     id: "1",
-    title: "28 10 00 Access Control 24.4",
+    product_line: "28 10 00 Access Control 24.4",
     status: "Active",
     createdAt: "2023-01-15T09:24:45",
   },
   {
     id: "2",
-    title: "28 15 23 Intercom Entry Systems 25.1",
+    product_line: "28 15 23 Intercom Entry Systems 25.1",
     status: "Inactive",
     createdAt: "2023-02-20T14:35:12",
   },
   {
     id: "3",
-    title: "28 17 11 Visitor Management Systems 25.1",
+    product_line: "28 17 11 Visitor Management Systems 25.1",
     status: "Active",
     createdAt: "2023-03-10T11:12:30",
   },
   {
     id: "4",
-    title: "28 20 00 Video Surveillance, Gateways, Connector 25.1",
+    product_line: "28 20 00 Video Surveillance, Gateways, Connector 25.1",
     status: "Active",
     createdAt: "2023-04-05T16:48:22",
   },
   {
     id: "5",
-    title: "28 30 00 Environmental Sensors 25.1",
+    product_line: "28 30 00 Environmental Sensors 25.1",
     status: "Active",
     createdAt: "2023-05-18T08:56:10",
   },
   {
     id: "6",
-    title: "28 31 00 Intrusion Detection 25.1",
+    product_line: "28 31 00 Intrusion Detection 25.1",
     status: "Active",
     createdAt: "2023-06-22T13:15:45",
   },
@@ -75,7 +75,7 @@ const data: Specification[] = [
 
 export type Specification = {
   id: string;
-  title: string;
+  product_line: string;
   status: string;
   createdAt: string;
 };
@@ -95,37 +95,15 @@ export function Table() {
   };
 
   const columns: ColumnDef<Specification>[] = [
-    // {
-    //   id: "select",
-    //   header: ({ table }) => (
-    //     <Checkbox
-    //       checked={
-    //         table.getIsAllPageRowsSelected() ||
-    //         (table.getIsSomePageRowsSelected() && "indeterminate")
-    //       }
-    //       onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
-    //       aria-label="Select all"
-    //     />
-    //   ),
-    //   cell: ({ row }) => (
-    //     <Checkbox
-    //       checked={row.getIsSelected()}
-    //       onCheckedChange={(value) => row.toggleSelected(!!value)}
-    //       aria-label="Select row"
-    //     />
-    //   ),
-    //   enableSorting: false,
-    //   enableHiding: false,
-    // },
     {
-      accessorKey: "title",
+      accessorKey: "product_line",
       header: ({ column }) => {
         return (
           <div
             className="flex items-center cursor-pointer"
             onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
           >
-            Title
+            Product Lines
             <ArrowUpDown className="ml-3 h-4 w-4" />
           </div>
         );
@@ -133,7 +111,7 @@ export function Table() {
       cell: ({ row }) => {
         return (
           <div className="flex items-center gap-2">
-            <div className="font-medium">{row.original.title}</div>
+            <div className="font-medium">{row.original.product_line}</div>
           </div>
         );
       },
@@ -256,8 +234,8 @@ export function Table() {
       <DataTable
         columns={columns}
         data={data}
-        searchColumn="title"
-        searchPlaceholder="Search specifications..."
+        searchColumn="product_line"
+        searchPlaceholder="Search product lines..."
       />
 
       <AlertDialog open={deleteDialogOpen} onOpenChange={setDeleteDialogOpen}>
@@ -267,7 +245,7 @@ export function Table() {
             <AlertDialogDescription>
               This action cannot be undone. This will permanently delete the
               entry
-              {userToDelete && ` "${userToDelete.title}"`} and remove their data
+              {userToDelete && ` "${userToDelete.product_line}"`} and remove their data
               from our servers.
             </AlertDialogDescription>
           </AlertDialogHeader>
