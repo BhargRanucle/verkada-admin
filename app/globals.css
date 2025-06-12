@@ -257,6 +257,6 @@
 }
 
 .view-content .ql-editor {
-  max-height: 180px !important;
+  /* max-height: 180px !important; */
   height: unset !important;
 }

@@ -207,40 +207,49 @@ export function Table() {
         return new Date(row.original.updatedAt).toLocaleDateString();
       },
     },
-    {
-      id: "downloads",
-      header: ({ column }) => {
-        return <div>Downloads</div>;
-      },
-      cell: ({ row }) => {
-        const data = row.original;
-        return (
-          <div className="flex items-center space-x-2">
-            {/* <div className="rounded-[12px] text-[11px] p-1 px-2 bg-[#e2e2e2] hover:bg-[#c1c1c1] text-[#000000] flex items-center cursor-pointer">
-              <Download className="h-4 w-4 me-1" />
-              <span>Docx</span>
-            </div>
+    // {
+    //   id: "downloads",
+    //   header: ({ column }) => {
+    //     return <div>Downloads</div>;
+    //   },
+    //   cell: ({ row }) => {
+    //     const data = row.original;
+    //     return (
+    //       <div className="flex items-center space-x-2">
+    //         <div className="rounded-[12px] text-[11px] p-1 px-2 bg-[#e2e2e2] hover:bg-[#c1c1c1] text-[#000000] flex items-center cursor-pointer">
+    //           <Download className="h-4 w-4 me-1" />
+    //           <span>Docx</span>
+    //         </div>
 
-            <div className="rounded-[12px] text-[11px] ms-2 p-1 px-2 bg-[#e2e2e2] hover:bg-[#c1c1c1] text-[#000000] flex items-center cursor-pointer">
-              <Download className="h-4 w-4 me-1" />
-              <span>Pdf</span>
-            </div> */}
+    //         <div className="rounded-[12px] text-[11px] ms-2 p-1 px-2 bg-[#e2e2e2] hover:bg-[#c1c1c1] text-[#000000] flex items-center cursor-pointer">
+    //           <Download className="h-4 w-4 me-1" />
+    //           <span>Pdf</span>
+    //         </div>
 
-            <img src="/pdf.png" width={30} className="cursor-pointer" />
-            <img src="/docx.png" width={30} className="cursor-pointer" />
-          </div>
-        );
-      },
-    },
+    //         {/* <img src="/pdf.png" width={30} className="cursor-pointer" />
+    //         <img src="/docx.png" width={30} className="cursor-pointer" /> */}
+    //       </div>
+    //     );
+    //   },
+    // },
     {
       id: "actions",
       header: ({ column }) => {
-        return <div>Actions</div>;
+        return <div className="text-center mr-[60px]">Actions</div>;
       },
       cell: ({ row }) => {
         const data = row.original;
         return (
           <div className="flex items-center space-x-2">
+            <div className="group/btn rounded-[12px] text-[11px] p-1.5 px-2 bg-[#e2e2e2] hover:bg-[#c1c1c1] text-[#000000] flex items-center cursor-pointer">
+              <Download className="h-4 w-4 me-1 group-hover/btn:animate-bounce" />
+              <span>Docx</span>
+            </div>
+
+            <div className="group/btn rounded-[12px] text-[11px] ms-2 p-1.5 px-2 bg-[#e2e2e2] hover:bg-[#c1c1c1] text-[#000000] flex items-center cursor-pointer">
+              <Download className="h-4 w-4 me-1 group-hover/btn:animate-bounce" />
+              <span>Pdf</span>
+            </div>
             <Link
               href={`/admin/manage-projects/detail/${data.id}`}
               className="rounded-[12px] p-2 bg-yellow-100 hover:bg-yellow-200"
@@ -254,6 +263,8 @@ export function Table() {
             >
               <Eye className="h-4 w-4 text-blue-600" />
             </Link>
+
+            
           </div>
         );
       },
