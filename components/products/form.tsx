@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
@@ -51,6 +51,7 @@ interface ProductFormProps {
 }
 
 export function ProductForm({ product }: ProductFormProps) {
+  const [isLoaded, setIsLoaded] = useState(false);
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
 
@@ -60,6 +61,55 @@ export function ProductForm({ product }: ProductFormProps) {
       name: product?.name || "",
       product_category: product?.product_category || "",
       content: product?.content || "",
+    },
+  });
+
+  const [isFullscreen, setIsFullscreen] = useState(false);
+  const editorContainerRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (ReactQuill) {
+      setIsLoaded(true);
+    }
+
+    // Clean up fullscreen state on unmount
+    return () => {
+      if (
+        document.fullscreenElement &&
+        editorContainerRef.current?.contains(document.fullscreenElement)
+      ) {
+        document.exitFullscreen();
+      }
+    };
+  }, []);
+  useEffect(() => {
+    const handleFullscreenChange = () => {
+      setIsFullscreen(
+        document.fullscreenElement === editorContainerRef.current
+      );
+    };
+
+    document.addEventListener("fullscreenchange", handleFullscreenChange);
+    return () => {
+      document.removeEventListener("fullscreenchange", handleFullscreenChange);
+    };
+  }, []);
+
+  const toggleFullscreen = () => {
+    if (!editorContainerRef.current) return;
+
+    if (!document.fullscreenElement) {
+      editorContainerRef.current.requestFullscreen().catch((err) => {
+        console.error(`Error attempting to enable fullscreen: ${err.message}`);
+      });
+    } else {
+      document.exitFullscreen();
+    }
+  };
+
+  const generateModules = (id: string) => ({
+    toolbar: {
+      container: `#${id}`,
     },
   });
 
@@ -232,26 +282,18 @@ export function ProductForm({ product }: ProductFormProps) {
             />
           </div>
 
-          <div className="mt-2 text-editor">
+          <div className={`mt-2 text-editor`}>
             <FormField
               control={form.control}
               name="content"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Content</FormLabel>
-                  <div>
-                    <div id={`toolbar`}>
-                      {/* <select className="ql-header">
-                        <option value="1">Heading 1</option>
-                        <option value="2">Heading 2</option>
-                      </select>
-                      <button className="ql-bold" />
-                      <button
-                        className="ql-list"
-                        value="bullet"
-                        title="Bullet List"
-                      /> */}
-
+                  <div
+                    ref={editorContainerRef}
+                    className={`${isFullscreen ? "fullscreen-editor" : ""}`}
+                  >
+                    <div id={`toolbar`} className="flex items-center">
                       <button className="ql-bold" />
                       <button
                         className="ql-list"
@@ -275,6 +317,30 @@ export function ProductForm({ product }: ProductFormProps) {
                       />
 
                       <button className="ql-link" title="Add Link" />
+
+                      <button
+                        className={`ql-fullscreen ml-auto ${
+                          isFullscreen ? "active" : ""
+                        }`}
+                        title={isFullscreen ? "Exit Fullscreen" : "Fullscreen"}
+                        onClick={toggleFullscreen}
+                      >
+                        {isFullscreen ? (
+                          <svg viewBox="0 0 24 24" width="16" height="16">
+                            <path
+                              fill="currentColor"
+                              d="M5 16h3v3h2v-5H5v2zm3-8H5v2h5V5H8v3zm6 11h2v-3h3v-2h-5v5zm2-11V5h-2v5h5V8h-3z"
+                            />
+                          </svg>
+                        ) : (
+                          <svg viewBox="0 0 24 24" width="16" height="16">
+                            <path
+                              fill="currentColor"
+                              d="M7 14H5v5h5v-2H7v-3zm-2-4h2V7h3V5H5v5zm12 7h-3v2h5v-5h-2v3zM14 5v2h3v3h2V5h-5z"
+                            />
+                          </svg>
+                        )}
+                      </button>
                     </div>
                     <ReactQuill
                       value={field.value}

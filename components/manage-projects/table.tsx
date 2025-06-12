@@ -6,6 +6,7 @@ import type { ColumnDef } from "@tanstack/react-table";
 import {
   ArrowUpDown,
   DivideSquare,
+  Download,
   Eye,
   History,
   MoreHorizontal,
@@ -204,6 +205,31 @@ export function Table() {
       },
       cell: ({ row }) => {
         return new Date(row.original.updatedAt).toLocaleDateString();
+      },
+    },
+    {
+      id: "downloads",
+      header: ({ column }) => {
+        return <div>Downloads</div>;
+      },
+      cell: ({ row }) => {
+        const data = row.original;
+        return (
+          <div className="flex items-center space-x-2">
+            {/* <div className="rounded-[12px] text-[11px] p-1 px-2 bg-[#e2e2e2] hover:bg-[#c1c1c1] text-[#000000] flex items-center cursor-pointer">
+              <Download className="h-4 w-4 me-1" />
+              <span>Docx</span>
+            </div>
+
+            <div className="rounded-[12px] text-[11px] ms-2 p-1 px-2 bg-[#e2e2e2] hover:bg-[#c1c1c1] text-[#000000] flex items-center cursor-pointer">
+              <Download className="h-4 w-4 me-1" />
+              <span>Pdf</span>
+            </div> */}
+
+            <img src="/pdf.png" width={30} className="cursor-pointer" />
+            <img src="/docx.png" width={30} className="cursor-pointer" />
+          </div>
+        );
       },
     },
     {

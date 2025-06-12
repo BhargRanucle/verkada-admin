@@ -175,7 +175,7 @@
 
 
 .ql-editor {
-  height: 150px !important;
+  height: 180px !important;
 }
 
 .manage-spacification-section .ql-editor {
@@ -214,4 +214,49 @@
 }
 .ql-editor li[data-list=ordered].ql-indent-4 > .ql-ui:before {
     content: counter(list-4, upper-alpha) ') ' !important;
+}
+
+.ql-editor ol li {
+  counter-reset: none !important;
+}
+
+.ql-editor ol li[data-list=bullet]:before {
+  content: none !important;
+}
+
+.fullscreen-editor {
+  position: fixed !important;
+  top: 0 !important;
+  left: 0 !important;
+  width: 100vw !important;
+  height: 100vh !important;
+  max-height: 100vh !important;
+  z-index: 9999 !important;
+  border-radius: 0 !important;
+  padding: 20px;
+  background: white;
+  overflow-y: auto;
+}
+
+.fullscreen-editor .ql-container {
+  height: calc(100vh - 100px) !important;
+  max-height: none !important;
+  /* border: none !important; */
+}
+
+.fullscreen-editor .ql-toolbar {
+  position: sticky;
+  top: 0;
+  z-index: 10000;
+  background: white;
+}
+
+.fullscreen-editor .ql-editor {
+  /* height: unset !important; */
+  height: calc(100vh - 100px) !important;
+}
+
+.view-content .ql-editor {
+  max-height: 180px !important;
+  height: unset !important;
 }

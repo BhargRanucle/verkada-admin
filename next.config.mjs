@@ -11,7 +11,7 @@ const nextConfig = {
   },
   reactStrictMode: false,
   env: {
-    API_URL: "http://192.168.1.14:5000/api",
+    API_URL: "http://localhost:5000/api",
   },
 }
 
