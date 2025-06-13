@@ -22,8 +22,9 @@ export default async function EditUserPage({
     name: "John Doe",
     email: "john.doe@example.com",
     role: "admin",
+    phone: "+1(555) 123-4567",
     createdAt: "2023-01-15T09:24:45",
-    status: "active",
+    status: "Active",
     avatar: "",
   };
   const breadcrumbs = [

@@ -29,9 +29,16 @@ import { toast } from "@/components/ui/use-toast";
 import { Metadata } from "next";
 
 const formSchema = z.object({
-  email: z.string().email({
-    message: "Please enter a valid email address.",
-  }),
+  email: z
+    .string({
+      required_error: "Email is required.",
+    })
+    .min(1, {
+      message: "Email is required.",
+    })
+    .email({
+      message: "Please enter a valid email address.",
+    }),
 });
 
 // export const metadata: Metadata = {
@@ -140,7 +147,7 @@ export default function ResetPasswordPage() {
                     render={({ field }) => (
                       <FormItem>
                         <FormLabel className="text-sm font-medium">
-                          Email Address
+                          Email Address *
                         </FormLabel>
                         <FormControl>
                           <div className="relative">

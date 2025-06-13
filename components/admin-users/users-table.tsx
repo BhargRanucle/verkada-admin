@@ -33,7 +33,6 @@ import {
 } from "@/components/ui/alert-dialog";
 import { deleteUser } from "@/lib/actions";
 
-// This would typically come from your database
 const data: User[] = [
   {
     id: "1",
@@ -122,6 +121,7 @@ export type User = {
   name: string;
   email: string;
   status: string;
+  phone?: string;
   createdAt: string;
   avatar: string;
 };

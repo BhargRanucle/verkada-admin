@@ -30,12 +30,36 @@ import { Metadata } from "next";
 import Head from "next/head";
 
 const formSchema = z.object({
-  email: z.string().email({
-    message: "Please enter a valid email address.",
-  }),
-  password: z.string().min(6, {
-    message: "Password must be at least 6 characters.",
-  }),
+ email: z
+      .string({
+        required_error: "Email is required.",
+      })
+      .min(1, {
+        message: "Email is required.",
+      })
+      .email({
+        message: "Please enter a valid email address.",
+      }),
+  password: z
+    .string({
+      required_error: "Password is required.",
+    })
+    .min(1, { message: "Password is required." })
+    .min(8, {
+      message: "Password must be at least 8 characters.",
+    })
+    .regex(/[A-Z]/, {
+      message: "Password must contain at least one uppercase letter.",
+    })
+    .regex(/[a-z]/, {
+      message: "Password must contain at least one lowercase letter.",
+    })
+    .regex(/\d/, {
+      message: "Password must contain at least one number.",
+    })
+    .regex(/[@$!%*?&#^]/, {
+      message: "Password must contain at least one special character.",
+    }),
   rememberMe: z.boolean().default(false),
 });
 
@@ -51,7 +75,7 @@ export default function LoginPage() {
   const [showPassword, setShowPassword] = useState(false);
 
   const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
+    resolver: zodResolver(formSchema) as any,
     defaultValues: {
       email: "",
       password: "",
@@ -136,12 +160,12 @@ export default function LoginPage() {
                   className="space-y-4"
                 >
                   <FormField
-                    control={form.control}
+                    control={form.control as any}
                     name="email"
                     render={({ field }) => (
                       <FormItem>
                         <FormLabel className="text-sm font-medium">
-                          Email Address
+                          Email Address *
                         </FormLabel>
                         <FormControl>
                           <div className="relative">
@@ -158,12 +182,12 @@ export default function LoginPage() {
                     )}
                   />
                   <FormField
-                    control={form.control}
+                    control={form.control as any}
                     name="password"
                     render={({ field }) => (
                       <FormItem>
                         <FormLabel className="text-sm font-medium">
-                          Password
+                          Password *
                         </FormLabel>
                         <FormControl>
                           <div className="relative">
@@ -195,7 +219,7 @@ export default function LoginPage() {
                   />
                   <div className="flex items-center justify-between">
                     <FormField
-                      control={form.control}
+                      control={form.control as any}
                       name="rememberMe"
                       render={({ field }) => (
                         <FormItem className="flex flex-row items-start space-x-3 space-y-0">
@@ -253,7 +277,7 @@ export default function LoginPage() {
             transition={{ delay: 0.5 }}
             className="mt-8 text-center text-xs text-muted-foreground"
           >
-            <p>Demo credentials: admin@example.com / password123</p>
+            <p>Demo credentials: admin@example.com / Password@123</p>
           </motion.div>
         </motion.div>
       </div>

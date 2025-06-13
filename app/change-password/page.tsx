@@ -31,13 +31,34 @@ import Head from "next/head";
 
 const formSchema = z
   .object({
-    password: z.string().min(8, {
-      message: "Password must be at least 8 characters.",
-    }),
-    confirmPassword: z.string(),
+    password: z
+      .string({
+        required_error: "Password is required.",
+      })
+      .min(1, { message: "Password is required." })
+      .min(8, {
+        message: "Password must be at least 8 characters.",
+      })
+      .regex(/[A-Z]/, {
+        message: "Password must contain at least one uppercase letter.",
+      })
+      .regex(/[a-z]/, {
+        message: "Password must contain at least one lowercase letter.",
+      })
+      .regex(/\d/, {
+        message: "Password must contain at least one number.",
+      })
+      .regex(/[@$!%*?&#^]/, {
+        message: "Password must contain at least one special character.",
+      }),
+    confirmPassword: z
+      .string({
+        required_error: "Confirm Password is required.",
+      })
+      .min(1, { message: "Confirm Password is required." }),
   })
   .refine((data) => data.password === data.confirmPassword, {
-    message: "Passwords do not match",
+    message: "Passwords do not match.",
     path: ["confirmPassword"],
   });
 
@@ -167,7 +188,7 @@ export default function ChangePasswordPage() {
                     render={({ field }) => (
                       <FormItem>
                         <FormLabel className="text-sm font-medium">
-                          New Password
+                          New Password *
                         </FormLabel>
                         <FormControl>
                           <div className="relative">
@@ -204,7 +225,7 @@ export default function ChangePasswordPage() {
                     render={({ field }) => (
                       <FormItem>
                         <FormLabel className="text-sm font-medium">
-                          Confirm Password
+                          Confirm Password *
                         </FormLabel>
                         <FormControl>
                           <div className="relative">

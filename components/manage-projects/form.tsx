@@ -288,7 +288,7 @@ export default function GeneralInformationForm() {
                               htmlFor="projectName"
                               className="text-sm font-medium text-slate-700 dark:text-slate-300"
                             >
-                              Project Name
+                              Project Name *
                             </Label>
                             <Field
                               as={Input}
@@ -313,7 +313,7 @@ export default function GeneralInformationForm() {
                               htmlFor="consultantName"
                               className="text-sm font-medium text-slate-700 dark:text-slate-300"
                             >
-                              Consultant Name
+                              Consultant Name *
                             </Label>
                             <Field
                               as={Input}
@@ -339,7 +339,7 @@ export default function GeneralInformationForm() {
                               htmlFor="issuanceDescription"
                               className="text-sm font-medium text-slate-700 dark:text-slate-300"
                             >
-                              Issuance Description
+                              Issuance Description *
                             </Label>
                             <Field
                               as={Input}
@@ -366,7 +366,7 @@ export default function GeneralInformationForm() {
                               htmlFor="issuanceDate"
                               className="text-sm font-medium text-slate-700 dark:text-slate-300"
                             >
-                              Issuance Date
+                              Issuance Date *
                             </Label>
                             <Popover>
                               <PopoverTrigger asChild>
@@ -402,7 +402,7 @@ export default function GeneralInformationForm() {
                             </Popover>
                             {errors.issuanceDate && touched.issuanceDate && (
                               <p className="text-red-500 text-xs">
-                                {errors.issuanceDate}
+                                {errors.issuanceDate as any}
                               </p>
                             )}
                           </div>
@@ -553,7 +553,7 @@ export default function GeneralInformationForm() {
                               htmlFor="sales_rep_contact"
                               className="text-sm font-medium text-slate-700 dark:text-slate-300"
                             >
-                              Sales Rep Contact
+                              Sales Rep Contact *
                             </Label>
                             <Select
                               onValueChange={(value) =>
@@ -592,7 +592,7 @@ export default function GeneralInformationForm() {
                               htmlFor="license_term"
                               className="text-sm font-medium text-slate-700 dark:text-slate-300"
                             >
-                              Select Licence Term
+                              Select Licence Term *
                             </Label>
                             <Select
                               onValueChange={(value) =>

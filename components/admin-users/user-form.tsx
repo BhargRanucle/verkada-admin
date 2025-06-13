@@ -1,65 +1,97 @@
-"use client"
+"use client";
 
-import { useState } from "react"
-import { useRouter } from "next/navigation"
-import { zodResolver } from "@hookform/resolvers/zod"
-import { useForm } from "react-hook-form"
-import { z } from "zod"
-import { Button } from "@/components/ui/button"
-import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form"
-import { Input } from "@/components/ui/input"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { Textarea } from "@/components/ui/textarea"
-import { toast } from "@/components/ui/use-toast"
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
-import { createUser, updateUser } from "@/lib/actions"
-import type { User } from "./users-table"
-import { motion } from "framer-motion"
+import { useState } from "react";
+import { useRouter } from "next/navigation";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
+import { z } from "zod";
+import { Button } from "@/components/ui/button";
+import {
+  Form,
+  FormControl,
+  FormDescription,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Textarea } from "@/components/ui/textarea";
+import { toast } from "@/components/ui/use-toast";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { createUser, updateUser } from "@/lib/actions";
+import type { User } from "./users-table";
+import { motion } from "framer-motion";
 
 const formSchema = z
   .object({
-    name: z.string().min(2, {
-      message: "Name must be at least 2 characters.",
-    }),
-    email: z.string().email({
-      message: "Please enter a valid email address.",
-    }),
-    role: z.string({
-      required_error: "Please select a role.",
-    }),
+    name: z
+      .string({
+        required_error: "Name is required.",
+      })
+      .min(1, {
+        message: "Name is required.",
+      }),
+    email: z
+      .string({
+        required_error: "Email is required.",
+      })
+      .min(1, {
+        message: "Email is required.",
+      })
+      .email({
+        message: "Please enter a valid email address.",
+      }),
     status: z.string({
       required_error: "Please select a status.",
     }),
-    bio: z.string().optional(),
+    phone: z.string().optional(),
     password: z
-      .string()
+      .string({
+        required_error: "Password is required.",
+      }).
+      min(1, { message: "Password is required." })
       .min(8, {
         message: "Password must be at least 8 characters.",
       })
-      .optional(),
-    confirmPassword: z.string().optional(),
+      .regex(/[A-Z]/, {
+        message: "Password must contain at least one uppercase letter.",
+      })
+      .regex(/[a-z]/, {
+        message: "Password must contain at least one lowercase letter.",
+      })
+      .regex(/\d/, {
+        message: "Password must contain at least one number.",
+      })
+      .regex(/[@$!%*?&#^]/, {
+        message: "Password must contain at least one special character.",
+      }),
+    confirmPassword: z
+      .string({
+        required_error: "Confirm Password is required.",
+      })
+      .min(1, { message: "Confirm Password is required." }),
   })
-  .refine(
-    (data) => {
-      if (data.password && data.confirmPassword) {
-        return data.password === data.confirmPassword
-      }
-      return true
-    },
-    {
-      message: "Passwords do not match",
-      path: ["confirmPassword"],
-    },
-  )
+  .refine((data) => data.password === data.confirmPassword, {
+    message: "Passwords do not match.",
+    path: ["confirmPassword"],
+  });
 
 interface UserFormProps {
-  user?: User
+  user?: User;
 }
 
 export function UserForm({ user }: UserFormProps) {
-  const router = useRouter()
-  const [isLoading, setIsLoading] = useState(false)
+  const router = useRouter();
+  const [isLoading, setIsLoading] = useState(false);
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -67,47 +99,51 @@ export function UserForm({ user }: UserFormProps) {
       name: user?.name || "",
       email: user?.email || "",
       status: user?.status || "",
-      bio: "",
+      phone: user?.phone || "",
       password: "",
       confirmPassword: "",
     },
-  })
+  });
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
-    setIsLoading(true)
+    setIsLoading(true);
 
     try {
       if (user) {
         // Update existing user
-        await updateUser(user.id, values)
+        await updateUser(user.id, values);
         toast({
           title: "User updated",
           description: "The user has been updated successfully.",
-        })
+        });
       } else {
         // Create new user
-        await createUser(values)
+        await createUser(values);
         toast({
           title: "User created",
           description: "The user has been created successfully.",
-        })
+        });
       }
 
-      router.push("/admin/admin-users")
-      router.refresh()
+      router.push("/admin/admin-users");
+      router.refresh();
     } catch (error) {
       toast({
         title: "Error",
         description: "Something went wrong. Please try again.",
         variant: "destructive",
-      })
+      });
     } finally {
-      setIsLoading(false)
+      setIsLoading(false);
     }
   }
 
   return (
-    <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }}>
+    <motion.div
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.5 }}
+    >
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
           <Tabs defaultValue="general" className="w-full">
@@ -122,26 +158,41 @@ export function UserForm({ user }: UserFormProps) {
             <TabsContent value="general" className="space-y-6 pt-6">
               <div className="flex flex-col items-center gap-4 sm:flex-row sm:items-start">
                 <Avatar className="h-20 w-20 border-4 border-background shadow-lg">
-                  <AvatarImage src={user?.avatar || "/placeholder.svg"} alt={user?.name || "User"} />
-                  <AvatarFallback className="text-lg">{user?.name?.charAt(0) || "U"}</AvatarFallback>
+                  <AvatarImage
+                    src={user?.avatar || "/placeholder.svg"}
+                    alt={user?.name || "User"}
+                  />
+                  <AvatarFallback className="text-lg">
+                    {user?.name?.charAt(0) || "U"}
+                  </AvatarFallback>
                 </Avatar>
                 <div className="text-center sm:text-left">
-                  <Button variant="outline" type="button" className="rounded-lg">
+                  <Button
+                    variant="outline"
+                    type="button"
+                    className="rounded-lg"
+                  >
                     Change Avatar
                   </Button>
-                  <p className="mt-2 text-xs text-muted-foreground">JPG, GIF or PNG. 1MB max.</p>
+                  <p className="mt-2 text-xs text-muted-foreground">
+                    JPG, GIF or PNG. 1MB max.
+                  </p>
                 </div>
               </div>
 
-              <div className="grid gap-6 grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
+              <div className="grid gap-6 grid-cols-1 md:grid-cols-1 lg:grid-cols-2">
                 <FormField
                   control={form.control}
                   name="name"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Name</FormLabel>
+                      <FormLabel>Name *</FormLabel>
                       <FormControl>
-                        <Input placeholder="John Doe" className="rounded-lg" {...field} />
+                        <Input
+                          placeholder="John Doe"
+                          className="rounded-lg"
+                          {...field}
+                        />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -152,22 +203,48 @@ export function UserForm({ user }: UserFormProps) {
                   name="email"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Email</FormLabel>
+                      <FormLabel>Email *</FormLabel>
                       <FormControl>
-                        <Input placeholder="john@example.com" className="rounded-lg" {...field} />
+                        <Input
+                          placeholder="john@example.com"
+                          className="rounded-lg"
+                          {...field}
+                          disabled={user?.id ? true : false}
+                        />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
                   )}
                 />
-                
+
+                <FormField
+                  control={form.control}
+                  name="phone"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Phone Number</FormLabel>
+                      <FormControl>
+                        <Input
+                          placeholder="+1 (555) 123-4567"
+                          className="rounded-lg"
+                          {...field}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+
                 <FormField
                   control={form.control}
                   name="status"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Status</FormLabel>
-                      <Select onValueChange={field.onChange} value={field.value || "Active"}>
+                      <FormLabel>Status *</FormLabel>
+                      <Select
+                        onValueChange={field.onChange}
+                        value={field.value || "Active"}
+                      >
                         <FormControl>
                           <SelectTrigger className="rounded-lg">
                             <SelectValue placeholder="Select a status" />
@@ -184,7 +261,7 @@ export function UserForm({ user }: UserFormProps) {
                 />
               </div>
 
-              <FormField
+              {/* <FormField
                 control={form.control}
                 name="bio"
                 render={({ field }) => (
@@ -200,7 +277,7 @@ export function UserForm({ user }: UserFormProps) {
                     <FormMessage />
                   </FormItem>
                 )}
-              />
+              /> */}
             </TabsContent>
             <TabsContent value="security" className="space-y-6 pt-6">
               <div className="grid gap-6 md:grid-cols-2">
@@ -209,11 +286,16 @@ export function UserForm({ user }: UserFormProps) {
                   name="password"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>{user ? "New Password" : "Password"}</FormLabel>
+                      <FormLabel>
+                        {user ? "New Password *" : "Password *"}
+                      </FormLabel>
                       <FormControl>
-                        <Input type="password" className="rounded-lg" {...field} />
+                        <Input
+                          type="password"
+                          className="rounded-lg"
+                          {...field}
+                        />
                       </FormControl>
-                      {/* <FormDescription>{user ? "Leave blank to keep current password." : ""}</FormDescription> */}
                       <FormMessage />
                     </FormItem>
                   )}
@@ -223,14 +305,30 @@ export function UserForm({ user }: UserFormProps) {
                   name="confirmPassword"
                   render={({ field }) => (
                     <FormItem>
-                      <FormLabel>Confirm Password</FormLabel>
+                      <FormLabel>Confirm Password *</FormLabel>
                       <FormControl>
-                        <Input type="password" className="rounded-lg" {...field} />
+                        <Input
+                          type="password"
+                          className="rounded-lg"
+                          {...field}
+                        />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
                   )}
                 />
+              </div>
+
+              <div className="bg-muted/50 rounded-lg p-4">
+                <h4 className="text-sm font-medium mb-2">
+                  Password Requirements:
+                </h4>
+                <ul className="text-xs text-muted-foreground space-y-1">
+                  <li>• At least 8 characters long</li>
+                  <li>• Contains uppercase and lowercase letters</li>
+                  <li>• Contains at least one number</li>
+                  <li>• Contains at least one special character</li>
+                </ul>
               </div>
             </TabsContent>
           </Tabs>
@@ -251,5 +349,5 @@ export function UserForm({ user }: UserFormProps) {
         </form>
       </Form>
     </motion.div>
-  )
+  );
 }

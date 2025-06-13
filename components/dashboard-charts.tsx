@@ -58,12 +58,12 @@ export function DashboardCharts() {
     <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }}>
       <Card className="overflow-hidden rounded-xl border-none shadow-lg">
         <CardHeader className="bg-gradient-to-r from-primary/5 to-primary/10 pb-6 px-4">
-          <CardTitle className="text-xl">Analytics</CardTitle>
-          <CardDescription>View your sales and traffic analytics</CardDescription>
+          <CardTitle className="text-xl">Project Analytics</CardTitle>
+          <CardDescription>Charts of Project Data for the Last Six Months</CardDescription>
         </CardHeader>
         <CardContent className="p-6">
           <Tabs defaultValue="sales" className="w-full">
-            <TabsList className="grid w-full grid-cols-3 rounded-lg bg-muted p-1">
+            {/* <TabsList className="grid w-full grid-cols-3 rounded-lg bg-muted p-1">
               <TabsTrigger value="sales" className="rounded-md">
                 Sales
               </TabsTrigger>
@@ -73,7 +73,7 @@ export function DashboardCharts() {
               <TabsTrigger value="products" className="rounded-md">
                 Products
               </TabsTrigger>
-            </TabsList>
+            </TabsList> */}
             <TabsContent value="sales" className="space-y-4 pt-6">
               <div className="h-[300px] w-full">
                 <ResponsiveContainer width="100%" height="100%">

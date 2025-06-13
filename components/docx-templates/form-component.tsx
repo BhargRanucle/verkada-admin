@@ -37,7 +37,6 @@ import { Specification } from "../manage-specifications/table";
 import { Label } from "@/components/ui/label";
 import TextEditorField from "../text-editor/TextEditorField";
 
-// Define product types and their associated products
 const productOptions = {
   "Door Controllers": [
     "AC12 1-Door Controller by Verkada Inc",
@@ -54,30 +53,18 @@ const productOptions = {
 };
 
 const validationSchema = Yup.object().shape({
-  generalSections: Yup.array()
-    .of(
-      Yup.object().shape({
-        title: Yup.string().required("Title is required"),
-        content: Yup.string().required("Content is required"),
-      })
+   general: Yup.string()
+    .test(
+      "is-not-empty",
+      "General section is required",
+      (value: any) => {
+        const trimmedValue = value?.trim();
+        return trimmedValue && trimmedValue !== "<p><br></p>";
+      }
     )
-    .min(1, "At least one general section is required"),
-
-  selectedProducts: Yup.array()
-    .of(Yup.string())
-    .min(1, "At least one product must be selected"),
-
-  executionSections: Yup.array()
-    .of(
-      Yup.object().shape({
-        title: Yup.string().required("Title is required"),
-        content: Yup.string().required("Content is required"),
-      })
-    )
-    .min(1, "At least one execution section is required"),
+    .required("General section is required"),
+  status: Yup.string().required("Please select a status"),
 });
-
-// Initial form values
 
 interface SpecificationProps {
   specification?: Specification;
@@ -111,9 +98,8 @@ export default function FormComponent({ specification }: SpecificationProps) {
         initialValues={initialValues}
         validationSchema={validationSchema}
         onSubmit={(values, { setSubmitting }) => {
-          console.log(values);
-          alert(JSON.stringify(values, null, 2));
-          setSubmitting(false);
+          console.log("values", values?.general)
+          // setSubmitting(false);
         }}
       >
         {({
@@ -153,7 +139,7 @@ export default function FormComponent({ specification }: SpecificationProps) {
                   htmlFor="status"
                   className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
                 >
-                  Status
+                  Status *
                 </label>
                 <Field name="status">
                   {({ field, form }: { field: any; form: any }) => (
@@ -212,7 +198,7 @@ export default function FormComponent({ specification }: SpecificationProps) {
                             className=" hover:border-black/20 transition-all duration-200 bg-white/80 backdrop-blur-sm border-0 rounded-[17px]"
                           >
                             <div className="">
-                              <Field name={`general`}>
+                              {/* <Field name={`general`}>
                                 {({ field, form, meta }: any) => (
                                   <>
                                     <TextEditorField
@@ -231,7 +217,24 @@ export default function FormComponent({ specification }: SpecificationProps) {
                                     />
                                   </>
                                 )}
-                              </Field>
+                              </Field> */}
+
+                              <div className="">
+                                <TextEditorField
+                                  name="general"
+                                  toolbarId="toolbar-general"
+                                  value={values.general}
+                                  onChange={(value) => {
+                                    setFieldValue("general", value);
+                                    console.log('value', value);
+                                  }}
+                                />
+                                <ErrorMessage
+                                  name="general"
+                                  component="div"
+                                  className="text-red-500 text-xs mt-1"
+                                />
+                              </div>
                             </div>
                           </div>
                         </div>
@@ -343,7 +346,6 @@ export default function FormComponent({ specification }: SpecificationProps) {
                                 className="text-xs border-black/20 text-gray-600"
                               >
                                 8 sections
-                                
                               </Badge>
                             </div>
                           </div>
@@ -359,285 +361,291 @@ export default function FormComponent({ specification }: SpecificationProps) {
                           ))} */}
 
                           <CardContent className=" space-y-2 p-0">
-                              <div className="">
-                                <Label
-                                  htmlFor={`installers`}
-                                  className="font-semibold text-sm text-[#000000] ms-1"
-                                >
-                                  Installers
-                                </Label>
-                                <div className="mt-1">
-                                  <Field name={`installers`}>
-                                    {({ field, form, meta }: any) => (
-                                      <>
-                                        <TextEditorField
-                                          name="installers"
-                                          toolbarId="toolbar-installers"
-                                          value={field.value}
-                                          onChange={(value: any) =>
-                                            setFieldValue(`installers`, value)
-                                          }
-                                        />
+                            <div className="">
+                              <Label
+                                htmlFor={`installers`}
+                                className="font-semibold text-sm text-[#000000] ms-1"
+                              >
+                                Installers
+                              </Label>
+                              <div className="mt-1">
+                                <Field name={`installers`}>
+                                  {({ field, form, meta }: any) => (
+                                    <>
+                                      <TextEditorField
+                                        name="installers"
+                                        toolbarId="toolbar-installers"
+                                        value={field.value}
+                                        onChange={(value: any) =>
+                                          setFieldValue(`installers`, value)
+                                        }
+                                      />
 
-                                        <ErrorMessage
-                                          name={`installers`}
-                                          component="div"
-                                          className="text-red-500 text-xs mt-1"
-                                        />
-                                      </>
-                                    )}
-                                  </Field>
-                                </div>
+                                      <ErrorMessage
+                                        name={`installers`}
+                                        component="div"
+                                        className="text-red-500 text-xs mt-1"
+                                      />
+                                    </>
+                                  )}
+                                </Field>
                               </div>
+                            </div>
 
-                              <div className="">
-                                <Label
-                                  htmlFor={`examination`}
-                                  className="font-semibold text-sm text-[#000000] ms-1"
-                                >
-                                  Examination
-                                </Label>
-                                <div className="mt-1">
-                                  <Field name={`examination`}>
-                                    {({ field, form, meta }: any) => (
-                                      <>
-                                        <TextEditorField
-                                          name="examination"
-                                          toolbarId="toolbar-examination"
-                                          value={field.value}
-                                          onChange={(value: any) =>
-                                            setFieldValue(`examination`, value)
-                                          }
-                                        />
+                            <div className="">
+                              <Label
+                                htmlFor={`examination`}
+                                className="font-semibold text-sm text-[#000000] ms-1"
+                              >
+                                Examination
+                              </Label>
+                              <div className="mt-1">
+                                <Field name={`examination`}>
+                                  {({ field, form, meta }: any) => (
+                                    <>
+                                      <TextEditorField
+                                        name="examination"
+                                        toolbarId="toolbar-examination"
+                                        value={field.value}
+                                        onChange={(value: any) =>
+                                          setFieldValue(`examination`, value)
+                                        }
+                                      />
 
-                                        <ErrorMessage
-                                          name={`examination`}
-                                          component="div"
-                                          className="text-red-500 text-xs mt-1"
-                                        />
-                                      </>
-                                    )}
-                                  </Field>
-                                </div>
+                                      <ErrorMessage
+                                        name={`examination`}
+                                        component="div"
+                                        className="text-red-500 text-xs mt-1"
+                                      />
+                                    </>
+                                  )}
+                                </Field>
                               </div>
+                            </div>
 
-                              <div className="mt-2">
-                                <Label
-                                  htmlFor={`preparation`}
-                                  className="font-semibold text-sm text-[#000000] ms-1"
-                                >
-                                  Preparation
-                                </Label>
-                                <div className="mt-1">
-                                  <Field name={`preparation`}>
-                                    {({ field, form, meta }: any) => (
-                                      <>
-                                        <TextEditorField
-                                          name="preparation"
-                                          toolbarId="toolbar-preparation"
-                                          value={field.value}
-                                          onChange={(value: any) =>
-                                            setFieldValue(`preparation`, value)
-                                          }
-                                        />
+                            <div className="mt-2">
+                              <Label
+                                htmlFor={`preparation`}
+                                className="font-semibold text-sm text-[#000000] ms-1"
+                              >
+                                Preparation
+                              </Label>
+                              <div className="mt-1">
+                                <Field name={`preparation`}>
+                                  {({ field, form, meta }: any) => (
+                                    <>
+                                      <TextEditorField
+                                        name="preparation"
+                                        toolbarId="toolbar-preparation"
+                                        value={field.value}
+                                        onChange={(value: any) =>
+                                          setFieldValue(`preparation`, value)
+                                        }
+                                      />
 
-                                        <ErrorMessage
-                                          name={`preparation`}
-                                          component="div"
-                                          className="text-red-500 text-xs mt-1"
-                                        />
-                                      </>
-                                    )}
-                                  </Field>
-                                </div>
+                                      <ErrorMessage
+                                        name={`preparation`}
+                                        component="div"
+                                        className="text-red-500 text-xs mt-1"
+                                      />
+                                    </>
+                                  )}
+                                </Field>
                               </div>
+                            </div>
 
-                              <div className="mt-2">
-                                <Label
-                                  htmlFor={`installation`}
-                                  className="font-semibold text-sm text-[#000000] ms-1"
-                                >
-                                  Installation
-                                </Label>
-                                <div className="mt-1">
-                                  <Field name={`installation`}>
-                                    {({ field, form, meta }: any) => (
-                                      <>
-                                        <TextEditorField
-                                          name="installation"
-                                          toolbarId="toolbar-installation"
-                                          value={field.value}
-                                          onChange={(value: any) =>
-                                            setFieldValue(`installation`, value)
-                                          }
-                                        />
+                            <div className="mt-2">
+                              <Label
+                                htmlFor={`installation`}
+                                className="font-semibold text-sm text-[#000000] ms-1"
+                              >
+                                Installation
+                              </Label>
+                              <div className="mt-1">
+                                <Field name={`installation`}>
+                                  {({ field, form, meta }: any) => (
+                                    <>
+                                      <TextEditorField
+                                        name="installation"
+                                        toolbarId="toolbar-installation"
+                                        value={field.value}
+                                        onChange={(value: any) =>
+                                          setFieldValue(`installation`, value)
+                                        }
+                                      />
 
-                                        <ErrorMessage
-                                          name={`installation`}
-                                          component="div"
-                                          className="text-red-500 text-xs mt-1"
-                                        />
-                                      </>
-                                    )}
-                                  </Field>
-                                </div>
+                                      <ErrorMessage
+                                        name={`installation`}
+                                        component="div"
+                                        className="text-red-500 text-xs mt-1"
+                                      />
+                                    </>
+                                  )}
+                                </Field>
                               </div>
+                            </div>
 
-                              <div className="mt-2">
-                                <Label
-                                  htmlFor={`labeling`}
-                                  className="font-semibold text-sm text-[#000000] ms-1"
-                                >
-                                  Labeling
-                                </Label>
-                                <div className="mt-1">
-                                  <Field name={`labeling`}>
-                                    {({ field, form, meta }: any) => (
-                                      <>
-                                        <TextEditorField
-                                          name="labeling"
-                                          toolbarId="toolbar-labeling"
-                                          value={field.value}
-                                          onChange={(value: any) =>
-                                            setFieldValue(`labeling`, value)
-                                          }
-                                        />
+                            <div className="mt-2">
+                              <Label
+                                htmlFor={`labeling`}
+                                className="font-semibold text-sm text-[#000000] ms-1"
+                              >
+                                Labeling
+                              </Label>
+                              <div className="mt-1">
+                                <Field name={`labeling`}>
+                                  {({ field, form, meta }: any) => (
+                                    <>
+                                      <TextEditorField
+                                        name="labeling"
+                                        toolbarId="toolbar-labeling"
+                                        value={field.value}
+                                        onChange={(value: any) =>
+                                          setFieldValue(`labeling`, value)
+                                        }
+                                      />
 
-                                        <ErrorMessage
-                                          name={`labeling`}
-                                          component="div"
-                                          className="text-red-500 text-xs mt-1"
-                                        />
-                                      </>
-                                    )}
-                                  </Field>
-                                </div>
+                                      <ErrorMessage
+                                        name={`labeling`}
+                                        component="div"
+                                        className="text-red-500 text-xs mt-1"
+                                      />
+                                    </>
+                                  )}
+                                </Field>
                               </div>
+                            </div>
 
-                              <div className="mt-2">
-                                <Label
-                                  htmlFor={`programming`}
-                                  className="font-semibold text-sm text-[#000000] ms-1"
-                                >
-                                  Programming
-                                </Label>
-                                <div className="mt-1">
-                                  <Field name={`programming`}>
-                                    {({ field, form, meta }: any) => (
-                                      <>
-                                        <TextEditorField
-                                          name="programming"
-                                          toolbarId="toolbar-programming"
-                                          value={field.value}
-                                          onChange={(value: any) =>
-                                            setFieldValue(`programming`, value)
-                                          }
-                                        />
+                            <div className="mt-2">
+                              <Label
+                                htmlFor={`programming`}
+                                className="font-semibold text-sm text-[#000000] ms-1"
+                              >
+                                Programming
+                              </Label>
+                              <div className="mt-1">
+                                <Field name={`programming`}>
+                                  {({ field, form, meta }: any) => (
+                                    <>
+                                      <TextEditorField
+                                        name="programming"
+                                        toolbarId="toolbar-programming"
+                                        value={field.value}
+                                        onChange={(value: any) =>
+                                          setFieldValue(`programming`, value)
+                                        }
+                                      />
 
-                                        <ErrorMessage
-                                          name={`programming`}
-                                          component="div"
-                                          className="text-red-500 text-xs mt-1"
-                                        />
-                                      </>
-                                    )}
-                                  </Field>
-                                </div>
+                                      <ErrorMessage
+                                        name={`programming`}
+                                        component="div"
+                                        className="text-red-500 text-xs mt-1"
+                                      />
+                                    </>
+                                  )}
+                                </Field>
                               </div>
+                            </div>
 
-                              <div className="mt-2">
-                                <Label
-                                  htmlFor={`acceptance_testing`}
-                                  className="font-semibold text-sm text-[#000000] ms-1"
-                                >
-                                  Acceptance Testing
-                                </Label>
-                                <div className="mt-1">
-                                  <Field name={`acceptance_testing`}>
-                                    {({ field, form, meta }: any) => (
-                                      <>
-                                        <TextEditorField
-                                          name="acceptance_testing"
-                                          toolbarId="toolbar-acceptance-testing"
-                                          value={field.value}
-                                          onChange={(value: any) =>
-                                            setFieldValue(`acceptance_testing`, value)
-                                          }
-                                        />
+                            <div className="mt-2">
+                              <Label
+                                htmlFor={`acceptance_testing`}
+                                className="font-semibold text-sm text-[#000000] ms-1"
+                              >
+                                Acceptance Testing
+                              </Label>
+                              <div className="mt-1">
+                                <Field name={`acceptance_testing`}>
+                                  {({ field, form, meta }: any) => (
+                                    <>
+                                      <TextEditorField
+                                        name="acceptance_testing"
+                                        toolbarId="toolbar-acceptance-testing"
+                                        value={field.value}
+                                        onChange={(value: any) =>
+                                          setFieldValue(
+                                            `acceptance_testing`,
+                                            value
+                                          )
+                                        }
+                                      />
 
-                                        <ErrorMessage
-                                          name={`acceptance_testing`}
-                                          component="div"
-                                          className="text-red-500 text-xs mt-1"
-                                        />
-                                      </>
-                                    )}
-                                  </Field>
-                                </div>
+                                      <ErrorMessage
+                                        name={`acceptance_testing`}
+                                        component="div"
+                                        className="text-red-500 text-xs mt-1"
+                                      />
+                                    </>
+                                  )}
+                                </Field>
                               </div>
+                            </div>
 
-                              <div className="mt-2">
-                                <Label
-                                  htmlFor={`owner_personnel_training`}
-                                  className="font-semibold text-sm text-[#000000] ms-1"
-                                >
-                                  Owner Personnel Training
-                                </Label>
-                                <div className="mt-1">
-                                  <Field name={`owner_personnel_training`}>
-                                    {({ field, form, meta }: any) => (
-                                      <>
-                                        <TextEditorField
-                                          name="owner_personnel_training"
-                                          toolbarId="toolbar-owner-personnel-training"
-                                          value={field.value}
-                                          onChange={(value: any) =>
-                                            setFieldValue(`owner_personnel_training`, value)
-                                          }
-                                        />
+                            <div className="mt-2">
+                              <Label
+                                htmlFor={`owner_personnel_training`}
+                                className="font-semibold text-sm text-[#000000] ms-1"
+                              >
+                                Owner Personnel Training
+                              </Label>
+                              <div className="mt-1">
+                                <Field name={`owner_personnel_training`}>
+                                  {({ field, form, meta }: any) => (
+                                    <>
+                                      <TextEditorField
+                                        name="owner_personnel_training"
+                                        toolbarId="toolbar-owner-personnel-training"
+                                        value={field.value}
+                                        onChange={(value: any) =>
+                                          setFieldValue(
+                                            `owner_personnel_training`,
+                                            value
+                                          )
+                                        }
+                                      />
 
-                                        <ErrorMessage
-                                          name={`owner_personnel_training`}
-                                          component="div"
-                                          className="text-red-500 text-xs mt-1"
-                                        />
-                                      </>
-                                    )}
-                                  </Field>
-                                </div>
+                                      <ErrorMessage
+                                        name={`owner_personnel_training`}
+                                        component="div"
+                                        className="text-red-500 text-xs mt-1"
+                                      />
+                                    </>
+                                  )}
+                                </Field>
                               </div>
+                            </div>
 
-                              <div className="mt-2">
-                                <Label
-                                  htmlFor={`documentation`}
-                                  className="font-semibold text-sm text-[#000000] ms-1"
-                                >
-                                  Documentation
-                                </Label>
-                                <div className="mt-1">
-                                  <Field name={`documentation`}>
-                                    {({ field, form, meta }: any) => (
-                                      <>
-                                        <TextEditorField
-                                          name="documentation"
-                                          toolbarId="toolbar-documentation"
-                                          value={field.value}
-                                          onChange={(value: any) =>
-                                            setFieldValue(`documentation`, value)
-                                          }
-                                        />
+                            <div className="mt-2">
+                              <Label
+                                htmlFor={`documentation`}
+                                className="font-semibold text-sm text-[#000000] ms-1"
+                              >
+                                Documentation
+                              </Label>
+                              <div className="mt-1">
+                                <Field name={`documentation`}>
+                                  {({ field, form, meta }: any) => (
+                                    <>
+                                      <TextEditorField
+                                        name="documentation"
+                                        toolbarId="toolbar-documentation"
+                                        value={field.value}
+                                        onChange={(value: any) =>
+                                          setFieldValue(`documentation`, value)
+                                        }
+                                      />
 
-                                        <ErrorMessage
-                                          name={`documentation`}
-                                          component="div"
-                                          className="text-red-500 text-xs mt-1"
-                                        />
-                                      </>
-                                    )}
-                                  </Field>
-                                </div>
+                                      <ErrorMessage
+                                        name={`documentation`}
+                                        component="div"
+                                        className="text-red-500 text-xs mt-1"
+                                      />
+                                    </>
+                                  )}
+                                </Field>
                               </div>
-                            </CardContent>
+                            </div>
+                          </CardContent>
 
                           {/* <div
                             key={`execution-section`}

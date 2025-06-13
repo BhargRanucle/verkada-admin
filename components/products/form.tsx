@@ -39,11 +39,17 @@ import "react-quill-new/dist/quill.snow.css";
 const ReactQuill = dynamic(() => import("react-quill-new"), { ssr: false });
 
 const formSchema = z.object({
-  name: z.string().min(2, {
-    message: "Name must be at least 2 characters.",
+  name: z.string().min(1, {
+    message: "Product name is required.",
   }),
   product_category: z.string().nonempty("Product Category is required."),
-  content: z.string().optional(),
+  content: z
+    .string()
+    .min(1, { message: "Product content is required." })
+    .refine(
+      (value) => value.trim() !== "<p><br></p>",
+      { message: "Product content is required." }
+    ),
 });
 
 interface ProductFormProps {
@@ -161,7 +167,7 @@ export function ProductForm({ product }: ProductFormProps) {
               name="name"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Name</FormLabel>
+                  <FormLabel>Name *</FormLabel>
                   <FormControl>
                     <Input
                       placeholder="Product Name"
@@ -219,7 +225,7 @@ export function ProductForm({ product }: ProductFormProps) {
               name="product_category"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Select Product Category</FormLabel>
+                  <FormLabel>Select Product Category *</FormLabel>
                   <Select
                     onValueChange={(value) => {
                       field.onChange(value);
@@ -288,7 +294,7 @@ export function ProductForm({ product }: ProductFormProps) {
               name="content"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Content</FormLabel>
+                  <FormLabel>Content *</FormLabel>
                   <div
                     ref={editorContainerRef}
                     className={`${isFullscreen ? "fullscreen-editor" : ""}`}

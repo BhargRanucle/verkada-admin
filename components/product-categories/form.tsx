@@ -48,10 +48,13 @@ export function ProductCategoryForm({
   const [isLoading, setIsLoading] = useState(false);
 
   const formSchema = z.object({
-    name: z.string().min(2, {
-      message: "Name must be at least 2 characters.",
+    name: z.string().min(1, {
+      message: "Product category name is required",
     }),
-    product_line: z.string(),
+    // product_line: z.string(),
+    product_line: z.string({
+      required_error: "Please select a product line.",
+    }),
   });
 
   const form = useForm<z.infer<typeof formSchema>>({
@@ -155,7 +158,7 @@ export function ProductCategoryForm({
                 name="name"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Name</FormLabel>
+                    <FormLabel>Name *</FormLabel>
                     <FormControl>
                       <Input
                         placeholder="Product Category Name"
@@ -175,7 +178,7 @@ export function ProductCategoryForm({
                 name="product_line"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Select Product Line</FormLabel>
+                    <FormLabel>Select Product Line *</FormLabel>
                     <Select
                       onValueChange={(value) => {
                         field.onChange(value);
@@ -189,7 +192,7 @@ export function ProductCategoryForm({
                       </FormControl>
                       <SelectContent>
                         <SelectItem value="access_control">
-                         28 10 00 Access Control 24.4
+                          28 10 00 Access Control 24.4
                         </SelectItem>
                         <SelectItem value="intercom_entry_systems">
                           28 15 23 Intercom Entry Systems 25.1
