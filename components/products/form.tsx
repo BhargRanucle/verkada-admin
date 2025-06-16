@@ -550,7 +550,7 @@ export function ProductForm({ product }: ProductFormProps) {
           </div>
 
           {form.getValues("product_line") == "28_20_00_video_surveillance_gateways_connector_25_1" && (
-            <p className="mb-0 !mt-2 text-[14px]">* Note:- Please use <b>#STORAGE</b> variable to use as dynamic value. *</p>
+            <p className="mb-0 !mt-2 text-[14px]">* Note:- Please use <b>#STORAGE#</b> variable to use as dynamic value. *</p>
           )}
 
           <div className="flex flex-col gap-2 sm:flex-row sm:justify-end">
