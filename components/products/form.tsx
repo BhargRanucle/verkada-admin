@@ -76,8 +76,10 @@ export function ProductForm({ product }: ProductFormProps) {
       thirty_days_storage: product?.thirty_days_storage || "none",
       sixty_days_storage: product?.sixty_days_storage || "none",
       ninety_days_storage: product?.ninety_days_storage || "none",
-      one_hundred_twenty_days_storage: product?.one_hundred_twenty_days_storage || "none",
-      three_hundred_sixty_five_days_storage: product?.three_hundred_sixty_five_days_storage || "none",
+      one_hundred_twenty_days_storage:
+        product?.one_hundred_twenty_days_storage || "none",
+      three_hundred_sixty_five_days_storage:
+        product?.three_hundred_sixty_five_days_storage || "none",
     },
   });
 
@@ -195,6 +197,17 @@ export function ProductForm({ product }: ProductFormProps) {
     },
   ];
 
+  const [isVideoSurveillance, setIsVideoSurveillance] = useState(false);
+
+  useEffect(() => {
+    const productLine = form.getValues("product_line");
+    if (productLine === "28_20_00_video_surveillance_gateways_connector_25_1") {
+      setIsVideoSurveillance(true);
+    } else {
+      setIsVideoSurveillance(false);
+    }
+  }, [form.watch("product_line")]);
+
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
@@ -229,16 +242,15 @@ export function ProductForm({ product }: ProductFormProps) {
                 <FormItem>
                   <FormLabel>Select Product Category *</FormLabel>
                   <Select
-                    onValueChange={(value) => {
-                      const parentGroup = selectData.find((group) =>
+                    onValueChange={async (value) => {
+                      const parentGroup = await selectData.find((group) =>
                         group.items.some((item) => item.value === value)
                       );
                       const parentFlag = parentGroup ? parentGroup.flag : null;
-                      console.log("Selected Value:", value);
-                      console.log("Parent Label:", parentFlag);
-
                       form.setValue("product_line", parentFlag as any);
                       field.onChange(value);
+
+                      setTimeout(() => {}, 0);
                     }}
                     value={field.value}
                   >
@@ -315,8 +327,7 @@ export function ProductForm({ product }: ProductFormProps) {
             />
           </div>
 
-          {form.getValues("product_line") ==
-            "28_20_00_video_surveillance_gateways_connector_25_1" && (
+          {isVideoSurveillance && (
             <div className="mt-2 grid gap-6 md:grid-cols-5">
               <FormField
                 control={form.control}
@@ -549,8 +560,11 @@ export function ProductForm({ product }: ProductFormProps) {
             />
           </div>
 
-          {form.getValues("product_line") == "28_20_00_video_surveillance_gateways_connector_25_1" && (
-            <p className="mb-0 !mt-2 text-[14px]">* Note:- Please use <b>#STORAGE#</b> variable to use as dynamic value. *</p>
+          {isVideoSurveillance && (
+            <p className="mb-0 !mt-2 text-[14px]">
+              * Note:- Please use <b>#STORAGE#</b> variable to use as dynamic
+              value. *
+            </p>
           )}
 
           <div className="flex flex-col gap-2 sm:flex-row sm:justify-end">
