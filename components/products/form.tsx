@@ -43,13 +43,18 @@ const formSchema = z.object({
     message: "Product name is required.",
   }),
   product_category: z.string().nonempty("Product Category is required."),
+  product_line: z.string().optional(),
   content: z
     .string()
     .min(1, { message: "Product content is required." })
-    .refine(
-      (value) => value.trim() !== "<p><br></p>",
-      { message: "Product content is required." }
-    ),
+    .refine((value) => value.trim() !== "<p><br></p>", {
+      message: "Product content is required.",
+    }),
+  thirty_days_storage: z.string().optional(),
+  sixty_days_storage: z.string().optional(),
+  ninety_days_storage: z.string().optional(),
+  one_hundred_twenty_days_storage: z.string().optional(),
+  three_hundred_sixty_five_days_storage: z.string().optional(),
 });
 
 interface ProductFormProps {
@@ -66,9 +71,17 @@ export function ProductForm({ product }: ProductFormProps) {
     defaultValues: {
       name: product?.name || "",
       product_category: product?.product_category || "",
+      product_line: product?.product_line || "",
       content: product?.content || "",
+      thirty_days_storage: product?.thirty_days_storage || "none",
+      sixty_days_storage: product?.sixty_days_storage || "none",
+      ninety_days_storage: product?.ninety_days_storage || "none",
+      one_hundred_twenty_days_storage: product?.one_hundred_twenty_days_storage || "none",
+      three_hundred_sixty_five_days_storage: product?.three_hundred_sixty_five_days_storage || "none",
     },
   });
+
+  // console.log('product_line value:', form.getValues('product_line'));
 
   const [isFullscreen, setIsFullscreen] = useState(false);
   const editorContainerRef = useRef<HTMLDivElement>(null);
@@ -153,6 +166,35 @@ export function ProductForm({ product }: ProductFormProps) {
     },
   };
 
+  const selectData = [
+    {
+      label: "28 10 00 Access Control 24.4",
+      flag: "28_10_00_access_control_24_4",
+      items: [
+        { value: "Door Controllers", text: "Door Controllers" },
+        { value: "IO Controllers", text: "IO Controllers" },
+        {
+          value: "Integrated Card Reader Door Locks",
+          text: "Integrated Card Reader Door Locks",
+        },
+        {
+          value: "Multi-Format Card Readers",
+          text: "Multi-Format Card Readers",
+        },
+      ],
+    },
+    {
+      label: "28 20 00 Video Surveillance, Gateways, Connector 25.1",
+      flag: "28_20_00_video_surveillance_gateways_connector_25_1",
+      items: [
+        { value: "Indoor Dome Series", text: "Indoor Dome Series" },
+        { value: "Outdoor Dome Series", text: "Outdoor Dome Series" },
+        { value: "Mini Series", text: "Mini Series" },
+        { value: "Bullet Series", text: "Bullet Series" },
+      ],
+    },
+  ];
+
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
@@ -180,46 +222,6 @@ export function ProductForm({ product }: ProductFormProps) {
               )}
             />
 
-            {/* <FormField
-              control={form.control}
-              name="product_category"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Select Product Category</FormLabel>
-                  <Select
-                    onValueChange={(value) => {
-                      field.onChange(value);
-                    }}
-                    value={field.value}
-                  >
-                    <FormControl>
-                      <SelectTrigger className="rounded-lg">
-                        <SelectValue placeholder="Select a product category" />
-                      </SelectTrigger>
-                    </FormControl>
-                    <SelectContent>
-                      <SelectItem value="Door Controllers">
-                        Door Controllers
-                      </SelectItem>
-                      <SelectItem value="IO Controllers">
-                        IO Controllers
-                      </SelectItem>
-                      <SelectItem value="Integrated Card Reader Door Locks">
-                        Integrated Card Reader Door Locks
-                      </SelectItem>
-                      <SelectItem value="Multi-Format Card Readers">
-                        Multi-Format Card Readers
-                      </SelectItem>
-                      <SelectItem value="Badge Printing Software">
-                        Badge Printing Software
-                      </SelectItem>
-                    </SelectContent>
-                  </Select>
-                  <FormMessage />
-                </FormItem>
-              )}
-            /> */}
-
             <FormField
               control={form.control}
               name="product_category"
@@ -228,6 +230,14 @@ export function ProductForm({ product }: ProductFormProps) {
                   <FormLabel>Select Product Category *</FormLabel>
                   <Select
                     onValueChange={(value) => {
+                      const parentGroup = selectData.find((group) =>
+                        group.items.some((item) => item.value === value)
+                      );
+                      const parentFlag = parentGroup ? parentGroup.flag : null;
+                      console.log("Selected Value:", value);
+                      console.log("Parent Label:", parentFlag);
+
+                      form.setValue("product_line", parentFlag as any);
                       field.onChange(value);
                     }}
                     value={field.value}
@@ -237,7 +247,7 @@ export function ProductForm({ product }: ProductFormProps) {
                         <SelectValue placeholder="Select a product category" />
                       </SelectTrigger>
                     </FormControl>
-                    <SelectContent>
+                    {/* <SelectContent>
                       <SelectGroup>
                         <SelectLabel>28 10 00 Access Control 24.4</SelectLabel>
                         <SelectItem className="ms-3" value="Door Controllers">
@@ -280,6 +290,23 @@ export function ProductForm({ product }: ProductFormProps) {
                           Bullet Series
                         </SelectItem>
                       </SelectGroup>
+                    </SelectContent> */}
+
+                    <SelectContent>
+                      {selectData.map((group, groupIndex) => (
+                        <SelectGroup key={groupIndex}>
+                          <SelectLabel>{group.label}</SelectLabel>
+                          {group.items.map((item, itemIndex) => (
+                            <SelectItem
+                              key={itemIndex}
+                              className="ms-3"
+                              value={item.value}
+                            >
+                              {item.text}
+                            </SelectItem>
+                          ))}
+                        </SelectGroup>
+                      ))}
                     </SelectContent>
                   </Select>
                   <FormMessage />
@@ -287,6 +314,166 @@ export function ProductForm({ product }: ProductFormProps) {
               )}
             />
           </div>
+
+          {form.getValues("product_line") ==
+            "28_20_00_video_surveillance_gateways_connector_25_1" && (
+            <div className="mt-2 grid gap-6 md:grid-cols-5">
+              <FormField
+                control={form.control}
+                name="thirty_days_storage"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>30 Days Storage</FormLabel>
+                    <Select
+                      onValueChange={(value) => {
+                        field.onChange(value);
+                      }}
+                      value={field.value}
+                    >
+                      <FormControl>
+                        <SelectTrigger className="rounded-lg">
+                          <SelectValue placeholder="Select a product line" />
+                        </SelectTrigger>
+                      </FormControl>
+                      <SelectContent>
+                        <SelectItem value="none">None</SelectItem>
+                        <SelectItem value="256GB">256GB</SelectItem>
+                        <SelectItem value="512GB">512GB</SelectItem>
+                        <SelectItem value="768GB">768GB</SelectItem>
+                        <SelectItem value="1TB">1TB</SelectItem>
+                        <SelectItem value="2TB">2TB</SelectItem>
+                      </SelectContent>
+                    </Select>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              <FormField
+                control={form.control}
+                name="sixty_days_storage"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>60 Days Storage</FormLabel>
+                    <Select
+                      onValueChange={(value) => {
+                        field.onChange(value);
+                      }}
+                      value={field.value}
+                    >
+                      <FormControl>
+                        <SelectTrigger className="rounded-lg">
+                          <SelectValue placeholder="Select a product line" />
+                        </SelectTrigger>
+                      </FormControl>
+                      <SelectContent>
+                        <SelectItem value="none">None</SelectItem>
+                        <SelectItem value="256GB">256GB</SelectItem>
+                        <SelectItem value="512GB">512GB</SelectItem>
+                        <SelectItem value="768GB">768GB</SelectItem>
+                        <SelectItem value="1TB">1TB</SelectItem>
+                        <SelectItem value="2TB">2TB</SelectItem>
+                      </SelectContent>
+                    </Select>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              <FormField
+                control={form.control}
+                name="ninety_days_storage"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>90 Days Storage</FormLabel>
+                    <Select
+                      onValueChange={(value) => {
+                        field.onChange(value);
+                      }}
+                      value={field.value}
+                    >
+                      <FormControl>
+                        <SelectTrigger className="rounded-lg">
+                          <SelectValue placeholder="Select a product line" />
+                        </SelectTrigger>
+                      </FormControl>
+                      <SelectContent>
+                        <SelectItem value="none">None</SelectItem>
+                        <SelectItem value="256GB">256GB</SelectItem>
+                        <SelectItem value="512GB">512GB</SelectItem>
+                        <SelectItem value="768GB">768GB</SelectItem>
+                        <SelectItem value="1TB">1TB</SelectItem>
+                        <SelectItem value="2TB">2TB</SelectItem>
+                      </SelectContent>
+                    </Select>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              <FormField
+                control={form.control}
+                name="one_hundred_twenty_days_storage"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>120 Days Storage</FormLabel>
+                    <Select
+                      onValueChange={(value) => {
+                        field.onChange(value);
+                      }}
+                      value={field.value}
+                    >
+                      <FormControl>
+                        <SelectTrigger className="rounded-lg">
+                          <SelectValue placeholder="Select a product line" />
+                        </SelectTrigger>
+                      </FormControl>
+                      <SelectContent>
+                        <SelectItem value="none">None</SelectItem>
+                        <SelectItem value="256GB">256GB</SelectItem>
+                        <SelectItem value="512GB">512GB</SelectItem>
+                        <SelectItem value="768GB">768GB</SelectItem>
+                        <SelectItem value="1TB">1TB</SelectItem>
+                        <SelectItem value="2TB">2TB</SelectItem>
+                      </SelectContent>
+                    </Select>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              <FormField
+                control={form.control}
+                name="three_hundred_sixty_five_days_storage"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>365 Days Storage</FormLabel>
+                    <Select
+                      onValueChange={(value) => {
+                        field.onChange(value);
+                      }}
+                      value={field.value}
+                    >
+                      <FormControl>
+                        <SelectTrigger className="rounded-lg">
+                          <SelectValue placeholder="Select a product line" />
+                        </SelectTrigger>
+                      </FormControl>
+                      <SelectContent>
+                        <SelectItem value="none">None</SelectItem>
+                        <SelectItem value="256GB">256GB</SelectItem>
+                        <SelectItem value="512GB">512GB</SelectItem>
+                        <SelectItem value="768GB">768GB</SelectItem>
+                        <SelectItem value="1TB">1TB</SelectItem>
+                        <SelectItem value="2TB">2TB</SelectItem>
+                      </SelectContent>
+                    </Select>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </div>
+          )}
 
           <div className={`mt-2 text-editor`}>
             <FormField
@@ -361,6 +548,10 @@ export function ProductForm({ product }: ProductFormProps) {
               )}
             />
           </div>
+
+          {form.getValues("product_line") == "28_20_00_video_surveillance_gateways_connector_25_1" && (
+            <p className="mb-0 !mt-2 text-[14px]">* Note:- Please use <b>#STORAGE</b> variable to use as dynamic value. *</p>
+          )}
 
           <div className="flex flex-col gap-2 sm:flex-row sm:justify-end">
             <Button
