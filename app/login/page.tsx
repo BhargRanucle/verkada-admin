@@ -87,13 +87,7 @@ export default function LoginPage() {
     setIsLoading(true);
 
     try {
-      // Simulate API call
       await new Promise((resolve) => setTimeout(resolve, 2000));
-
-      // In a real app, you would validate credentials here
-      console.log("Login attempt:", values);
-
-      // Redirect to dashboard on successful login
       router.push("/admin/dashboard");
     } catch (error) {
       console.error("Login error:", error);
@@ -171,7 +165,7 @@ export default function LoginPage() {
                           <div className="relative">
                             <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
                             <Input
-                              placeholder="admin@example.com"
+                              placeholder="admin@verkada.com"
                               className="pl-10 h-12 rounded-xl border-muted bg-muted/50 focus:bg-background transition-colors"
                               {...field}
                             />
@@ -277,7 +271,7 @@ export default function LoginPage() {
             transition={{ delay: 0.5 }}
             className="mt-8 text-center text-xs text-muted-foreground"
           >
-            <p>Demo credentials: admin@example.com / Password@123</p>
+            <p>Demo credentials: admin@verkada.com / Admin@123</p>
           </motion.div>
         </motion.div>
       </div>

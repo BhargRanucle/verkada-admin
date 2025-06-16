@@ -2,7 +2,7 @@ import { redirect } from "next/navigation"
 
 export default function Home() {
   // Redirect to dashboard
-  redirect("/admin/dashboard")
+  redirect("/login")
 
   return null
 }
