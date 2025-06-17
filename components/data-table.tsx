@@ -1,6 +1,6 @@
-"use client"
+"use client";
 
-import { useEffect, useState } from "react"
+import { useEffect, useState } from "react";
 import {
   type ColumnDef,
   type ColumnFiltersState,
@@ -11,19 +11,32 @@ import {
   getPaginationRowModel,
   getSortedRowModel,
   useReactTable,
-} from "@tanstack/react-table"
-import { ChevronLeft, ChevronRight, Search } from "lucide-react"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
-import { motion } from "framer-motion"
+} from "@tanstack/react-table";
+import { ChevronLeft, ChevronRight, Search } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from "@/components/ui/table";
+import { motion } from "framer-motion";
 
 interface DataTableProps<TData, TValue> {
-  columns: ColumnDef<TData, TValue>[]
-  data: TData[]
-  searchColumn?: string
-  searchPlaceholder?: string
+  columns: ColumnDef<TData, TValue>[];
+  data: TData[];
+  searchColumn?: string;
+  searchPlaceholder?: string;
 }
 
 export function DataTable<TData, TValue>({
@@ -32,8 +45,8 @@ export function DataTable<TData, TValue>({
   searchColumn,
   searchPlaceholder = "Search...",
 }: DataTableProps<TData, TValue>) {
-  const [sorting, setSorting] = useState<SortingState>([])
-  const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([])
+  const [sorting, setSorting] = useState<SortingState>([]);
+  const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
 
   const table = useReactTable({
     data,
@@ -48,9 +61,9 @@ export function DataTable<TData, TValue>({
       sorting,
       columnFilters,
     },
-  })
+  });
 
-   useEffect(() => {
+  useEffect(() => {
     table.setPageSize(5);
   }, []);
 
@@ -67,8 +80,15 @@ export function DataTable<TData, TValue>({
             <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
             <Input
               placeholder={searchPlaceholder}
-              value={(table.getColumn(searchColumn)?.getFilterValue() as string) ?? ""}
-              onChange={(event) => table.getColumn(searchColumn)?.setFilterValue(event.target.value)}
+              value={
+                (table.getColumn(searchColumn)?.getFilterValue() as string) ??
+                ""
+              }
+              onChange={(event) =>
+                table
+                  .getColumn(searchColumn)
+                  ?.setFilterValue(event.target.value)
+              }
               className="pl-9"
             />
           </div>
@@ -76,11 +96,13 @@ export function DataTable<TData, TValue>({
             <Select
               value={`${table.getState().pagination.pageSize}`}
               onValueChange={(value) => {
-                table.setPageSize(Number(value))
+                table.setPageSize(Number(value));
               }}
             >
-              <SelectTrigger className="h-10 w-[100px]">
-                <SelectValue placeholder={table.getState().pagination.pageSize} />
+              <SelectTrigger className="h-10 w-full">
+                <SelectValue
+                  placeholder={table.getState().pagination.pageSize}
+                />
               </SelectTrigger>
               <SelectContent>
                 {[5, 10, 20, 30, 40, 50].map((pageSize) => (
@@ -93,7 +115,7 @@ export function DataTable<TData, TValue>({
           </div>
         </div>
       )}
-      <div className="table-responsive rounded-xl border-none bg-white shadow-lg dark:bg-background">
+      {/* <div className="table-responsive rounded-xl border-none bg-white shadow-lg dark:bg-background">
         <Table>
           <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (
@@ -132,13 +154,81 @@ export function DataTable<TData, TValue>({
             )}
           </TableBody>
         </Table>
-      </div>
+      </div> */}
+
+
+        <div className="rounded-xl border-none bg-white shadow-lg dark:bg-background w-full">
+          <div className="overflow-x-auto">
+            <Table>
+              <TableHeader>
+                {table.getHeaderGroups().map((headerGroup) => (
+                  <TableRow
+                    key={headerGroup.id}
+                    className="border-b bg-muted/50 hover:bg-muted/50"
+                  >
+                    {headerGroup.headers.map((header) => {
+                      return (
+                        <TableHead
+                          key={header.id}
+                          className="py-3 text-foreground"
+                        >
+                          {header.isPlaceholder
+                            ? null
+                            : flexRender(
+                                header.column.columnDef.header,
+                                header.getContext()
+                              )}
+                        </TableHead>
+                      );
+                    })}
+                  </TableRow>
+                ))}
+              </TableHeader>
+              <TableBody>
+                {table.getRowModel().rows?.length ? (
+                  table.getRowModel().rows.map((row) => (
+                    <TableRow
+                      key={row.id}
+                      data-state={row.getIsSelected() && "selected"}
+                      className="border-b transition-colors hover:bg-muted/30"
+                    >
+                      {row.getVisibleCells().map((cell) => (
+                        <TableCell key={cell.id} className="py-3">
+                          {flexRender(
+                            cell.column.columnDef.cell,
+                            cell.getContext()
+                          )}
+                        </TableCell>
+                      ))}
+                    </TableRow>
+                  ))
+                ) : (
+                  <TableRow>
+                    <TableCell
+                      colSpan={columns.length}
+                      className="h-24 text-center"
+                    >
+                      No results found.
+                    </TableCell>
+                  </TableRow>
+                )}
+              </TableBody>
+            </Table>
+          </div>
+        </div>
+
+
       <div className="flex flex-col items-center justify-between gap-4 sm:flex-row">
         <div className="text-sm text-muted-foreground">
-          Showing {table.getState().pagination.pageIndex * table.getState().pagination.pageSize + 1} to{" "}
+          Showing{" "}
+          {table.getState().pagination.pageIndex *
+            table.getState().pagination.pageSize +
+            1}{" "}
+          to{" "}
           {Math.min(
-            (table.getState().pagination.pageIndex + 1) * table.getState().pagination.pageSize,
-            table.getFilteredRowModel().rows.length,
+            (table.getState().pagination.pageIndex + 1) *
+              table.getState().pagination.pageSize,
+            table.getFilteredRowModel().rows.length
           )}{" "}
           of {table.getFilteredRowModel().rows.length} entries
         </div>
@@ -156,7 +246,11 @@ export function DataTable<TData, TValue>({
             {Array.from({ length: table.getPageCount() }, (_, i) => (
               <Button
                 key={i}
-                variant={i === table.getState().pagination.pageIndex ? "default" : "outline"}
+                variant={
+                  i === table.getState().pagination.pageIndex
+                    ? "default"
+                    : "outline"
+                }
                 size="icon"
                 className="h-8 w-8 rounded-lg"
                 onClick={() => table.setPageIndex(i)}
@@ -165,7 +259,10 @@ export function DataTable<TData, TValue>({
               </Button>
             )).slice(
               Math.max(0, table.getState().pagination.pageIndex - 1),
-              Math.min(table.getPageCount(), table.getState().pagination.pageIndex + 4),
+              Math.min(
+                table.getPageCount(),
+                table.getState().pagination.pageIndex + 4
+              )
             )}
           </div>
           <Button
@@ -180,5 +277,5 @@ export function DataTable<TData, TValue>({
         </div>
       </div>
     </motion.div>
-  )
+  );
 }

@@ -148,10 +148,10 @@ export function UserForm({ user }: UserFormProps) {
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
           <Tabs defaultValue="general" className="w-full">
             <TabsList className="grid w-full grid-cols-2 rounded-lg">
-              <TabsTrigger value="general" className="rounded-md">
+              <TabsTrigger value="general" className="rounded-md below-320:text-[11px]">
                 General Information
               </TabsTrigger>
-              <TabsTrigger value="security" className="rounded-md">
+              <TabsTrigger value="security" className="rounded-md below-320:text-[11px]">
                 Security
               </TabsTrigger>
             </TabsList>

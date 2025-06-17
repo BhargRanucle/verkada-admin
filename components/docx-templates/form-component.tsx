@@ -169,7 +169,7 @@ export default function FormComponent({ specification }: SpecificationProps) {
             <div className="grid grid-cols-1 lg:grid-cols-1 gap-4">
               {/* General Section */}
               <Card className="border-2 border-black/10 shadow-lg hover:shadow-xl transition-all duration-300 bg-gradient-to-tr from-white to-blue-50">
-                <CardContent className="pt-0 space-y-2">
+                <CardContent className="!pt-0 p-3 xl:p-6 lg:p-6 md:p-6 space-y-2">
                   <FieldArray name="generalSections">
                     {({ push, remove }) => (
                       <>
@@ -256,7 +256,7 @@ export default function FormComponent({ specification }: SpecificationProps) {
 
               {/* Product Section */}
               <Card className="border-2 border-black/10 shadow-lg hover:shadow-xl transition-all duration-300 bg-gradient-to-tr from-white to-blue-50">
-                <CardContent className="pt-0 space-y-2">
+                <CardContent className="!pt-0 p-3 xl:p-6 lg:p-6 md:p-6 space-y-2">
                   <FieldArray name="productSections">
                     {({ push, remove }) => (
                       <>
@@ -328,7 +328,7 @@ export default function FormComponent({ specification }: SpecificationProps) {
 
               {/* Execution Section */}
               <Card className="border-2 border-black/10 shadow-lg hover:shadow-xl transition-all duration-300 bg-gradient-to-tr from-white to-blue-50">
-                <CardContent className="pt-0 space-y-2">
+                <CardContent className="!pt-0 p-3 xl:p-6 lg:p-6 md:p-6 space-y-2">
                   <FieldArray name="executionSections">
                     {({ push, remove }) => (
                       <>

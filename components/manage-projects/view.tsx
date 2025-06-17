@@ -290,7 +290,7 @@ export default function ViewProject() {
                     General Information
                   </h4>
                   <div className="border-t-[1px] border-[black]"></div>
-                  <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-4">
+                  <div className="grid grid-cols-1 lg:grid-cols-4 md:grid-cols-2 sm:grid-cols-1 gap-4 mt-4">
                     <div className="bg-slate-50 dark:bg-slate-700/50 rounded-lg p-4">
                       <h3 className="text-xs font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wide">
                         Project Name
@@ -677,7 +677,7 @@ export default function ViewProject() {
 
                                 <TableCell className="py-3 px-4">
                                   <div className="flex items-center gap-2">
-                                    <div className="w-8 h-8 bg-gradient-to-br from-gray-800 to-black rounded-full flex items-center justify-center text-white text-xs font-bold shadow-md">
+                                    <div className="w-8 h-8 bg-gradient-to-br from-gray-800 to-black rounded-full flex items-center justify-center text-white text-xs font-bold shadow-md hidden lg:flex">
                                       {item.updatedBy
                                         .split(" ")
                                         .map((n) => n[0])
@@ -699,7 +699,7 @@ export default function ViewProject() {
                                     onClick={() =>
                                       handleDownload(item.id, item.updatedBy)
                                     }
-                                    className="bg-black hover:bg-gray-800 text-white transition-all duration-300 hover:scale-105 hover:shadow-lg group/btn"
+                                    className="bg-black h-[25px] lg:h-[35px] text-[10px] w-[90px] hover:bg-gray-800 text-white transition-all duration-300 hover:scale-105 hover:shadow-lg group/btn"
                                     size="sm"
                                   >
                                     <Download className="h-3 w-3 group-hover/btn:animate-bounce" />
@@ -710,7 +710,7 @@ export default function ViewProject() {
                                     onClick={() =>
                                       handleDownload(item.id, item.updatedBy)
                                     }
-                                    className="bg-black ms-2 hover:bg-gray-800 text-white transition-all duration-300 hover:scale-105 hover:shadow-lg group/btn"
+                                    className="bg-black h-[25px] lg:h-[35px] text-[10px] w-[90px] mt-1 ms-0 lg:ms-2 hover:bg-gray-800 text-white transition-all duration-300 hover:scale-105 hover:shadow-lg group/btn"
                                     size="sm"
                                   >
                                     <Download className="h-3 w-3 group-hover/btn:animate-bounce" />

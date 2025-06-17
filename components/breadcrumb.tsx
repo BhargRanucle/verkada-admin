@@ -115,11 +115,11 @@ export function Breadcrumb({ items }: BreadcrumbProps) {
         <div key={item.href} className="flex items-center">
           <ChevronRight className="h-4 w-4 mx-1 text-muted-foreground/50" />
           {index === items.length - 1 ? (
-            <span className="font-medium text-foreground px-2 py-1 rounded-md bg-muted/50">{item.label}</span>
+            <span className="font-medium text-foreground px-2 py-1 rounded-md bg-muted/50 below-320:text-[11px]">{item.label}</span>
           ) : (
             <Link
               href={item.href}
-              className="hover:text-foreground transition-colors px-2 py-1 rounded-md hover:bg-muted/50"
+              className="hover:text-foreground transition-colors px-2 py-1 rounded-md hover:bg-muted/50 below-320:text-[11px]"
             >
               {item.label}
             </Link>

@@ -328,7 +328,7 @@ export function ProductForm({ product }: ProductFormProps) {
           </div>
 
           {isVideoSurveillance && (
-            <div className="mt-2 grid gap-6 md:grid-cols-5">
+            <div className="mt-2 grid gap-6 lg:grid-cols-5 md:grid-cols-2">
               <FormField
                 control={form.control}
                 name="thirty_days_storage"

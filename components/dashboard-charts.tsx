@@ -20,8 +20,6 @@ import {
 import { motion } from "framer-motion"
 
 const lineData = [
-  { name: "Jan", value: 400 },
-  { name: "Feb", value: 300 },
   { name: "Mar", value: 500 },
   { name: "Apr", value: 280 },
   { name: "May", value: 590 },
