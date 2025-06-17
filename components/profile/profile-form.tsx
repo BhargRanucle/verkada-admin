@@ -268,7 +268,7 @@ export function ProfileForm() {
                     </div>
                   </div>
 
-                  <div className="grid gap-6 md:grid-cols-3">
+                  <div className="grid gap-6 lg:grid-cols-3">
                     <FormField
                       control={profileForm.control}
                       name="name"
@@ -388,7 +388,7 @@ export function ProfileForm() {
                     )}
                   />
 
-                  <div className="grid gap-6 md:grid-cols-2">
+                  <div className="grid gap-6 lg:grid-cols-2">
                     <FormField
                       control={passwordForm.control}
                       name="newPassword"

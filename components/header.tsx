@@ -41,14 +41,14 @@ export function Header() {
           />
         </div> */}
 
-        <Button
+        {/* <Button
           variant="ghost"
           size="icon"
           className="relative rounded-full bg-muted hover:bg-muted/80 md:hidden"
           aria-label="Search"
         >
           <Search className="h-4 w-4" />
-        </Button>
+        </Button> */}
 
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
@@ -139,7 +139,7 @@ export function Header() {
               </Avatar>
               <div className="text-center">
                 <div className="font-medium">Admin User</div>
-                <div className="text-xs text-muted-foreground">admin@example.com</div>
+                <div className="text-xs text-muted-foreground">admin@verkada.com</div>
               </div>
             </div>
             <DropdownMenuItem asChild>

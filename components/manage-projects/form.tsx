@@ -282,7 +282,7 @@ export default function GeneralInformationForm() {
                           General Information
                         </h4>
                         <div className="border-t-[1px] border-[black]"></div>
-                        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-3">
+                        <div className="grid grid-cols-1 lg:grid-cols-4 md:grid-cols-2 sm:grid-cols-1 gap-4 mt-3">
                           <div className="space-y-1.5">
                             <Label
                               htmlFor="projectName"
@@ -622,7 +622,7 @@ export default function GeneralInformationForm() {
                           <h3 className="text-base font-semibold text-slate-800 dark:text-slate-200 mb-3">
                             Select System Monitoring License
                           </h3>
-                          <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-2">
+                          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-2">
                             <FieldArray name="system_monitoring">
                               {() => (
                                 <>
@@ -697,7 +697,7 @@ export default function GeneralInformationForm() {
                           <h3 className="text-base font-semibold text-slate-800 dark:text-slate-200 mb-3">
                             Indoor Dome Products
                           </h3>
-                          <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-2">
+                          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-2">
                             <FieldArray name="indoor_dome_products">
                               {() => (
                                 <>
@@ -773,7 +773,7 @@ export default function GeneralInformationForm() {
                           <h3 className="text-base font-semibold text-slate-800 dark:text-slate-200 mb-3">
                             Outdoor Dome Products
                           </h3>
-                          <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-2">
+                          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-2">
                             <FieldArray name="outdoor_dome_products">
                               {() => (
                                 <>
@@ -849,7 +849,7 @@ export default function GeneralInformationForm() {
                           <h3 className="text-base font-semibold text-slate-800 dark:text-slate-200 mb-3">
                             Fips-Validated Cameras
                           </h3>
-                          <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-2">
+                          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-2">
                             <FieldArray name="fips_validated_cameras">
                               {() => (
                                 <>
