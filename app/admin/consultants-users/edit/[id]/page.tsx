@@ -5,8 +5,8 @@ import { Breadcrumb } from "@/components/breadcrumb";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Edit Consultant User",
-  description: "Edit Consultant User",
+  title: "Edit Consultants User",
+  description: "Edit Consultants User",
   generator: "verkada",
 };
 
@@ -28,14 +28,14 @@ export default async function EditUserPage({
     createdAt: "2023-01-15T09:24:45",
   };
   const breadcrumbs = [
-    { label: "Consultant Users", href: "/admin/consultants-users" },
-    { label: "Edit Consultant User", href: "#" },
+    { label: "Consultants Users", href: "/admin/consultants-users" },
+    { label: "Edit Consultants User", href: "#" },
   ];
 
   return (
     <div className="space-y-6">
       <Breadcrumb items={breadcrumbs} />
-      <PageTitle title="Edit Consultant User" />
+      <PageTitle title="Edit Consultants User" />
       <div className="rounded-xl border-none bg-white p-6 shadow-none dark:bg-background [box-shadow:0_8px_34px_rgba(0,0,0,0.1)]">
         <UserForm user={data} />
       </div>

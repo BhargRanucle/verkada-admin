@@ -5,21 +5,21 @@ import { Breadcrumb } from "@/components/breadcrumb";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Consultant Users",
-  description: "Consultant Users",
+  title: "Consultants Users",
+  description: "Consultants Users",
   generator: "verkada",
 };
 
 export default function UsersPage() {
   const breadcrumbs = [
-    { label: "Consultant Users", href: "/admin/consultants-users" },
+    { label: "Consultants Users", href: "/admin/consultants-users" },
   ];
   return (
     <div className="space-y-6">
       <Breadcrumb items={breadcrumbs} />
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <PageTitle
-          title="Consultant Users"
+          title="Consultants Users"
         />
         {/* <CreateButton href="/admin/admin-users/create" label="Add User" /> */}
       </div>

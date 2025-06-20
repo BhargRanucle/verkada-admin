@@ -64,7 +64,7 @@ const navItems = [
         icon: ShieldCheck,
       },
       {
-        title: "Consultant Users",
+        title: "Consultants Users",
         href: "/admin/consultants-users",
         icon: User,
       },

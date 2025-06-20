@@ -42,6 +42,7 @@ const data: Projects[] = [
     id: "1",
     project_name: "Video Surveillance by Verkada",
     consultant_name: "Bhart Dan Gadhvi",
+    company_name: "Ranucle",
     createdAt: "2023-01-15T09:24:45",
     updatedAt: "2025-06-02T09:24:45",
   },
@@ -49,6 +50,7 @@ const data: Projects[] = [
     id: "2",
     project_name: "Access Control by Verkada",
     consultant_name: "Anand Patel",
+    company_name: "Verkada",
     createdAt: "2023-02-20T14:35:12",
     updatedAt: "2025-06-02T09:24:45",
   },
@@ -56,6 +58,7 @@ const data: Projects[] = [
     id: "3",
     project_name: "Intercom Entry by Verkada",
     consultant_name: "Priti Shah",
+    company_name: "Ranucle",
     createdAt: "2023-03-10T11:12:30",
     updatedAt: "2025-06-02T09:24:45",
   },
@@ -63,6 +66,7 @@ const data: Projects[] = [
     id: "4",
     project_name: "Video Surveillance 2 by Verkada",
     consultant_name: "Jaymin Suthar",
+    company_name: "Verkada",
     createdAt: "2023-04-05T16:48:22",
     updatedAt: "2025-06-02T09:24:45",
   },
@@ -70,6 +74,7 @@ const data: Projects[] = [
     id: "5",
     project_name: "Intrusion Detection by Verkada",
     consultant_name: "Saumil Gohel",
+    company_name: "Verkada",
     createdAt: "2023-05-18T08:56:10",
     updatedAt: "2025-06-02T09:24:45",
   },
@@ -77,6 +82,7 @@ const data: Projects[] = [
     id: "6",
     project_name: "Access Control Badges",
     consultant_name: "Suraj Pandey",
+    company_name: "Ranucle",
     createdAt: "2023-06-22T13:15:45",
     updatedAt: "2025-06-02T09:24:45",
   },
@@ -86,6 +92,7 @@ export type Projects = {
   id: string;
   project_name: string;
   consultant_name?: string;
+  company_name?: string;
   createdAt: string;
   updatedAt: string;
 };
@@ -105,34 +112,11 @@ export function Table() {
   };
 
   const columns: ColumnDef<Projects>[] = [
-    // {
-    //   id: "select",
-    //   header: ({ table }) => (
-    //     <Checkbox
-    //       checked={
-    //         table.getIsAllPageRowsSelected() ||
-    //         (table.getIsSomePageRowsSelected() && "indeterminate")
-    //       }
-    //       onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
-    //       aria-label="Select all"
-    //     />
-    //   ),
-    //   cell: ({ row }) => (
-    //     <Checkbox
-    //       checked={row.getIsSelected()}
-    //       onCheckedChange={(value) => row.toggleSelected(!!value)}
-    //       aria-label="Select row"
-    //     />
-    //   ),
-    //   enableSorting: false,
-    //   enableHiding: false,
-    // },
     {
       accessorKey: "project_name",
       header: ({ column }) => {
         return (
           <div
-            // variant="ghost"
             className="flex items-center cursor-pointer"
             onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
           >
@@ -154,7 +138,6 @@ export function Table() {
       header: ({ column }) => {
         return (
           <div
-            // variant="ghost"
             className="flex items-center cursor-pointer"
             onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
           >
@@ -172,11 +155,31 @@ export function Table() {
       },
     },
     {
+      accessorKey: "company_name",
+      header: ({ column }) => {
+        return (
+          <div
+            className="flex items-center cursor-pointer"
+            onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+          >
+            Company Name
+            <ArrowUpDown className="ml-3 h-4 w-4" />
+          </div>
+        );
+      },
+      cell: ({ row }) => {
+        return (
+          <div className="flex items-center gap-2">
+            <div className="font-medium">{row.original.company_name}</div>
+          </div>
+        );
+      },
+    },
+    {
       accessorKey: "createdAt",
       header: ({ column }) => {
         return (
           <div
-            // variant="ghost"
             className="flex items-center cursor-pointer"
             onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
           >
@@ -207,31 +210,6 @@ export function Table() {
         return new Date(row.original.updatedAt).toLocaleDateString();
       },
     },
-    // {
-    //   id: "downloads",
-    //   header: ({ column }) => {
-    //     return <div>Downloads</div>;
-    //   },
-    //   cell: ({ row }) => {
-    //     const data = row.original;
-    //     return (
-    //       <div className="flex items-center space-x-2">
-    //         <div className="rounded-[12px] text-[11px] p-1 px-2 bg-[#e2e2e2] hover:bg-[#c1c1c1] text-[#000000] flex items-center cursor-pointer">
-    //           <Download className="h-4 w-4 me-1" />
-    //           <span>Docx</span>
-    //         </div>
-
-    //         <div className="rounded-[12px] text-[11px] ms-2 p-1 px-2 bg-[#e2e2e2] hover:bg-[#c1c1c1] text-[#000000] flex items-center cursor-pointer">
-    //           <Download className="h-4 w-4 me-1" />
-    //           <span>Pdf</span>
-    //         </div>
-
-    //         {/* <img src="/pdf.png" width={30} className="cursor-pointer" />
-    //         <img src="/docx.png" width={30} className="cursor-pointer" /> */}
-    //       </div>
-    //     );
-    //   },
-    // },
     {
       id: "actions",
       header: ({ column }) => {
@@ -263,8 +241,6 @@ export function Table() {
             >
               <Eye className="h-4 w-4 text-blue-600" />
             </Link>
-
-            
           </div>
         );
       },
