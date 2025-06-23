@@ -162,7 +162,7 @@ export function Table() {
             className="flex items-center cursor-pointer"
             onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
           >
-            Company Name
+            Consultant Company
             <ArrowUpDown className="ml-3 h-4 w-4" />
           </div>
         );
