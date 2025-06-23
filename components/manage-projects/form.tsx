@@ -49,9 +49,16 @@ import {
 } from "@/components/ui/select";
 
 const GeneralInformationSchema = Yup.object().shape({
-  projectName: Yup.string().required("Project name is required"),
-  consultantName: Yup.string().required("Consultant name is required"),
+  first_name: Yup.string().required("First name is required"),
+  last_name: Yup.string().required("Last name is required"),
   company_name: Yup.string().required("Company name is required"),
+  email: Yup.string()
+    .email("Invalid email address")
+    .required("Email is required"),
+  phone_number: Yup.string().required("Phone number is required"),
+  project_name: Yup.string().required("Project name is required"),
+  end_customer_company: Yup.string().required("End customer company is required"),
+  projectName: Yup.string().required("Project name is required"),
   issuanceDescription: Yup.string().required(
     "Issuance description is required"
   ),
@@ -103,10 +110,40 @@ const GeneralInformationSchema = Yup.object().shape({
   ),
 });
 
-// Initial form values
 const initialValues = {
+  rep: "Eric Talley",
+  first_name: "Richard",
+  last_name: "Brysacz",
+  project_role: "Engineer",
+  company_name: "WSP",
+  email: "rick.brysacz@wsp.com",
+  phone_number: "949-751-5819",
+  project_name: "3 building Civic Center Project",
+  project_description: "3 building Civic Center Project",
+  project_type: "Municipality / Government / Public Utility",
+  project_location: "Visalia, CA",
+  construction_type: "Ground Up",
+  project_stage: "Preconstruction / Bidding / Procurement (Stage 5)",
+  stage_four_completion_date: new Date("2024-11-27"),
+  construction_start_date: new Date("2025-06-10"),
+  construction_completion_date: new Date("2026-12-10"),
+  budget: "12000",
+  intrested_products: [
+    { name: "Cameras", description: "Cameras", checked: true },
+    { name: "Access Control", description: "Access Control", checked: true },
+    { name: "Sensors", description: "Sensors", checked: false },
+    { name: "Alarms", description: "Alarms", checked: true },
+    { name: "Workplace", description: "Workplace", checked: false },
+    { name: "Intercom", description: "Intercom", checked: true },
+  ],
+  end_customer_company: "City of Visalia",
+  end_customer_contact: "",
+  architect: "Darden Architects",
+  mep_engineer: "WSP",
+  security_consultant: "Rick Brysacz",
+  property_management_company: "Griffin Structures",
+  general_contractor: "",
   projectName: "Video Surveillance",
-  company_name: "Ranucle",
   consultantName: "Bhart Dan Gadhvi",
   issuanceDescription: "Issuance Description",
   issuanceDate: new Date("2025-05-15"),
@@ -285,86 +322,907 @@ export default function GeneralInformationForm() {
                     <Form className="space-y-4">
                       <div>
                         <h4 className="my-1 mt-4 text-black text-[20px] font-semibold">
-                          General - Part 1
+                          Project Details
                         </h4>
                         <div className="border-t-[1px] border-[black]"></div>
-                        <div className="grid grid-cols-1 lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-1 gap-4 mt-3">
-                          <div className="space-y-1.5">
-                            <Label
-                              htmlFor="projectName"
-                              className="text-sm font-medium text-slate-700 dark:text-slate-300"
-                            >
-                              Project Name *
-                            </Label>
-                            <Field
-                              as={Input}
-                              id="projectName"
-                              name="projectName"
-                              className={cn(
-                                " dark:bg-slate-700 border-slate-200 dark:border-slate-600 focus:border-slate-400 dark:focus:border-slate-400",
-                                errors.projectName && touched.projectName
-                                  ? ""
-                                  : ""
-                              )}
-                            />
-                            {errors.projectName && touched.projectName && (
-                              <p className="text-red-500 text-xs">
-                                {errors.projectName}
-                              </p>
-                            )}
-                          </div>
-
-                          {/* <div className="space-y-1.5">
-                            <Label
-                              htmlFor="consultantName"
-                              className="text-sm font-medium text-slate-700 dark:text-slate-300"
-                            >
-                              Consultant Name *
-                            </Label>
-                            <Field
-                              as={Input}
-                              id="consultantName"
-                              name="consultantName"
-                              className={cn(
-                                " dark:bg-slate-700 border-slate-200 dark:border-slate-600 focus:border-slate-400 dark:focus:border-slate-400",
-                                errors.consultantName && touched.consultantName
-                                  ? ""
-                                  : ""
-                              )}
-                            />
-                            {errors.consultantName &&
-                              touched.consultantName && (
+                        <div className="bg-slate-50 dark:bg-slate-700/50 rounded-lg p-4 space-y-3 mt-3">
+                          <h3 className="text-base font-semibold text-slate-800 dark:text-slate-200">
+                            Lead Information
+                          </h3>
+                          <div className="border-t-[1px] border-[#c2c2c2] mx-[-15px]"></div>
+                          <div className="grid grid-cols-1 lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-1 gap-4 mt-3">
+                            <div className="space-y-1.5">
+                              <Label
+                                htmlFor="rep"
+                                className="text-sm font-medium text-slate-700 dark:text-slate-300"
+                              >
+                                A&E Rep:
+                              </Label>
+                              <Select
+                                onValueChange={(value) =>
+                                  setFieldValue("rep", value)
+                                }
+                                value={values.rep}
+                              >
+                                <SelectTrigger className="rounded-lg">
+                                  <SelectValue placeholder="Select a Rep" />
+                                </SelectTrigger>
+                                <SelectContent>
+                                  <SelectItem value="Dan Bettencourt">
+                                    Dan Bettencourt
+                                  </SelectItem>
+                                  <SelectItem value="CJ Corry">
+                                    CJ Corry
+                                  </SelectItem>
+                                  <SelectItem value="Eric Talley">
+                                    Eric Talley
+                                  </SelectItem>
+                                  <SelectItem value="Ashley Ott">
+                                    Ashley Ott
+                                  </SelectItem>
+                                  <SelectItem value="Miles Anderson">
+                                    Miles Anderson
+                                  </SelectItem>
+                                  <SelectItem value="Chad Cooper">
+                                    Chad Cooper
+                                  </SelectItem>
+                                </SelectContent>
+                              </Select>
+                              {errors.rep && touched.rep && (
                                 <p className="text-red-500 text-xs">
-                                  {errors.consultantName}
+                                  {errors.rep}
                                 </p>
                               )}
-                          </div>
+                            </div>
 
-                           <div className="space-y-1.5">
-                            <Label
-                              htmlFor="company_name"
-                              className="text-sm font-medium text-slate-700 dark:text-slate-300"
-                            >
-                              Company Name *
-                            </Label>
-                            <Field
-                              as={Input}
-                              id="company_name"
-                              name="company_name"
-                              className={cn(
-                                " dark:bg-slate-700 border-slate-200 dark:border-slate-600 focus:border-slate-400 dark:focus:border-slate-400",
-                                errors.company_name && touched.company_name
-                                  ? ""
-                                  : ""
+                            <div className="space-y-1.5">
+                              <Label
+                                htmlFor="first_name"
+                                className="text-sm font-medium text-slate-700 dark:text-slate-300"
+                              >
+                                First Name *
+                              </Label>
+                              <Field
+                                as={Input}
+                                id="first_name"
+                                name="first_name"
+                                className={cn(
+                                  " dark:bg-slate-700 border-slate-200 dark:border-slate-600 focus:border-slate-400 dark:focus:border-slate-400",
+                                  errors.first_name && touched.first_name
+                                    ? ""
+                                    : ""
+                                )}
+                              />
+                              {errors.first_name && touched.first_name && (
+                                <p className="text-red-500 text-xs">
+                                  {errors.first_name}
+                                </p>
                               )}
-                            />
-                            {errors.company_name &&
-                              touched.company_name && (
+                            </div>
+
+                            <div className="space-y-1.5">
+                              <Label
+                                htmlFor="last_name"
+                                className="text-sm font-medium text-slate-700 dark:text-slate-300"
+                              >
+                                Last Name *
+                              </Label>
+                              <Field
+                                as={Input}
+                                id="last_name"
+                                name="last_name"
+                                className={cn(
+                                  " dark:bg-slate-700 border-slate-200 dark:border-slate-600 focus:border-slate-400 dark:focus:border-slate-400",
+                                  errors.last_name && touched.last_name
+                                    ? ""
+                                    : ""
+                                )}
+                              />
+                              {errors.last_name && touched.last_name && (
+                                <p className="text-red-500 text-xs">
+                                  {errors.last_name}
+                                </p>
+                              )}
+                            </div>
+
+                            <div className="space-y-1.5">
+                              <Label
+                                htmlFor="project_role"
+                                className="text-sm font-medium text-slate-700 dark:text-slate-300"
+                              >
+                                Title & Role in the Project
+                              </Label>
+                              <Field
+                                as={Input}
+                                id="project_role"
+                                name="project_role"
+                                className={cn(
+                                  " dark:bg-slate-700 border-slate-200 dark:border-slate-600 focus:border-slate-400 dark:focus:border-slate-400",
+                                  errors.project_role && touched.project_role
+                                    ? ""
+                                    : ""
+                                )}
+                              />
+                              {errors.project_role && touched.project_role && (
+                                <p className="text-red-500 text-xs">
+                                  {errors.project_role}
+                                </p>
+                              )}
+                            </div>
+
+                            <div className="space-y-1.5">
+                              <Label
+                                htmlFor="company_name"
+                                className="text-sm font-medium text-slate-700 dark:text-slate-300"
+                              >
+                                Company *
+                              </Label>
+                              <Field
+                                as={Input}
+                                id="company_name"
+                                name="company_name"
+                                className={cn(
+                                  " dark:bg-slate-700 border-slate-200 dark:border-slate-600 focus:border-slate-400 dark:focus:border-slate-400",
+                                  errors.company_name && touched.company_name
+                                    ? ""
+                                    : ""
+                                )}
+                              />
+                              {errors.company_name && touched.company_name && (
                                 <p className="text-red-500 text-xs">
                                   {errors.company_name}
                                 </p>
                               )}
-                          </div> */}
+                            </div>
+
+                            <div className="space-y-1.5">
+                              <Label
+                                htmlFor="email"
+                                className="text-sm font-medium text-slate-700 dark:text-slate-300"
+                              >
+                                Email *
+                              </Label>
+                              <Field
+                                as={Input}
+                                id="email"
+                                name="email"
+                                className={cn(
+                                  " dark:bg-slate-700 border-slate-200 dark:border-slate-600 focus:border-slate-400 dark:focus:border-slate-400",
+                                  errors.email && touched.email ? "" : ""
+                                )}
+                              />
+                              {errors.email && touched.email && (
+                                <p className="text-red-500 text-xs">
+                                  {errors.email}
+                                </p>
+                              )}
+                            </div>
+
+                            <div className="space-y-1.5">
+                              <Label
+                                htmlFor="phone_number"
+                                className="text-sm font-medium text-slate-700 dark:text-slate-300"
+                              >
+                                Phone Number *
+                              </Label>
+                              <Field
+                                as={Input}
+                                id="phone_number"
+                                name="phone_number"
+                                className={cn(
+                                  " dark:bg-slate-700 border-slate-200 dark:border-slate-600 focus:border-slate-400 dark:focus:border-slate-400",
+                                  errors.phone_number && touched.phone_number
+                                    ? ""
+                                    : ""
+                                )}
+                              />
+                              {errors.phone_number && touched.phone_number && (
+                                <p className="text-red-500 text-xs">
+                                  {errors.phone_number}
+                                </p>
+                              )}
+                            </div>
+                          </div>
+                        </div>
+
+                        <div className="bg-slate-50 dark:bg-slate-700/50 rounded-lg p-4 space-y-3 mt-3">
+                          <h3 className="text-base font-semibold text-slate-800 dark:text-slate-200">
+                            Project Information
+                          </h3>
+                          <div className="border-t-[1px] border-[#c2c2c2] mx-[-15px]"></div>
+                          <div className="grid grid-cols-1 lg:grid-cols-2 md:grid-cols-2 sm:grid-cols-1 gap-4 mt-3">
+                            <div className="space-y-1.5">
+                              <Label
+                                htmlFor="project_name"
+                                className="text-sm font-medium text-slate-700 dark:text-slate-300"
+                              >
+                                Project Name *
+                              </Label>
+                              <Field
+                                as={Input}
+                                id="project_name"
+                                name="project_name"
+                                className={cn(
+                                  " dark:bg-slate-700 border-slate-200 dark:border-slate-600 focus:border-slate-400 dark:focus:border-slate-400",
+                                  errors.project_name && touched.project_name
+                                    ? ""
+                                    : ""
+                                )}
+                              />
+                              {errors.project_name && touched.project_name && (
+                                <p className="text-red-500 text-xs">
+                                  {errors.project_name}
+                                </p>
+                              )}
+                            </div>
+
+                            <div className="space-y-1.5">
+                              <Label
+                                htmlFor="project_description"
+                                className="text-sm font-medium text-slate-700 dark:text-slate-300"
+                              >
+                                Project Description
+                              </Label>
+                              <Field
+                                as={Input}
+                                id="project_description"
+                                name="project_description"
+                                className={cn(
+                                  " dark:bg-slate-700 border-slate-200 dark:border-slate-600 focus:border-slate-400 dark:focus:border-slate-400",
+                                  errors.project_description &&
+                                    touched.project_description
+                                    ? ""
+                                    : ""
+                                )}
+                              />
+                              {errors.project_description &&
+                                touched.project_description && (
+                                  <p className="text-red-500 text-xs">
+                                    {errors.project_description}
+                                  </p>
+                                )}
+                            </div>
+
+                            <div className="space-y-1.5">
+                              <Label
+                                htmlFor="project_type"
+                                className="text-sm font-medium text-slate-700 dark:text-slate-300"
+                              >
+                                Project Type
+                              </Label>
+                              <Select
+                                onValueChange={(value) =>
+                                  setFieldValue("project_type", value)
+                                }
+                                value={values.project_type}
+                              >
+                                <SelectTrigger className="rounded-lg">
+                                  <SelectValue placeholder="Select a Project Type" />
+                                </SelectTrigger>
+                                <SelectContent>
+                                  <SelectItem value="Education (K-12 or Higher Ed)">
+                                    {`Education (K-12 or Higher Ed)`}
+                                  </SelectItem>
+                                  <SelectItem value="Residential / Multi-family/ Senior Care/ Student Housing">
+                                    Residential / Multi-family/ Senior Care/
+                                    Student Housing
+                                  </SelectItem>
+                                  <SelectItem value="Mixed Use Commercial">
+                                    Mixed Use Commercial
+                                  </SelectItem>
+                                  <SelectItem value="Hospitality">
+                                    Hospitality
+                                  </SelectItem>
+                                  <SelectItem value="Industrial / Manufacturing">
+                                    Industrial / Manufacturing
+                                  </SelectItem>
+                                  <SelectItem value="Master Planned Community">
+                                    Master Planned Community
+                                  </SelectItem>
+                                  <SelectItem value="Healthcare / Biotech">
+                                    Healthcare / Biotech
+                                  </SelectItem>
+                                  <SelectItem value="Entertainment / Arts / Sports">
+                                    Entertainment / Arts / Sports
+                                  </SelectItem>
+                                  <SelectItem value="Municipality / Government / Public Utility">
+                                    Municipality / Government / Public Utility
+                                  </SelectItem>
+                                  <SelectItem value="Transportation / Aviation / Aerospace">
+                                    Transportation / Aviation / Aerospace
+                                  </SelectItem>
+                                </SelectContent>
+                              </Select>
+                              {errors.project_type && touched.project_type && (
+                                <p className="text-red-500 text-xs">
+                                  {errors.project_type}
+                                </p>
+                              )}
+                            </div>
+
+                            <div className="space-y-1.5">
+                              <Label
+                                htmlFor="project_location"
+                                className="text-sm font-medium text-slate-700 dark:text-slate-300"
+                              >
+                                Project Location (City, State/province,
+                                Country):
+                              </Label>
+                              <Field
+                                as={Input}
+                                id="project_location"
+                                name="project_location"
+                                className={cn(
+                                  " dark:bg-slate-700 border-slate-200 dark:border-slate-600 focus:border-slate-400 dark:focus:border-slate-400",
+                                  errors.project_location &&
+                                    touched.project_location
+                                    ? ""
+                                    : ""
+                                )}
+                              />
+                              {errors.project_location &&
+                                touched.project_location && (
+                                  <p className="text-red-500 text-xs">
+                                    {errors.project_location}
+                                  </p>
+                                )}
+                            </div>
+
+                            <div className="space-y-1.5">
+                              <Label
+                                htmlFor="construction_type"
+                                className="text-sm font-medium text-slate-700 dark:text-slate-300"
+                              >
+                                Construction Type
+                              </Label>
+                              <Select
+                                onValueChange={(value) =>
+                                  setFieldValue("construction_type", value)
+                                }
+                                value={values.construction_type}
+                              >
+                                <SelectTrigger className="rounded-lg">
+                                  <SelectValue placeholder="Select a Construction Type" />
+                                </SelectTrigger>
+                                <SelectContent>
+                                  <SelectItem value="Ground Up">
+                                    Ground Up
+                                  </SelectItem>
+                                  <SelectItem value="1st Generation Buildout">
+                                    1st Generation Buildout
+                                  </SelectItem>
+                                  <SelectItem value="2nd Generation Buildout">
+                                    2nd Generation Buildout
+                                  </SelectItem>
+                                  <SelectItem value="Other">Other</SelectItem>
+                                </SelectContent>
+                              </Select>
+                              {errors.construction_type &&
+                                touched.construction_type && (
+                                  <p className="text-red-500 text-xs">
+                                    {errors.construction_type}
+                                  </p>
+                                )}
+                            </div>
+
+                            <div className="space-y-1.5">
+                              <Label
+                                htmlFor="project_stage"
+                                className="text-sm font-medium text-slate-700 dark:text-slate-300"
+                              >
+                                What stage is the project in?:
+                              </Label>
+                              <Select
+                                onValueChange={(value) =>
+                                  setFieldValue("project_stage", value)
+                                }
+                                value={values.project_stage}
+                              >
+                                <SelectTrigger className="rounded-lg">
+                                  <SelectValue placeholder="Select a Project Stage" />
+                                </SelectTrigger>
+                                <SelectContent>
+                                  <SelectItem value="Programming / Planning (Stage 1)">
+                                    {`Programming / Planning (Stage 1)`}
+                                  </SelectItem>
+                                  <SelectItem value="Schematic Design (Stage 2)">
+                                    {`Schematic Design (Stage 2)`}
+                                  </SelectItem>
+                                  <SelectItem value="Design Development (Stage 3)">
+                                    {`Design Development (Stage 3)`}
+                                  </SelectItem>
+                                  <SelectItem value="Construction Documents (Stage 4)">
+                                    {`Construction Documents (Stage 4)`}
+                                  </SelectItem>
+                                  <SelectItem value="Permitting">
+                                    {`Permitting`}
+                                  </SelectItem>
+                                  <SelectItem value="Preconstruction / Bidding / Procurement (Stage 5)">
+                                    {`Preconstruction / Bidding / Procurement (Stage 5)`}
+                                  </SelectItem>
+                                  <SelectItem value="Core & Shell Construction">
+                                    {`Core & Shell Construction`}
+                                  </SelectItem>
+                                  <SelectItem value="Interior Buildout">
+                                    {`Interior Buildout`}
+                                  </SelectItem>
+                                </SelectContent>
+                              </Select>
+                              {errors.project_stage &&
+                                touched.project_stage && (
+                                  <p className="text-red-500 text-xs">
+                                    {errors.project_stage}
+                                  </p>
+                                )}
+                            </div>
+
+                            
+                          </div>
+
+                          <div className="grid grid-cols-1 lg:grid-cols-2 md:grid-cols-2 sm:grid-cols-1 gap-4 mt-3">
+                            <div className="space-y-1.5">
+                              <Label
+                                htmlFor="stage_four_completion_date"
+                                className="text-sm font-medium text-slate-700 dark:text-slate-300"
+                              >
+                                Construction Documents (Stage 4) Completion
+                                Date:
+                              </Label>
+                              <Popover>
+                                <PopoverTrigger asChild>
+                                  <Button
+                                    variant="outline"
+                                    className={cn(
+                                      "w-full justify-start text-left font-normal  dark:bg-slate-700 border-slate-200 dark:border-slate-600 hover:bg-slate-100 dark:hover:bg-slate-600",
+                                      !values.stage_four_completion_date &&
+                                        "text-muted-foreground",
+                                      errors.stage_four_completion_date &&
+                                        touched.stage_four_completion_date
+                                        ? ""
+                                        : ""
+                                    )}
+                                  >
+                                    <CalendarIcon className="mr-2 h-4 w-4" />
+                                    {values.stage_four_completion_date ? (
+                                      format(
+                                        values.stage_four_completion_date,
+                                        "PPP"
+                                      )
+                                    ) : (
+                                      <span>Pick a date</span>
+                                    )}
+                                  </Button>
+                                </PopoverTrigger>
+                                <PopoverContent className="w-auto p-0 bg-white dark:bg-slate-800 border-slate-200 dark:border-slate-700">
+                                  <Calendar
+                                    mode="single"
+                                    selected={
+                                      values.stage_four_completion_date as any
+                                    }
+                                    onSelect={(date) =>
+                                      setFieldValue(
+                                        "stage_four_completion_date",
+                                        date
+                                      )
+                                    }
+                                    initialFocus
+                                  />
+                                </PopoverContent>
+                              </Popover>
+                              {errors.stage_four_completion_date &&
+                                touched.stage_four_completion_date && (
+                                  <p className="text-red-500 text-xs">
+                                    {errors.stage_four_completion_date as any}
+                                  </p>
+                                )}
+                            </div>
+
+                            <div className="space-y-1.5">
+                              <Label
+                                htmlFor="construction_start_date"
+                                className="text-sm font-medium text-slate-700 dark:text-slate-300"
+                              >
+                                Construction Start Date (target):
+                              </Label>
+                              <Popover>
+                                <PopoverTrigger asChild>
+                                  <Button
+                                    variant="outline"
+                                    className={cn(
+                                      "w-full justify-start text-left font-normal  dark:bg-slate-700 border-slate-200 dark:border-slate-600 hover:bg-slate-100 dark:hover:bg-slate-600",
+                                      !values.construction_start_date &&
+                                        "text-muted-foreground",
+                                      errors.construction_start_date &&
+                                        touched.construction_start_date
+                                        ? ""
+                                        : ""
+                                    )}
+                                  >
+                                    <CalendarIcon className="mr-2 h-4 w-4" />
+                                    {values.construction_start_date ? (
+                                      format(
+                                        values.construction_start_date,
+                                        "PPP"
+                                      )
+                                    ) : (
+                                      <span>Pick a date</span>
+                                    )}
+                                  </Button>
+                                </PopoverTrigger>
+                                <PopoverContent className="w-auto p-0 bg-white dark:bg-slate-800 border-slate-200 dark:border-slate-700">
+                                  <Calendar
+                                    mode="single"
+                                    selected={
+                                      values.construction_start_date as any
+                                    }
+                                    onSelect={(date) =>
+                                      setFieldValue(
+                                        "construction_start_date",
+                                        date
+                                      )
+                                    }
+                                    initialFocus
+                                  />
+                                </PopoverContent>
+                              </Popover>
+                              {errors.construction_start_date &&
+                                touched.construction_start_date && (
+                                  <p className="text-red-500 text-xs">
+                                    {errors.construction_start_date as any}
+                                  </p>
+                                )}
+                            </div>
+
+                            <div className="space-y-1.5">
+                              <Label
+                                htmlFor="construction_completion_date"
+                                className="text-sm font-medium text-slate-700 dark:text-slate-300"
+                              >
+                                Construction Completion Date (target):
+                              </Label>
+                              <Popover>
+                                <PopoverTrigger asChild>
+                                  <Button
+                                    variant="outline"
+                                    className={cn(
+                                      "w-full justify-start text-left font-normal  dark:bg-slate-700 border-slate-200 dark:border-slate-600 hover:bg-slate-100 dark:hover:bg-slate-600",
+                                      !values.construction_completion_date &&
+                                        "text-muted-foreground",
+                                      errors.construction_completion_date &&
+                                        touched.construction_completion_date
+                                        ? ""
+                                        : ""
+                                    )}
+                                  >
+                                    <CalendarIcon className="mr-2 h-4 w-4" />
+                                    {values.construction_completion_date ? (
+                                      format(
+                                        values.construction_completion_date,
+                                        "PPP"
+                                      )
+                                    ) : (
+                                      <span>Pick a date</span>
+                                    )}
+                                  </Button>
+                                </PopoverTrigger>
+                                <PopoverContent className="w-auto p-0 bg-white dark:bg-slate-800 border-slate-200 dark:border-slate-700">
+                                  <Calendar
+                                    mode="single"
+                                    selected={
+                                      values.construction_completion_date as any
+                                    }
+                                    onSelect={(date) =>
+                                      setFieldValue(
+                                        "construction_completion_date",
+                                        date
+                                      )
+                                    }
+                                    initialFocus
+                                  />
+                                </PopoverContent>
+                              </Popover>
+                              {errors.construction_completion_date &&
+                                touched.construction_completion_date && (
+                                  <p className="text-red-500 text-xs">
+                                    {errors.construction_completion_date as any}
+                                  </p>
+                                )}
+                            </div>
+
+                            <div className="space-y-1.5">
+                              <Label
+                                htmlFor="budget"
+                                className="text-sm font-medium text-slate-700 dark:text-slate-300"
+                              >
+                                Estimated Total Security Budget:
+                              </Label>
+                              <Field
+                                as={Input}
+                                id="budget"
+                                name="budget"
+                                className={cn(
+                                  "dark:bg-slate-700 border-slate-200 dark:border-slate-600 focus:border-slate-400 dark:focus:border-slate-400",
+                                  errors.budget && touched.budget ? "" : ""
+                                )}
+                              />
+                              {errors.budget && touched.budget && (
+                                <p className="text-red-500 text-xs">
+                                  {errors.budget}
+                                </p>
+                              )}
+                            </div>
+                          </div>
+
+                          <div className="grid grid-cols-12 gap-4 mt-3">
+                            
+                            <div className="col-span-12 lg:col-span-12 space-y-1.5">
+                              <Label
+                                htmlFor="budget"
+                                className="text-sm font-medium text-slate-700 dark:text-slate-300"
+                              >
+                                What products are you interested in including:
+                              </Label>
+
+                              <div className="grid grid-cols-1 md:grid-cols-6 lg:grid-cols-6 gap-2">
+                            <FieldArray name="intrested_products">
+                              {() => (
+                                <>
+                                  {values.intrested_products.map(
+                                    (intrested_product, index) => {
+                                      const id = `intrested_product-${index}`;
+                                      const isChecked =
+                                        values.intrested_products[index].checked;
+
+                                      return (
+                                        <div
+                                          key={index}
+                                          onClick={(e) => {
+                                            e.stopPropagation();
+                                            setFieldValue(
+                                              `intrested_products[${index}].checked`,
+                                              !isChecked
+                                            );
+                                          }}
+                                          className="flex items-center space-x-2 p-2 bg-white dark:bg-slate-800 rounded-md border border-slate-200 dark:border-slate-600 cursor-pointer"
+                                        >
+                                          <input
+                                            type="checkbox"
+                                            checked={isChecked}
+                                            onChange={() => {}}
+                                            className="hidden"
+                                          />
+                                          <div className="flex items-center">
+                                            <div
+                                              className={`w-4 h-4 border mr-0 flex items-center justify-center ${
+                                                isChecked
+                                                  ? "bg-[black] border-[black]"
+                                                  : "border-gray-400 dark:border-gray-500"
+                                              }`}
+                                            >
+                                              {isChecked && (
+                                                <svg
+                                                  className="w-3 h-3 text-white"
+                                                  viewBox="0 0 24 24"
+                                                  fill="none"
+                                                >
+                                                  <path
+                                                    d="M5 13l4 4L19 7"
+                                                    stroke="currentColor"
+                                                    strokeWidth="2"
+                                                    strokeLinecap="round"
+                                                    strokeLinejoin="round"
+                                                  />
+                                                </svg>
+                                              )}
+                                            </div>
+                                          </div>
+                                          <label
+                                            htmlFor={id}
+                                            className="text-xs leading-tight cursor-pointer"
+                                          >
+                                            {intrested_product.description}
+                                          </label>
+                                        </div>
+                                      );
+                                    }
+                                  )}
+                                </>
+                              )}
+                            </FieldArray>
+                          </div>
+                            </div>
+                          </div>
+                        </div>
+
+                        <div className="bg-slate-50 dark:bg-slate-700/50 rounded-lg p-4 space-y-3 mt-3">
+                          <h3 className="text-base font-semibold text-slate-800 dark:text-slate-200">
+                            Project Team
+                          </h3>
+                          <div className="border-t-[1px] border-[#c2c2c2] mx-[-15px]"></div>
+                          <div className="grid grid-cols-1 lg:grid-cols-3 md:grid-cols-2 sm:grid-cols-1 gap-4 mt-3">
+                            <div className="space-y-1.5">
+                              <Label
+                                htmlFor="end_customer_company"
+                                className="text-sm font-medium text-slate-700 dark:text-slate-300"
+                              >
+                                End Customer Company * :
+                              </Label>
+                              <Field
+                                as={Input}
+                                id="end_customer_company"
+                                name="end_customer_company"
+                                className={cn(
+                                  " dark:bg-slate-700 border-slate-200 dark:border-slate-600 focus:border-slate-400 dark:focus:border-slate-400",
+                                  errors.end_customer_company && touched.end_customer_company
+                                    ? ""
+                                    : ""
+                                )}
+                              />
+                              {errors.end_customer_company && touched.end_customer_company && (
+                                <p className="text-red-500 text-xs">
+                                  {errors.end_customer_company}
+                                </p>
+                              )}
+                            </div>
+                            
+                            <div className="space-y-1.5">
+                              <Label
+                                htmlFor="end_customer_contact"
+                                className="text-sm font-medium text-slate-700 dark:text-slate-300"
+                              >
+                                End Customer Contact:
+                              </Label>
+                              <Field
+                                as={Input}
+                                id="end_customer_contact"
+                                name="end_customer_contact"
+                                className={cn(
+                                  " dark:bg-slate-700 border-slate-200 dark:border-slate-600 focus:border-slate-400 dark:focus:border-slate-400",
+                                  errors.end_customer_contact && touched.end_customer_contact
+                                    ? ""
+                                    : ""
+                                )}
+                              />
+                              {errors.end_customer_contact && touched.end_customer_contact && (
+                                <p className="text-red-500 text-xs">
+                                  {errors.end_customer_contact}
+                                </p>
+                              )}
+                            </div>
+
+                            <div className="space-y-1.5">
+                              <Label
+                                htmlFor="architect"
+                                className="text-sm font-medium text-slate-700 dark:text-slate-300"
+                              >
+                                Architect:
+                              </Label>
+                              <Field
+                                as={Input}
+                                id="architect"
+                                name="architect"
+                                className={cn(
+                                  " dark:bg-slate-700 border-slate-200 dark:border-slate-600 focus:border-slate-400 dark:focus:border-slate-400",
+                                  errors.architect && touched.architect
+                                    ? ""
+                                    : ""
+                                )}
+                              />
+                              {errors.architect && touched.architect && (
+                                <p className="text-red-500 text-xs">
+                                  {errors.architect}
+                                </p>
+                              )}
+                            </div>
+
+                            <div className="space-y-1.5">
+                              <Label
+                                htmlFor="mep_engineer"
+                                className="text-sm font-medium text-slate-700 dark:text-slate-300"
+                              >
+                                MEP Engineer:
+                              </Label>
+                              <Field
+                                as={Input}
+                                id="mep_engineer"
+                                name="mep_engineer"
+                                className={cn(
+                                  " dark:bg-slate-700 border-slate-200 dark:border-slate-600 focus:border-slate-400 dark:focus:border-slate-400",
+                                  errors.mep_engineer && touched.mep_engineer
+                                    ? ""
+                                    : ""
+                                )}
+                              />
+                              {errors.mep_engineer && touched.mep_engineer && (
+                                <p className="text-red-500 text-xs">
+                                  {errors.mep_engineer}
+                                </p>
+                              )}
+                            </div>
+
+                            <div className="space-y-1.5">
+                              <Label
+                                htmlFor="security_consultant"
+                                className="text-sm font-medium text-slate-700 dark:text-slate-300"
+                              >
+                                Security / Technology Consultant:
+                              </Label>
+                              <Field
+                                as={Input}
+                                id="security_consultant"
+                                name="security_consultant"
+                                className={cn(
+                                  " dark:bg-slate-700 border-slate-200 dark:border-slate-600 focus:border-slate-400 dark:focus:border-slate-400",
+                                  errors.security_consultant && touched.security_consultant
+                                    ? ""
+                                    : ""
+                                )}
+                              />
+                              {errors.security_consultant && touched.security_consultant && (
+                                <p className="text-red-500 text-xs">
+                                  {errors.security_consultant}
+                                </p>
+                              )}
+                            </div>
+
+                            <div className="space-y-1.5">
+                              <Label
+                                htmlFor="property_management_company"
+                                className="text-sm font-medium text-slate-700 dark:text-slate-300"
+                              >
+                                Property Management Company:
+                              </Label>
+                              <Field
+                                as={Input}
+                                id="property_management_company"
+                                name="property_management_company"
+                                className={cn(
+                                  " dark:bg-slate-700 border-slate-200 dark:border-slate-600 focus:border-slate-400 dark:focus:border-slate-400",
+                                  errors.property_management_company && touched.property_management_company
+                                    ? ""
+                                    : ""
+                                )}
+                              />
+                              {errors.property_management_company && touched.property_management_company && (
+                                <p className="text-red-500 text-xs">
+                                  {errors.property_management_company}
+                                </p>
+                              )}
+                            </div>
+
+                            <div className="space-y-1.5">
+                              <Label
+                                htmlFor="general_contractor"
+                                className="text-sm font-medium text-slate-700 dark:text-slate-300"
+                              >
+                                General Contractor (if known):
+                              </Label>
+                              <Field
+                                as={Input}
+                                id="general_contractor"
+                                name="general_contractor"
+                                className={cn(
+                                  " dark:bg-slate-700 border-slate-200 dark:border-slate-600 focus:border-slate-400 dark:focus:border-slate-400",
+                                  errors.general_contractor && touched.general_contractor
+                                    ? ""
+                                    : ""
+                                )}
+                              />
+                              {errors.general_contractor && touched.general_contractor && (
+                                <p className="text-red-500 text-xs">
+                                  {errors.general_contractor}
+                                </p>
+                              )}
+                            </div>
+                          </div>  
+                        </div>
+                      </div>
+                      <div>
+                        <h4 className="my-1 mt-7 text-black text-[20px] font-semibold">
+                          General - Part 1
+                        </h4>
+                        <div className="border-t-[1px] border-[black]"></div>
+                        <div className="grid grid-cols-1 lg:grid-cols-2 md:grid-cols-2 sm:grid-cols-1 gap-4 mt-3">
 
                           <div className="space-y-1.5">
                             <Label
@@ -540,7 +1398,7 @@ export default function GeneralInformationForm() {
                           </div>
                         </div>
 
-                         {/* <div className="bg-slate-50 dark:bg-slate-700/50 rounded-lg p-4 space-y-3 mt-3">
+                        {/* <div className="bg-slate-50 dark:bg-slate-700/50 rounded-lg p-4 space-y-3 mt-3">
                           <h3 className="text-base font-semibold text-slate-800 dark:text-slate-200">
                             Submittals
                           </h3>
@@ -594,7 +1452,6 @@ export default function GeneralInformationForm() {
                             </Field>
                           </div>
                         </div> */}
-                       
                       </div>
 
                       <div>
@@ -984,7 +1841,7 @@ export default function GeneralInformationForm() {
                         </h4>
                         <div className="border-t-[1px] border-[black]"></div>
 
-                         <div className="bg-slate-50 dark:bg-slate-700/50 rounded-lg p-4 space-y-3 mt-4">
+                        <div className="bg-slate-50 dark:bg-slate-700/50 rounded-lg p-4 space-y-3 mt-4">
                           <div className="bg-white text-editor rounded-[17px]">
                             <Field name={`execution`} className="">
                               {({ field, form, meta }: any) => (
@@ -1007,8 +1864,6 @@ export default function GeneralInformationForm() {
                             </Field>
                           </div>
                         </div>
-
-                        
 
                         {/* <div className="bg-slate-50 dark:bg-slate-700/50 rounded-lg p-4 space-y-3 mt-4">
                           <h3 className="text-base font-semibold text-slate-800 dark:text-slate-200">
