@@ -6,13 +6,9 @@ import type { ColumnDef } from "@tanstack/react-table";
 import {
   ArrowUpDown,
   DivideSquare,
-  Download,
-  Eye,
-  History,
   MoreHorizontal,
   Pencil,
   Trash,
-  View,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
@@ -37,90 +33,144 @@ import {
 } from "@/components/ui/alert-dialog";
 import { deleteUser } from "@/lib/actions";
 
-const data: Projects[] = [
+const data: User[] = [
   {
     id: "1",
-    project_name: "Video Surveillance by Verkada",
-    consultant_name: "Bhart Dan Gadhvi",
+    name: "John Doe",
+    email: "john@example.com",
     company_name: "Ranucle",
+    status: "Active",
+    is_verified: true,
     createdAt: "2023-01-15T09:24:45",
-    updatedAt: "2025-06-02T09:24:45",
+    avatar: "/placeholder.svg",
   },
   {
     id: "2",
-    project_name: "Access Control by Verkada",
-    consultant_name: "Anand Patel",
+    name: "Jane Smith",
+    email: "jane@example.com",
     company_name: "Verkada",
+    status: "Active",
+    is_verified: false,
     createdAt: "2023-02-20T14:35:12",
-    updatedAt: "2025-06-02T09:24:45",
+    avatar: "/placeholder.svg",
   },
   {
     id: "3",
-    project_name: "Intercom Entry by Verkada",
-    consultant_name: "Priti Shah",
-    company_name: "Ranucle",
+    name: "Robert Johnson",
+    email: "robert@example.com",
+    company_name: "Verkada",
+    status: "Active",
+    is_verified: true,
     createdAt: "2023-03-10T11:12:30",
-    updatedAt: "2025-06-02T09:24:45",
+    avatar: "/placeholder.svg",
   },
   {
     id: "4",
-    project_name: "Video Surveillance 2 by Verkada",
-    consultant_name: "Jaymin Suthar",
-    company_name: "Verkada",
+    name: "Emily Davis",
+    email: "emily@example.com",
+    company_name: "Ranucle",
+    status: "Active",
+    is_verified: true,
     createdAt: "2023-04-05T16:48:22",
-    updatedAt: "2025-06-02T09:24:45",
+    avatar: "/placeholder.svg",
   },
   {
     id: "5",
-    project_name: "Intrusion Detection by Verkada",
-    consultant_name: "Saumil Gohel",
-    company_name: "Verkada",
+    name: "Michael Wilson",
+    email: "michael@example.com",
+    company_name: "Ranucle",
+    status: "Inactive",
+    is_verified: true,
     createdAt: "2023-05-18T08:56:10",
-    updatedAt: "2025-06-02T09:24:45",
+    avatar: "/placeholder.svg",
   },
   {
     id: "6",
-    project_name: "Access Control Badges",
-    consultant_name: "Suraj Pandey",
-    company_name: "Ranucle",
+    name: "Sarah Thompson",
+    email: "sarah@example.com",
+    company_name: "Verkada",
+    status: "Inactive",
+    is_verified: true,
     createdAt: "2023-06-22T13:15:45",
-    updatedAt: "2025-06-02T09:24:45",
+    avatar: "/placeholder.svg",
+  },
+  {
+    id: "7",
+    name: "David Brown",
+    email: "david@example.com",
+    company_name: "Verkada",
+    status: "Active",
+    is_verified: true,
+    createdAt: "2023-07-30T10:30:15",
+    avatar: "/placeholder.svg",
+  },
+  {
+    id: "8",
+    name: "Jennifer Martinez",
+    email: "jennifer@example.com",
+    status: "Active",
+    company_name: "Ranucle",
+    is_verified: true,
+    createdAt: "2023-08-12T15:22:33",
+    avatar: "/placeholder.svg",
+  },
+  {
+    id: "9",
+    name: "Christopher Lee",
+    email: "chris@example.com",
+    status: "Active",
+    company_name: "Verkada",
+    is_verified: true,
+    createdAt: "2023-09-05T09:10:20",
+    avatar: "/placeholder.svg",
+  },
+  {
+    id: "10",
+    name: "Amanda White",
+    email: "amanda@example.com",
+    status: "Active",
+    company_name: "Ranucle",
+    is_verified: true,
+    createdAt: "2023-10-18T14:05:50",
+    avatar: "/placeholder.svg",
   },
 ];
 
-export type Projects = {
+export type User = {
   id: string;
-  project_name: string;
-  consultant_name?: string;
-  company_name?: string;
+  name: string;
+  email: string;
+  is_verified: boolean;
+  company_name: string;
+  status: string;
+  phone?: string;
   createdAt: string;
-  updatedAt: string;
+  avatar: string;
 };
 
-export function Table() {
+export function UsersTable() {
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
-  const [userToDelete, setUserToDelete] = useState<Projects | null>(null);
+  const [userToDelete, setUserToDelete] = useState<User | null>(null);
 
   const handleDelete = async () => {
     if (userToDelete) {
-      // In a real app, this would call a server action to delete the user
       await deleteUser(userToDelete.id);
       setDeleteDialogOpen(false);
       setUserToDelete(null);
-      // You would typically refresh the data here
     }
   };
 
-  const columns: ColumnDef<Projects>[] = [
+  const columns: ColumnDef<User>[] = [
     {
-      accessorKey: "project_name",
+      accessorKey: "name",
       header: ({ column }) => {
         return (
           <div
+            // variant="ghost"
             className="flex items-center cursor-pointer"
             onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
           >
-            Project Name
+            Name
             <ArrowUpDown className="ml-3 h-4 w-4" />
           </div>
         );
@@ -128,28 +178,30 @@ export function Table() {
       cell: ({ row }) => {
         return (
           <div className="flex items-center gap-2">
-            <div className="font-medium">{row.original.project_name}</div>
+            <Avatar className="h-8 w-8 border-2 border-background">
+              <AvatarImage
+                src={row.original.avatar || "/placeholder.svg"}
+                alt={row.original.name}
+              />
+              <AvatarFallback className="bg-primary/10 text-primary">
+                {row.original.name.charAt(0)}
+              </AvatarFallback>
+            </Avatar>
+            <div className="font-medium">{row.original.name}</div>
           </div>
         );
       },
     },
     {
-      accessorKey: "consultant_name",
+      accessorKey: "email",
       header: ({ column }) => {
         return (
           <div
             className="flex items-center cursor-pointer"
             onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
           >
-            Consultant Name
+            Email
             <ArrowUpDown className="ml-3 h-4 w-4" />
-          </div>
-        );
-      },
-      cell: ({ row }) => {
-        return (
-          <div className="flex items-center gap-2">
-            <div className="font-medium">{row.original.consultant_name}</div>
           </div>
         );
       },
@@ -167,11 +219,42 @@ export function Table() {
           </div>
         );
       },
-      cell: ({ row }) => {
+    },
+    {
+      accessorKey: "status",
+      header: ({ column }) => {
         return (
-          <div className="flex items-center gap-2">
-            <div className="font-medium">{row.original.company_name}</div>
+          <div
+            // variant="ghost"
+            className="flex items-center cursor-pointer"
+            onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+          >
+            Status
+            <ArrowUpDown className="ml-3 h-4 w-4" />
           </div>
+        );
+      },
+      cell: ({ row }) => {
+        const status = row.original.status;
+        return (
+          <Badge
+            variant={
+              status === "Active"
+                ? "success"
+                : status === "Inactive"
+                ? "destructive"
+                : "outline"
+            }
+            className={
+              status === "Active"
+                ? "bg-emerald-500/10 text-emerald-500"
+                : status === "Inactive"
+                ? "bg-destructive/10 text-destructive"
+                : "bg-amber-500/10 text-amber-500"
+            }
+          >
+            {status}
+          </Badge>
         );
       },
     },
@@ -193,54 +276,29 @@ export function Table() {
       },
     },
     {
-      accessorKey: "updatedAt",
-      header: ({ column }) => {
-        return (
-          <div
-            // variant="ghost"
-            className="flex items-center cursor-pointer"
-            onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-          >
-            Last Updated At
-            <ArrowUpDown className="ml-3 h-4 w-4" />
-          </div>
-        );
-      },
-      cell: ({ row }) => {
-        return new Date(row.original.updatedAt).toLocaleDateString();
-      },
-    },
-    {
       id: "actions",
       header: ({ column }) => {
-        return <div className="text-center mr-[60px]">Actions</div>;
+        return <div>Actions</div>;
       },
       cell: ({ row }) => {
-        const data = row.original;
+        const user = row.original;
         return (
           <div className="flex items-center space-x-2">
-            <div className="group/btn rounded-[12px] text-[11px] p-1.5 px-2 bg-[#e2e2e2] hover:bg-[#c1c1c1] text-[#000000] flex items-center cursor-pointer">
-              <Download className="h-4 w-4 me-1 group-hover/btn:animate-bounce" />
-              <span>Docx</span>
-            </div>
-
-            <div className="group/btn rounded-[12px] text-[11px] ms-2 p-1.5 px-2 bg-[#e2e2e2] hover:bg-[#c1c1c1] text-[#000000] flex items-center cursor-pointer">
-              <Download className="h-4 w-4 me-1 group-hover/btn:animate-bounce" />
-              <span>Pdf</span>
-            </div>
             <Link
-              href={`/admin/manage-projects/detail/${data.id}`}
+              href={`/admin/consultants-users/edit/${user.id}`}
               className="rounded-[12px] p-2 bg-yellow-100 hover:bg-yellow-200"
             >
               <Pencil className="h-4 w-4 text-yellow-600" />
             </Link>
-
-            <Link
-              href={`/admin/manage-projects/view/${data.id}`}
-              className="rounded-[12px] p-2 bg-blue-200 hover:bg-blue-300"
+            {/* <div
+              className="rounded-[12px] p-2 bg-red-100 hover:bg-red-200 cursor-pointer"
+              onClick={() => {
+                setUserToDelete(user);
+                setDeleteDialogOpen(true);
+              }}
             >
-              <Eye className="h-4 w-4 text-blue-600" />
-            </Link>
+              <Trash className="h-4 w-4 text-red-600" />
+            </div> */}
           </div>
         );
       },
@@ -252,8 +310,8 @@ export function Table() {
       <DataTable
         columns={columns}
         data={data}
-        searchColumn="project_name"
-        searchPlaceholder="Search projects..."
+        searchColumn="name"
+        searchPlaceholder="Search consultant users..."
       />
 
       <AlertDialog open={deleteDialogOpen} onOpenChange={setDeleteDialogOpen}>
@@ -263,8 +321,8 @@ export function Table() {
             <AlertDialogDescription>
               This action cannot be undone. This will permanently delete the
               entry
-              {userToDelete && ` "${userToDelete.project_name}"`} and remove
-              their data from our servers.
+              {userToDelete && ` "${userToDelete.name}"`} and remove their data
+              from our servers.
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
