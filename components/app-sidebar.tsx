@@ -121,23 +121,38 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
       const isSubmenuActive = item.submenu?.some((subItem) =>
         pathname.startsWith(subItem.href)
       );
-  
+
       return (
         <SidebarMenuItem key={item.href}>
           <SidebarMenuButton
-            onClick={() => item.submenu && toggleSubmenu(item.href)}
-            asChild
+            onClick={() =>
+              item.submenu ? toggleSubmenu(item.href) : router.push(item.href)
+            }
             isActive={
               pathname === item.href ||
               pathname.startsWith(`${item.href}/`) ||
               isSubmenuActive
             }
           >
-            <div className="flex items-center justify-between w-full h-[40px]">
-              <Link href={item.href} className="flex items-center text-[15px]">
-                {item.icon && <item.icon className="h-[18px] me-1 pr-[6px]" />}
-                {state === "expanded" && <span>{item.title}</span>}
+            <div className="flex items-center justify-between w-full h-[40px] text-[15px]">
+              {/* Only render Link if it's NOT a submenu */}
+              {item.submenu ? (
+                <div className="flex items-center w-full">
+                  {item.icon && (
+                    <item.icon className="h-[18px] me-1 pr-[6px]" />
+                  )}
+                  {state === "expanded" && <span>{item.title}</span>}
+                </div>
+              ) : (
+                <Link href={item.href} className="flex items-center w-full">
+                  {item.icon && (
+                    <item.icon className="h-[18px] me-1 pr-[6px]" />
+                  )}
+                  {state === "expanded" && <span>{item.title}</span>}
                 </Link>
+              )}
+
+              {/* Chevron for submenu */}
               {item.submenu &&
                 (openSubmenus[item.href] || isSubmenuActive ? (
                   <ChevronUp className="ml-2" />
@@ -146,7 +161,6 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
                 ))}
             </div>
           </SidebarMenuButton>
-  
           {item.submenu && (openSubmenus[item.href] || isSubmenuActive) && (
             <SidebarGroupContent
               className={`${state == "collapsed" ? "" : "pl-4"} mt-2`}
@@ -161,7 +175,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
                       <Link href={subItem.href} className="flex items-center">
                         {subItem.icon && <subItem.icon className="mr-1" />}
                         {state === "expanded" && <span>{subItem.title}</span>}
-                        </Link>
+                      </Link>
                     </SidebarMenuButton>
                   </SidebarMenuItem>
                 ))}
@@ -171,7 +185,6 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         </SidebarMenuItem>
       );
     });
-  
 
   return (
     <Sidebar collapsible="icon" {...props}>
