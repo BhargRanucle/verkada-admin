@@ -139,14 +139,14 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
               {item.submenu ? (
                 <div className="flex items-center w-full">
                   {item.icon && (
-                    <item.icon className="h-[18px] me-1 pr-[6px]" />
+                    <item.icon className="min-w-[18px] min-h-[18px] w-[18px] h-[18px] mr-1 pr-[2px]" />
                   )}
                   {state === "expanded" && <span>{item.title}</span>}
                 </div>
               ) : (
                 <Link href={item.href} className="flex items-center w-full">
                   {item.icon && (
-                    <item.icon className="h-[18px] me-1 pr-[6px]" />
+                    <item.icon className="min-w-[18px] min-h-[18px] w-[18px] h-[18px] mr-1 pr-[2px]" />
                   )}
                   {state === "expanded" && <span>{item.title}</span>}
                 </Link>
@@ -173,7 +173,9 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
                       isActive={pathname.startsWith(subItem.href)}
                     >
                       <Link href={subItem.href} className="flex items-center">
-                        {subItem.icon && <subItem.icon className="mr-1" />}
+                        {subItem.icon && (
+                          <subItem.icon className="min-w-[16px] min-h-[16px] w-[16px] h-[16px] mr-1" />
+                        )}
                         {state === "expanded" && <span>{subItem.title}</span>}
                       </Link>
                     </SidebarMenuButton>
