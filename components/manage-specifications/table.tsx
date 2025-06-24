@@ -188,7 +188,7 @@ export function Table() {
             >
               <Pencil className="h-4 w-4 text-yellow-600" />
             </Link>
-            <div
+            {/* <div
               className="rounded-[12px] p-2 bg-red-100 hover:bg-red-200 cursor-pointer"
               onClick={() => {
                 setUserToDelete(data);
@@ -196,7 +196,7 @@ export function Table() {
               }}
             >
               <Trash className="h-4 w-4 text-red-600" />
-            </div>
+            </div> */}
           </div>
         );
       },
