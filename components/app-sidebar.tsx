@@ -117,51 +117,76 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   };
 
   const renderNavItems = (items: typeof navItems) =>
-    items.map((item) => (
-      <SidebarMenuItem key={item.href}>
-        <SidebarMenuButton
-          onClick={() => item.submenu && toggleSubmenu(item.href)}
-          asChild
-          isActive={
-            pathname === item.href || pathname.startsWith(`${item.href}/`)
-          }
-        >
-          <div className="flex items-center justify-between w-full h-[40px]">
-            <Link href={item.href} className="flex items-center text-[15px]">
-              {item.icon && <item.icon className="h-[18px] me-1 pr-[6px]" />}
-              <span>{item.title}</span>
-            </Link>
-            {item.submenu &&
-              (openSubmenus[item.href] ? (
-                <ChevronUp className="ml-2" />
-              ) : (
-                <ChevronDown className="ml-2" />
-              ))}
-          </div>
-        </SidebarMenuButton>
-        {item.submenu && openSubmenus[item.href] && (
-          <SidebarGroupContent
-            className={`${state == "collapsed" ? "" : "pl-4"} mt-2`}
+    items.map((item) => {
+      const isSubmenuActive = item.submenu?.some((subItem) =>
+        pathname.startsWith(subItem.href)
+      );
+
+      return (
+        <SidebarMenuItem key={item.href}>
+          <SidebarMenuButton
+            onClick={() =>
+              item.submenu ? toggleSubmenu(item.href) : router.push(item.href)
+            }
+            isActive={
+              pathname === item.href ||
+              pathname.startsWith(`${item.href}/`) ||
+              isSubmenuActive
+            }
           >
-            <SidebarMenu>
-              {item.submenu.map((subItem) => (
-                <SidebarMenuItem key={subItem.href}>
-                  <SidebarMenuButton
-                    asChild
-                    isActive={pathname === subItem.href}
-                  >
-                    <Link href={subItem.href} className="flex items-center">
-                      {subItem.icon && <subItem.icon className="mr-1" />}
-                      <span>{subItem.title}</span>
-                    </Link>
-                  </SidebarMenuButton>
-                </SidebarMenuItem>
-              ))}
-            </SidebarMenu>
-          </SidebarGroupContent>
-        )}
-      </SidebarMenuItem>
-    ));
+            <div className="flex items-center justify-between w-full h-[40px] text-[15px]">
+              {/* Only render Link if it's NOT a submenu */}
+              {item.submenu ? (
+                <div className="flex items-center w-full">
+                  {item.icon && (
+                    <item.icon className="min-w-[18px] min-h-[18px] w-[18px] h-[18px] mr-1 pr-[2px]" />
+                  )}
+                  {state === "expanded" && <span>{item.title}</span>}
+                </div>
+              ) : (
+                <Link href={item.href} className="flex items-center w-full">
+                  {item.icon && (
+                    <item.icon className="min-w-[18px] min-h-[18px] w-[18px] h-[18px] mr-1 pr-[2px]" />
+                  )}
+                  {state === "expanded" && <span>{item.title}</span>}
+                </Link>
+              )}
+
+              {/* Chevron for submenu */}
+              {item.submenu &&
+                (openSubmenus[item.href] || isSubmenuActive ? (
+                  <ChevronUp className="ml-2" />
+                ) : (
+                  <ChevronDown className="ml-2" />
+                ))}
+            </div>
+          </SidebarMenuButton>
+          {item.submenu && (openSubmenus[item.href] || isSubmenuActive) && (
+            <SidebarGroupContent
+              className={`${state == "collapsed" ? "" : "pl-4"} mt-2`}
+            >
+              <SidebarMenu>
+                {item.submenu.map((subItem) => (
+                  <SidebarMenuItem key={subItem.href}>
+                    <SidebarMenuButton
+                      asChild
+                      isActive={pathname.startsWith(subItem.href)}
+                    >
+                      <Link href={subItem.href} className="flex items-center">
+                        {subItem.icon && (
+                          <subItem.icon className="min-w-[16px] min-h-[16px] w-[16px] h-[16px] mr-1" />
+                        )}
+                        {state === "expanded" && <span>{subItem.title}</span>}
+                      </Link>
+                    </SidebarMenuButton>
+                  </SidebarMenuItem>
+                ))}
+              </SidebarMenu>
+            </SidebarGroupContent>
+          )}
+        </SidebarMenuItem>
+      );
+    });
 
   return (
     <Sidebar collapsible="icon" {...props}>
