@@ -49,6 +49,7 @@ import {
 } from "@/components/ui/select";
 
 const GeneralInformationSchema = Yup.object().shape({
+  rep: Yup.string().required("Please select a sales rep"),
   first_name: Yup.string().required("First name is required"),
   last_name: Yup.string().required("Last name is required"),
   company_name: Yup.string().required("Company name is required"),
@@ -57,8 +58,9 @@ const GeneralInformationSchema = Yup.object().shape({
     .required("Email is required"),
   phone_number: Yup.string().required("Phone number is required"),
   project_name: Yup.string().required("Project name is required"),
-  end_customer_company: Yup.string().required("End customer company is required"),
-  projectName: Yup.string().required("Project name is required"),
+  end_customer_company: Yup.string().required(
+    "End customer company is required"
+  ),
   issuanceDescription: Yup.string().required(
     "Issuance description is required"
   ),
@@ -82,7 +84,6 @@ const GeneralInformationSchema = Yup.object().shape({
   programming: Yup.string(),
   acceptance_testing: Yup.string(),
   owner_personnel_training: Yup.string(),
-  sales_rep_contact: Yup.string().required("Sales Rep Contact is required"),
   license_term: Yup.string().required("License Term is required"),
   system_monitoring: Yup.array().of(
     Yup.object().shape({
@@ -111,7 +112,7 @@ const GeneralInformationSchema = Yup.object().shape({
 });
 
 const initialValues = {
-  rep: "Eric Talley",
+  rep: "",
   first_name: "Richard",
   last_name: "Brysacz",
   project_role: "Engineer",
@@ -292,7 +293,14 @@ export default function GeneralInformationForm() {
       container: `#toolbar-submittals`,
     },
   };
-
+  const reps = [
+    { label: "Dan Bettencourt", value: "dan.bettencourt@verkada.com" },
+    { label: "CJ Corry", value: "cj.corry@verkada.com" },
+    { label: "Eric Talley", value: "eric.talley@verkada.com" },
+    { label: "Ashley Ott", value: "ashley.ott@verkada.com" },
+    { label: "Miles Anderson", value: "miles.anderson@verkada.com" },
+    { label: "Chad Cooper", value: "chad.cooper@verkada.com" },
+  ];
   return (
     <div className="min-h-screen">
       <div className="">
@@ -336,19 +344,22 @@ export default function GeneralInformationForm() {
                                 htmlFor="rep"
                                 className="text-sm font-medium text-slate-700 dark:text-slate-300"
                               >
-                                A&E Rep:
+                                A&E Rep *
                               </Label>
-                              <Select
+                              {/* <Select
                                 onValueChange={(value) =>
                                   setFieldValue("rep", value)
                                 }
                                 value={values.rep}
                               >
-                                <SelectTrigger className="rounded-lg">
+                                <SelectTrigger className="rounded-lg text-left">
                                   <SelectValue placeholder="Select a Rep" />
                                 </SelectTrigger>
                                 <SelectContent>
-                                  <SelectItem value="Dan Bettencourt">
+                                  <SelectItem
+                                    value="dan.bettencourt@verkada.com"
+                                    className="text-left"
+                                  >
                                     Dan Bettencourt
                                   </SelectItem>
                                   <SelectItem value="CJ Corry">
@@ -366,6 +377,28 @@ export default function GeneralInformationForm() {
                                   <SelectItem value="Chad Cooper">
                                     Chad Cooper
                                   </SelectItem>
+                                </SelectContent>
+                              </Select> */}
+
+                              <Select
+                                onValueChange={(value) =>
+                                  setFieldValue("rep", value)
+                                }
+                                value={values.rep}
+                              >
+                                <SelectTrigger className="rounded-lg text-left">
+                                  <SelectValue placeholder="Select a Rep" />
+                                </SelectTrigger>
+                                <SelectContent>
+                                  {reps.map((rep) => (
+                                    <SelectItem
+                                      key={rep.value}
+                                      value={rep.value}
+                                      className="text-left"
+                                    >
+                                      {rep.label}
+                                    </SelectItem>
+                                  ))}
                                 </SelectContent>
                               </Select>
                               {errors.rep && touched.rep && (
@@ -755,8 +788,6 @@ export default function GeneralInformationForm() {
                                   </p>
                                 )}
                             </div>
-
-                            
                           </div>
 
                           <div className="grid grid-cols-1 lg:grid-cols-2 md:grid-cols-2 sm:grid-cols-1 gap-4 mt-3">
@@ -954,7 +985,6 @@ export default function GeneralInformationForm() {
                           </div>
 
                           <div className="grid grid-cols-12 gap-4 mt-3">
-                            
                             <div className="col-span-12 lg:col-span-12 space-y-1.5">
                               <Label
                                 htmlFor="budget"
@@ -964,72 +994,73 @@ export default function GeneralInformationForm() {
                               </Label>
 
                               <div className="grid grid-cols-1 md:grid-cols-6 lg:grid-cols-6 gap-2">
-                            <FieldArray name="intrested_products">
-                              {() => (
-                                <>
-                                  {values.intrested_products.map(
-                                    (intrested_product, index) => {
-                                      const id = `intrested_product-${index}`;
-                                      const isChecked =
-                                        values.intrested_products[index].checked;
+                                <FieldArray name="intrested_products">
+                                  {() => (
+                                    <>
+                                      {values.intrested_products.map(
+                                        (intrested_product, index) => {
+                                          const id = `intrested_product-${index}`;
+                                          const isChecked =
+                                            values.intrested_products[index]
+                                              .checked;
 
-                                      return (
-                                        <div
-                                          key={index}
-                                          onClick={(e) => {
-                                            e.stopPropagation();
-                                            setFieldValue(
-                                              `intrested_products[${index}].checked`,
-                                              !isChecked
-                                            );
-                                          }}
-                                          className="flex items-center space-x-2 p-2 bg-white dark:bg-slate-800 rounded-md border border-slate-200 dark:border-slate-600 cursor-pointer"
-                                        >
-                                          <input
-                                            type="checkbox"
-                                            checked={isChecked}
-                                            onChange={() => {}}
-                                            className="hidden"
-                                          />
-                                          <div className="flex items-center">
+                                          return (
                                             <div
-                                              className={`w-4 h-4 border mr-0 flex items-center justify-center ${
-                                                isChecked
-                                                  ? "bg-[black] border-[black]"
-                                                  : "border-gray-400 dark:border-gray-500"
-                                              }`}
+                                              key={index}
+                                              onClick={(e) => {
+                                                e.stopPropagation();
+                                                setFieldValue(
+                                                  `intrested_products[${index}].checked`,
+                                                  !isChecked
+                                                );
+                                              }}
+                                              className="flex items-center space-x-2 p-2 bg-white dark:bg-slate-800 rounded-md border border-slate-200 dark:border-slate-600 cursor-pointer"
                                             >
-                                              {isChecked && (
-                                                <svg
-                                                  className="w-3 h-3 text-white"
-                                                  viewBox="0 0 24 24"
-                                                  fill="none"
+                                              <input
+                                                type="checkbox"
+                                                checked={isChecked}
+                                                onChange={() => {}}
+                                                className="hidden"
+                                              />
+                                              <div className="flex items-center">
+                                                <div
+                                                  className={`w-4 h-4 border mr-0 flex items-center justify-center ${
+                                                    isChecked
+                                                      ? "bg-[black] border-[black]"
+                                                      : "border-gray-400 dark:border-gray-500"
+                                                  }`}
                                                 >
-                                                  <path
-                                                    d="M5 13l4 4L19 7"
-                                                    stroke="currentColor"
-                                                    strokeWidth="2"
-                                                    strokeLinecap="round"
-                                                    strokeLinejoin="round"
-                                                  />
-                                                </svg>
-                                              )}
+                                                  {isChecked && (
+                                                    <svg
+                                                      className="w-3 h-3 text-white"
+                                                      viewBox="0 0 24 24"
+                                                      fill="none"
+                                                    >
+                                                      <path
+                                                        d="M5 13l4 4L19 7"
+                                                        stroke="currentColor"
+                                                        strokeWidth="2"
+                                                        strokeLinecap="round"
+                                                        strokeLinejoin="round"
+                                                      />
+                                                    </svg>
+                                                  )}
+                                                </div>
+                                              </div>
+                                              <label
+                                                htmlFor={id}
+                                                className="text-xs leading-tight cursor-pointer"
+                                              >
+                                                {intrested_product.description}
+                                              </label>
                                             </div>
-                                          </div>
-                                          <label
-                                            htmlFor={id}
-                                            className="text-xs leading-tight cursor-pointer"
-                                          >
-                                            {intrested_product.description}
-                                          </label>
-                                        </div>
-                                      );
-                                    }
+                                          );
+                                        }
+                                      )}
+                                    </>
                                   )}
-                                </>
-                              )}
-                            </FieldArray>
-                          </div>
+                                </FieldArray>
+                              </div>
                             </div>
                           </div>
                         </div>
@@ -1053,18 +1084,20 @@ export default function GeneralInformationForm() {
                                 name="end_customer_company"
                                 className={cn(
                                   " dark:bg-slate-700 border-slate-200 dark:border-slate-600 focus:border-slate-400 dark:focus:border-slate-400",
-                                  errors.end_customer_company && touched.end_customer_company
+                                  errors.end_customer_company &&
+                                    touched.end_customer_company
                                     ? ""
                                     : ""
                                 )}
                               />
-                              {errors.end_customer_company && touched.end_customer_company && (
-                                <p className="text-red-500 text-xs">
-                                  {errors.end_customer_company}
-                                </p>
-                              )}
+                              {errors.end_customer_company &&
+                                touched.end_customer_company && (
+                                  <p className="text-red-500 text-xs">
+                                    {errors.end_customer_company}
+                                  </p>
+                                )}
                             </div>
-                            
+
                             <div className="space-y-1.5">
                               <Label
                                 htmlFor="end_customer_contact"
@@ -1078,16 +1111,18 @@ export default function GeneralInformationForm() {
                                 name="end_customer_contact"
                                 className={cn(
                                   " dark:bg-slate-700 border-slate-200 dark:border-slate-600 focus:border-slate-400 dark:focus:border-slate-400",
-                                  errors.end_customer_contact && touched.end_customer_contact
+                                  errors.end_customer_contact &&
+                                    touched.end_customer_contact
                                     ? ""
                                     : ""
                                 )}
                               />
-                              {errors.end_customer_contact && touched.end_customer_contact && (
-                                <p className="text-red-500 text-xs">
-                                  {errors.end_customer_contact}
-                                </p>
-                              )}
+                              {errors.end_customer_contact &&
+                                touched.end_customer_contact && (
+                                  <p className="text-red-500 text-xs">
+                                    {errors.end_customer_contact}
+                                  </p>
+                                )}
                             </div>
 
                             <div className="space-y-1.5">
@@ -1153,16 +1188,18 @@ export default function GeneralInformationForm() {
                                 name="security_consultant"
                                 className={cn(
                                   " dark:bg-slate-700 border-slate-200 dark:border-slate-600 focus:border-slate-400 dark:focus:border-slate-400",
-                                  errors.security_consultant && touched.security_consultant
+                                  errors.security_consultant &&
+                                    touched.security_consultant
                                     ? ""
                                     : ""
                                 )}
                               />
-                              {errors.security_consultant && touched.security_consultant && (
-                                <p className="text-red-500 text-xs">
-                                  {errors.security_consultant}
-                                </p>
-                              )}
+                              {errors.security_consultant &&
+                                touched.security_consultant && (
+                                  <p className="text-red-500 text-xs">
+                                    {errors.security_consultant}
+                                  </p>
+                                )}
                             </div>
 
                             <div className="space-y-1.5">
@@ -1178,16 +1215,18 @@ export default function GeneralInformationForm() {
                                 name="property_management_company"
                                 className={cn(
                                   " dark:bg-slate-700 border-slate-200 dark:border-slate-600 focus:border-slate-400 dark:focus:border-slate-400",
-                                  errors.property_management_company && touched.property_management_company
+                                  errors.property_management_company &&
+                                    touched.property_management_company
                                     ? ""
                                     : ""
                                 )}
                               />
-                              {errors.property_management_company && touched.property_management_company && (
-                                <p className="text-red-500 text-xs">
-                                  {errors.property_management_company}
-                                </p>
-                              )}
+                              {errors.property_management_company &&
+                                touched.property_management_company && (
+                                  <p className="text-red-500 text-xs">
+                                    {errors.property_management_company}
+                                  </p>
+                                )}
                             </div>
 
                             <div className="space-y-1.5">
@@ -1203,18 +1242,20 @@ export default function GeneralInformationForm() {
                                 name="general_contractor"
                                 className={cn(
                                   " dark:bg-slate-700 border-slate-200 dark:border-slate-600 focus:border-slate-400 dark:focus:border-slate-400",
-                                  errors.general_contractor && touched.general_contractor
+                                  errors.general_contractor &&
+                                    touched.general_contractor
                                     ? ""
                                     : ""
                                 )}
                               />
-                              {errors.general_contractor && touched.general_contractor && (
-                                <p className="text-red-500 text-xs">
-                                  {errors.general_contractor}
-                                </p>
-                              )}
+                              {errors.general_contractor &&
+                                touched.general_contractor && (
+                                  <p className="text-red-500 text-xs">
+                                    {errors.general_contractor}
+                                  </p>
+                                )}
                             </div>
-                          </div>  
+                          </div>
                         </div>
                       </div>
                       <div>
@@ -1223,8 +1264,7 @@ export default function GeneralInformationForm() {
                         </h4>
                         <div className="border-t-[1px] border-[black]"></div>
                         <div className="grid grid-cols-1 lg:grid-cols-2 md:grid-cols-2 sm:grid-cols-1 gap-4 mt-3">
-
-                          <div className="space-y-1.5">
+                          <div className="bg-slate-50 dark:bg-slate-700/50 rounded-lg px-4 py-2 pb-3 space-y-3 mt-3">
                             <Label
                               htmlFor="issuanceDescription"
                               className="text-sm font-medium text-slate-700 dark:text-slate-300"
@@ -1251,7 +1291,7 @@ export default function GeneralInformationForm() {
                               )}
                           </div>
 
-                          <div className="space-y-1.5">
+                          <div className="bg-slate-50 dark:bg-slate-700/50 rounded-lg px-4 py-2 pb-3 space-y-3 mt-3">
                             <Label
                               htmlFor="issuanceDate"
                               className="text-sm font-medium text-slate-700 dark:text-slate-300"
@@ -1397,61 +1437,6 @@ export default function GeneralInformationForm() {
                             </FieldArray>
                           </div>
                         </div>
-
-                        {/* <div className="bg-slate-50 dark:bg-slate-700/50 rounded-lg p-4 space-y-3 mt-3">
-                          <h3 className="text-base font-semibold text-slate-800 dark:text-slate-200">
-                            Submittals
-                          </h3>
-                          <div className="bg-white text-editor rounded-[17px]">
-                            <Field name={`submittals`} className="">
-                              {({ field, form, meta }: any) => (
-                                <div>
-                                  <TextEditorField
-                                    name="submittals"
-                                    toolbarId="toolbar-submittals"
-                                    value={field.value}
-                                    onChange={(value: any) =>
-                                      setFieldValue(`submittals`, value)
-                                    }
-                                  />
-                                  <ErrorMessage
-                                    name={`submittals`}
-                                    component="div"
-                                    className="text-red-500 text-xs mt-1"
-                                  />
-                                </div>
-                              )}
-                            </Field>
-                          </div>
-                        </div>
-
-                        <div className="bg-slate-50 dark:bg-slate-700/50 rounded-lg p-4 space-y-3 mt-3">
-                          <h3 className="text-base font-semibold text-slate-800 dark:text-slate-200">
-                            Definitions
-                          </h3>
-                          <div className="bg-white text-editor rounded-[17px]">
-                            <Field name={`definitions`} className="">
-                              {({ field, form, meta }: any) => (
-                                <>
-                                  <TextEditorField
-                                    name="definitions"
-                                    toolbarId="toolbar-definitions"
-                                    value={field.value}
-                                    onChange={(value: any) =>
-                                      setFieldValue(`definitions`, value)
-                                    }
-                                  />
-
-                                  <ErrorMessage
-                                    name={`definitions`}
-                                    component="div"
-                                    className="text-red-500 text-xs mt-1"
-                                  />
-                                </>
-                              )}
-                            </Field>
-                          </div>
-                        </div> */}
                       </div>
 
                       <div>
@@ -1460,15 +1445,27 @@ export default function GeneralInformationForm() {
                         </h4>
                         <div className="border-t-[1px] border-[black]"></div>
 
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-3">
-                          <div className="space-y-1.5">
-                            <Label
-                              htmlFor="sales_rep_contact"
-                              className="text-sm font-medium text-slate-700 dark:text-slate-300"
-                            >
-                              Sales Rep Contact *
-                            </Label>
-                            <Select
+                        
+                          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div className="bg-slate-50 dark:bg-slate-700/50 rounded-lg px-4 py-2 space-y-3 mt-3">
+                              <Label
+                                htmlFor="sales_rep_contact"
+                                className="text-sm font-medium text-slate-700 dark:text-slate-300"
+                              >
+                                Sales Rep Contact:-
+                              </Label>
+                              {values?.rep ? (
+                                <p className="font-meduim text-[15px]">
+                                  {reps.find((rep) => rep.value === values?.rep)
+                                    ?.label || "Unknown Rep"}{" "}
+                                  - {values?.rep}
+                                </p>
+                              ) : (
+                                <p className="font-meduim text-[15px]">
+                                  Not Selected
+                                </p>
+                              )}
+                              {/* <Select
                               onValueChange={(value) =>
                                 setFieldValue("sales_rep_contact", value)
                               }
@@ -1491,45 +1488,48 @@ export default function GeneralInformationForm() {
                                   dan.bettencourt@verkada.com
                                 </SelectItem>
                               </SelectContent>
-                            </Select>
-                            {errors.sales_rep_contact &&
-                              touched.sales_rep_contact && (
+                            </Select> */}
+                              {errors.sales_rep_contact &&
+                                touched.sales_rep_contact && (
+                                  <p className="text-red-500 text-xs">
+                                    {errors.sales_rep_contact}
+                                  </p>
+                                )}
+                            </div>
+
+                            <div className="bg-slate-50 dark:bg-slate-700/50 rounded-lg px-4 py-2 pb-3 space-y-3 mt-3">
+                              <Label
+                                htmlFor="license_term"
+                                className="text-sm font-medium text-slate-700 dark:text-slate-300"
+                              >
+                                Select Licence Term *
+                              </Label>
+                              <Select
+                                onValueChange={(value) =>
+                                  setFieldValue("license_term", value)
+                                }
+                                value={values.license_term}
+                              >
+                                <SelectTrigger className="rounded-lg">
+                                  <SelectValue placeholder="Select Licence Term" />
+                                </SelectTrigger>
+                                <SelectContent>
+                                  <SelectItem value="1-year">1-year</SelectItem>
+                                  <SelectItem value="3-year">3-year</SelectItem>
+                                  <SelectItem value="5-year">5-year</SelectItem>
+                                  <SelectItem value="10-year">
+                                    10-year
+                                  </SelectItem>
+                                </SelectContent>
+                              </Select>
+                              {errors.license_term && touched.license_term && (
                                 <p className="text-red-500 text-xs">
-                                  {errors.sales_rep_contact}
+                                  {errors.license_term}
                                 </p>
                               )}
+                            </div>
                           </div>
-
-                          <div className="space-y-1.5">
-                            <Label
-                              htmlFor="license_term"
-                              className="text-sm font-medium text-slate-700 dark:text-slate-300"
-                            >
-                              Select Licence Term *
-                            </Label>
-                            <Select
-                              onValueChange={(value) =>
-                                setFieldValue("license_term", value)
-                              }
-                              value={values.license_term}
-                            >
-                              <SelectTrigger className="rounded-lg">
-                                <SelectValue placeholder="Select Licence Term" />
-                              </SelectTrigger>
-                              <SelectContent>
-                                <SelectItem value="1-year">1-year</SelectItem>
-                                <SelectItem value="3-year">3-year</SelectItem>
-                                <SelectItem value="5-year">5-year</SelectItem>
-                                <SelectItem value="10-year">10-year</SelectItem>
-                              </SelectContent>
-                            </Select>
-                            {errors.license_term && touched.license_term && (
-                              <p className="text-red-500 text-xs">
-                                {errors.license_term}
-                              </p>
-                            )}
-                          </div>
-                        </div>
+                       
 
                         <div className="bg-slate-50 dark:bg-slate-700/50 rounded-lg p-4 mt-3">
                           <h3 className="text-base font-semibold text-slate-800 dark:text-slate-200 mb-3">
@@ -1864,228 +1864,6 @@ export default function GeneralInformationForm() {
                             </Field>
                           </div>
                         </div>
-
-                        {/* <div className="bg-slate-50 dark:bg-slate-700/50 rounded-lg p-4 space-y-3 mt-4">
-                          <h3 className="text-base font-semibold text-slate-800 dark:text-slate-200">
-                            Installers
-                          </h3>
-                          <div className="bg-white text-editor rounded-[17px]">
-                            <Field name={`installers`} className="">
-                              {({ field, form, meta }: any) => (
-                                <div>
-                                  <TextEditorField
-                                    name="installers"
-                                    toolbarId="toolbar-installers"
-                                    value={field.value}
-                                    onChange={(value: any) =>
-                                      setFieldValue(`installers`, value)
-                                    }
-                                  />
-                                  <ErrorMessage
-                                    name={`installers`}
-                                    component="div"
-                                    className="text-red-500 text-xs mt-1"
-                                  />
-                                </div>
-                              )}
-                            </Field>
-                          </div>
-                        </div>
-
-                        <div className="bg-slate-50 dark:bg-slate-700/50 rounded-lg p-4 space-y-3 mt-3">
-                          <h3 className="text-base font-semibold text-slate-800 dark:text-slate-200">
-                            Examination
-                          </h3>
-                          <div className="bg-white text-editor rounded-[17px]">
-                            <Field name={`examination`} className="">
-                              {({ field, form, meta }: any) => (
-                                <div>
-                                  <TextEditorField
-                                    name="examination"
-                                    toolbarId="toolbar-examination"
-                                    value={field.value}
-                                    onChange={(value: any) =>
-                                      setFieldValue(`examination`, value)
-                                    }
-                                  />
-                                  <ErrorMessage
-                                    name={`examination`}
-                                    component="div"
-                                    className="text-red-500 text-xs mt-1"
-                                  />
-                                </div>
-                              )}
-                            </Field>
-                          </div>
-                        </div>
-
-                        <div className="bg-slate-50 dark:bg-slate-700/50 rounded-lg p-4 space-y-3 mt-3">
-                          <h3 className="text-base font-semibold text-slate-800 dark:text-slate-200">
-                            Preparation
-                          </h3>
-                          <div className="bg-white text-editor rounded-[17px]">
-                            <Field name={`preparation`} className="">
-                              {({ field, form, meta }: any) => (
-                                <div>
-                                  <TextEditorField
-                                    name="preparation"
-                                    toolbarId="toolbar-preparation"
-                                    value={field.value}
-                                    onChange={(value: any) =>
-                                      setFieldValue(`preparation`, value)
-                                    }
-                                  />
-                                  <ErrorMessage
-                                    name={`preparation`}
-                                    component="div"
-                                    className="text-red-500 text-xs mt-1"
-                                  />
-                                </div>
-                              )}
-                            </Field>
-                          </div>
-                        </div>
-
-                        <div className="bg-slate-50 dark:bg-slate-700/50 rounded-lg p-4 space-y-3 mt-3">
-                          <h3 className="text-base font-semibold text-slate-800 dark:text-slate-200">
-                            Installation
-                          </h3>
-                          <div className="bg-white text-editor rounded-[17px]">
-                            <Field name={`installation`} className="">
-                              {({ field, form, meta }: any) => (
-                                <div>
-                                  <TextEditorField
-                                    name="installation"
-                                    toolbarId="toolbar-installation"
-                                    value={field.value}
-                                    onChange={(value: any) =>
-                                      setFieldValue(`installation`, value)
-                                    }
-                                  />
-                                  <ErrorMessage
-                                    name={`installation`}
-                                    component="div"
-                                    className="text-red-500 text-xs mt-1"
-                                  />
-                                </div>
-                              )}
-                            </Field>
-                          </div>
-                        </div>
-
-                        <div className="bg-slate-50 dark:bg-slate-700/50 rounded-lg p-4 space-y-3 mt-3">
-                          <h3 className="text-base font-semibold text-slate-800 dark:text-slate-200">
-                            Labeling
-                          </h3>
-                          <div className="bg-white text-editor rounded-[17px]">
-                            <Field name={`labeling`} className="">
-                              {({ field, form, meta }: any) => (
-                                <div>
-                                  <TextEditorField
-                                    name="labeling"
-                                    toolbarId="toolbar-labeling"
-                                    value={field.value}
-                                    onChange={(value: any) =>
-                                      setFieldValue(`labeling`, value)
-                                    }
-                                  />
-                                  <ErrorMessage
-                                    name={`labeling`}
-                                    component="div"
-                                    className="text-red-500 text-xs mt-1"
-                                  />
-                                </div>
-                              )}
-                            </Field>
-                          </div>
-                        </div>
-
-                        <div className="bg-slate-50 dark:bg-slate-700/50 rounded-lg p-4 space-y-3 mt-3">
-                          <h3 className="text-base font-semibold text-slate-800 dark:text-slate-200">
-                            Programming
-                          </h3>
-                          <div className="bg-white text-editor rounded-[17px]">
-                            <Field name={`programming`} className="">
-                              {({ field, form, meta }: any) => (
-                                <div>
-                                  <TextEditorField
-                                    name="programming"
-                                    toolbarId="toolbar-programming"
-                                    value={field.value}
-                                    onChange={(value: any) =>
-                                      setFieldValue(`programming`, value)
-                                    }
-                                  />
-                                  <ErrorMessage
-                                    name={`programming`}
-                                    component="div"
-                                    className="text-red-500 text-xs mt-1"
-                                  />
-                                </div>
-                              )}
-                            </Field>
-                          </div>
-                        </div>
-
-                        <div className="bg-slate-50 dark:bg-slate-700/50 rounded-lg p-4 space-y-3 mt-3">
-                          <h3 className="text-base font-semibold text-slate-800 dark:text-slate-200">
-                            Acceptance Testing
-                          </h3>
-                          <div className="bg-white text-editor rounded-[17px]">
-                            <Field name={`acceptance_testing`} className="">
-                              {({ field, form, meta }: any) => (
-                                <div>
-                                  <TextEditorField
-                                    name="acceptance_testing"
-                                    toolbarId="toolbar-acceptance-testing"
-                                    value={field.value}
-                                    onChange={(value: any) =>
-                                      setFieldValue(`acceptance_testing`, value)
-                                    }
-                                  />
-                                  <ErrorMessage
-                                    name={`acceptance_testing`}
-                                    component="div"
-                                    className="text-red-500 text-xs mt-1"
-                                  />
-                                </div>
-                              )}
-                            </Field>
-                          </div>
-                        </div>
-
-                        <div className="bg-slate-50 dark:bg-slate-700/50 rounded-lg p-4 space-y-3 mt-3">
-                          <h3 className="text-base font-semibold text-slate-800 dark:text-slate-200">
-                            Owner Personnel Training
-                          </h3>
-                          <div className="bg-white text-editor rounded-[17px]">
-                            <Field
-                              name={`owner_personnel_training`}
-                              className=""
-                            >
-                              {({ field, form, meta }: any) => (
-                                <div>
-                                  <TextEditorField
-                                    name="owner_personnel_training"
-                                    toolbarId="toolbar-owner-personnel-training"
-                                    value={field.value}
-                                    onChange={(value: any) =>
-                                      setFieldValue(
-                                        `owner_personnel_training`,
-                                        value
-                                      )
-                                    }
-                                  />
-                                  <ErrorMessage
-                                    name={`owner_personnel_training`}
-                                    component="div"
-                                    className="text-red-500 text-xs mt-1"
-                                  />
-                                </div>
-                              )}
-                            </Field>
-                          </div>
-                        </div> */}
                       </div>
 
                       <div className="flex justify-end pt-2">
